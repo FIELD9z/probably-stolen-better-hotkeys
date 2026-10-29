@@ -10,7 +10,7 @@ namespace StarterMod
             {
                 var language = Settings.Language;
                 if (language != "Auto") return language == "简体中文";
-                return (LocHelper.GetCurrentLocaleCode() ?? "en").StartsWith("zh", StringComparison.OrdinalIgnoreCase);
+                return LocaleSnapshot.Code.StartsWith("zh", StringComparison.OrdinalIgnoreCase);
             }
         }
         internal static string T(string zh, string en) => Chinese ? zh : en;

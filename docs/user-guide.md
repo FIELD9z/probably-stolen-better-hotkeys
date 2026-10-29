@@ -1,4 +1,4 @@
-# Better Hotkeys / 更好的快捷键 — 0.3.0
+# Better Hotkeys / 更好的快捷键 — 0.2.2
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -6,20 +6,6 @@ Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
 在 Mods 中打开 Better Hotkeys 的设置，修改后点击应用。设置跨存档保存；当前鼠标手势或拖动结束后生效。语言可选 Auto（跟随游戏，中文以外使用英文）、English、简体中文；修改语言后重新打开面板。
 
-0.2.1：原生操作提示面板的快捷键区域在 Mod 实际启用时显示动态列表，使用当前已生效的绑定，约 0.15 秒刷新；关闭、未绑定和冲突状态明确显示。接管模式显示助手动作，原生＋辅助模式显示原生转移键。改键后无需重启；停用 Mod 或输入模块故障导致停用时恢复原生区域。其他店铺说明不改动。此提示布局仍待游戏内验证。
-
-### 0.3.0 顾客需求与标签收纳
-
-- **H** 开关当前顾客的需求高亮。首次默认开启，状态跨重启保存；下一位顾客自动更新。青色内框表示物品匹配需求，右上角标表示容器内有匹配物品，两者可以同时出现。不按预算过滤；订单高亮表示该物品可贡献，不表示数量已经凑齐。未知特殊订单明确提示无法识别。
-- **J** 立即收纳选区；持续按住 J，再逐个点击物品可连续收纳，点击不触发拖动。H/J 都可在 Mod 设置中改键；冲突时不会执行。
-- 点击自有容器标题栏的**设置图标**，编辑当前容器／当前页的名称、标签、满足任意／全部及优先级。名称是 Mod 显示别名，完整保存；标题空间不足时只影响显示，不截断保存内容。
-- 标签可搜索游戏分类、公开品质／条件和受支持的离散状态；本次不提供耐久、纯度等数值范围条件。标签不读取隐藏真假属性。已有规则随当前存档保存。
-- 默认 **Open** 范围只使用打开且当前可见的页；设置为 **All** 可使用玩家库存中全部合规储藏页及嵌套容器，包括关闭页，不切换当前页面。待售区、顾客物品、垃圾和机器输入口不作为目标。
-- 储藏升级后**每页独立名称和规则**；原第 1 页的规则继续保留。优先级越大越先尝试，相同优先级按容器身份和页号稳定排序；满后尝试下一目标，允许拆分堆叠，不重排目标内原有物品。
-- 固定物品及已设置收纳标签的容器跳过；普通未贴标签容器按自身属性整只转移。未匹配／放不下的物品留在原处并提示数量。
-- **空标签仅表示不参与 J 自动收纳，手动放入与原有 Shift/Ctrl 转移不受影响。**
-
-这些新增功能已通过编译与逻辑检查；标题栏布局、跨页转移、保存／读档仍需在游戏内验证。
 
 ### 默认操作
 
@@ -56,7 +42,6 @@ VanillaWithHelpers 交还原生快速转移，同时关闭本 Mod 转移/固定�
 
 Open Better Hotkeys settings in Mods and click Apply. Settings persist across saves. Changes take effect after the current mouse gesture/drag ends. Auto follows the game language (Chinese or English fallback); reopen the panel after changing language.
 
-0.2.1: while this mod is actually enabled, the native control-hint overlay's shortcut region shows a dynamic list of currently effective bindings (refreshed approximately every 0.15 seconds). Disabled, unbound and conflicting shortcuts are labeled. TakeOver shows our actions; VanillaWithHelpers shows native transfer keys. Applied binding changes require no restart. Disabling the mod, including disabling after an input error, restores the original region. Other shop hints are unchanged. The new layout still needs in-game verification.
 
 ### Default controls
 
@@ -91,15 +76,11 @@ Checks cover public game bindings, available storage-coordinator presets and dia
 
 ## Validation / 验证
 
-0.2.1 compiled against installed full-game DLLs with zero warnings/errors; 110 logic checks and assembly-binding checks passed. Actual panel layout, language changes, persistence across restart, pending changes during dragging, mode switching, marker alignment and combinations with other mods still require in-game verification. 编译与逻辑测试不等于游戏内验证通过。
+本次 0.2.2 保留 0.2.1 原有转移、固定、整理、标记与设置功能范围；移除原生快捷提示面板接管。自定义快捷键请以 Mod 设置和本文为准。0.3/0.4 开发功能不包含在此维护版本。编译与逻辑检查不等于游戏内验证。
+
+Version 0.2.2 retains the established transfer, pin, sorting, marker and settings features. Native shortcut hints are no longer replaced; consult Mod settings and this guide for custom bindings. Development features from 0.3/0.4 are not part of this maintenance release. Build and logic checks do not replace in-game verification.
+
+[Source / 源代码](https://github.com/FIELD9z/probably-stolen-better-hotkeys)
 
 
-## 0.3.0 — Customer demand and tagged storage
-
-- **H** toggles customer demand markers, enabled initially and remembered globally. An inset border marks matching items; a top-right badge marks containers holding matches. Budgets are ignored. An order marker means the item contributes, not that the total quantity is fulfilled. Unknown special requests display an unsupported notice.
-- **J** stores the selected items; hold J and click individual items to store repeatedly without dragging. Both keys can be changed in Mod settings and are checked for conflicts.
-- Use the **settings icon in a container header** to name and tag the current container/page, select any/all matching, and set priority. Names are complete Mod aliases; limited title space may shorten their display only. Rules are saved separately per game save.
-- Every upgraded storage page has independent rules. **Open** targets only visible current pages; **All** includes closed pages and eligible nested storage in the player's inventory, without switching tabs. Sale areas, client property, trash and machine intakes are excluded.
-- Higher priority is tried first; ties use stable owner identity and page order. Stacks may split across destinations. Pinned items and tagged storage containers are skipped. Unmatched/full items remain at the source. Empty tags affect only automatic storage, never manual insertion or existing transfer shortcuts.
-- Searchable tags cover game categories, public conditions and supported discrete states. Numeric rules such as durability/purity are deferred. Hidden truth is not revealed by tag matching.
-- Runtime layout, cross-page transfers and save/reload still require in-game validation.
+Source / 源码：[GitHub](https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/codex/0.2.2-text-fix)。本分支为 0.2.2 维护版；主分支含开发功能。

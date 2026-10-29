@@ -66,6 +66,4 @@ target.childItems.Add(new GameItem { Stackable = true, AddCapacity = 4, parentIn
 Check("uses multiple direct-layer stack capacities", DirectTransfer.Move(item, target, out _) == 7 && item.unitCount == 13);
 InspectionChecks.Run(Check);
 ShortcutChecks.Run(Check);
-ControlHintChecks.Run(Check);
-StorageChecks.Run(Check);
 Console.WriteLine($"{passed} checks passed. Unity runtime and game callbacks are not exercised by these doubles.");

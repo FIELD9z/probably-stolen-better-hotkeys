@@ -28,7 +28,6 @@ namespace StarterMod
         public void OnDisable()
         {
             Active = false;
-            ControlHints.Restore();
             OrganizerInput.Reset();
             if (hooksRegistered)
             {
@@ -57,7 +56,6 @@ namespace StarterMod
         internal static void Fail(System.Exception error)
         {
             Active = false;
-            ControlHints.Restore();
             Log?.Error("Better Hotkeys disabled after an input error: " + error);
             OrganizerInput.Reset();
         }

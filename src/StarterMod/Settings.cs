@@ -41,11 +41,6 @@ namespace StarterMod
             Binding("container_key", "Ctrl", "容器转移键＋左键", "Container chord + left click");
             Binding("pin_key", "Alt", "固定键＋左键", "Pin chord + left click");
             Binding("marker_key", "B", "标记键", "Marker chord");
-            Binding("demand_key", "H", "顾客需求高亮开关", "Toggle customer demand");
-            Binding("store_key", "J", "按标签收纳 / 按住并点击", "Store by tags / hold and click");
-            Bool("demand_enabled", true, "06 Demand / 需求", "需求高亮（记忆开关）", "Demand highlight (remembered toggle)");
-            Bool("auto_store", true, "07 Storage / 收纳", "按标签快速收纳", "Quick store by tags");
-            Choice("store_scope", "Open", new[] { "Open", "All" }, "07 Storage / 收纳", "目标范围：当前可见页 / 全部页", "Targets: visible pages / all pages");
             Binding("sort_key", "S", "独立整理键", "Independent sort chord");
             Bool("equivalent_modifiers", true, "02 Keys / 按键", "左右修饰键等价", "Treat left/right modifiers equally", "关闭时 Shift/Ctrl/Alt 代表左键；右键请写 RightShift/RightCtrl/RightAlt。", "When off, Shift/Ctrl/Alt mean left-side keys. Use RightShift/RightCtrl/RightAlt for the right side.");
             Bool("follow_sort_key", true, "02 Keys / 按键", "整理跟随游戏键位", "Follow game's sort binding");
@@ -62,7 +57,6 @@ namespace StarterMod
             Bool("scan_nested", true, "04 Markers / 标记", "外层容器汇总嵌套内容", "Mark containers holding flagged items");
             Bool("owned_only", false, "04 Markers / 标记", "仅标记自有物品", "Only mark owned items");
             var colors = new[] { "Yellow", "Red", "Purple", "Cyan", "Orange", "White", "Green" };
-            Choice("demand_color", "Cyan", colors, "06 Demand / 需求", "需求高亮颜色", "Demand color");
             Choice("stolen_color", "Yellow", colors, "04 Markers / 标记", "赃物颜色", "Stolen color");
             Choice("contraband_color", "Red", colors, "04 Markers / 标记", "违禁品颜色", "Contraband color");
             Choice("both_color", "Purple", colors, "04 Markers / 标记", "混合类别颜色", "Mixed-category color");
@@ -84,7 +78,6 @@ namespace StarterMod
         {
             if (id != Id) return;
             var next = new Preferences {
-                DemandEnabled = Get<bool>("demand_enabled"), AutoStore = Get<bool>("auto_store"), StoreAllPages = Get<string>("store_scope") == "All", DemandColor = Get<string>("demand_color"),
                 Takeover = Get<string>("input_mode") == "TakeOver", Transfer = Get<bool>("transfer_enabled"), Pin = Get<bool>("pin_enabled"), Sort = Get<bool>("sort_enabled"), Markers = Get<bool>("markers_enabled"),
                 Equivalent = Get<bool>("equivalent_modifiers"), FollowSort = Get<bool>("follow_sort_key"), Batch = Get<bool>("batch_selected"), HeaderOnly = Get<bool>("target_header_only"), TargetBorder = Get<bool>("target_border"),
                 RememberSort = Get<bool>("remember_sort"), BigFirst = Get<bool>("sort_big_first"), FromEnd = Get<bool>("sort_from_end"),
@@ -93,12 +86,12 @@ namespace StarterMod
                 StolenColor = Get<string>("stolen_color"), ContrabandColor = Get<string>("contraband_color"), BothColor = Get<string>("both_color"),
                 Notices = Get<string>("transfer_notices"), TargetNotice = Get<bool>("target_notice"), MarkerNotice = Get<bool>("marker_notice")
             };
-            var keys = new[] { "counter_key", "container_key", "pin_key", "marker_key", "sort_key", "demand_key", "store_key" };
-            var old = new[] { Current.Counter, Current.Container, Current.PinKey, Current.MarkerKey, Current.SortKey, Current.DemandKey, Current.StoreKey };
-            var parsed = new Shortcut[7];
+            var keys = new[] { "counter_key", "container_key", "pin_key", "marker_key", "sort_key" };
+            var old = new[] { Current.Counter, Current.Container, Current.PinKey, Current.MarkerKey, Current.SortKey };
+            var parsed = new Shortcut[5];
             var valid = true;
             for (var i = 0; i < keys.Length; i++) valid &= Shortcut.TryParse(Get<string>(keys[i]), out parsed[i]);
-            var active = new[] { next.Takeover && next.Transfer, next.Takeover && next.Transfer, next.Takeover && next.Pin, next.Markers, next.Sort && !next.FollowSort, true, next.AutoStore };
+            var active = new[] { next.Takeover && next.Transfer, next.Takeover && next.Transfer, next.Takeover && next.Pin, next.Markers, next.Sort && !next.FollowSort };
             for (var i = 0; i < keys.Length && valid; i++)
                 for (var j = 0; j < i && valid; j++)
                     if (active[i] && active[j] && parsed[i].Overlaps(parsed[j], next.Equivalent)) valid = false;
@@ -112,7 +105,7 @@ namespace StarterMod
                 pending = null;
                 return;
             }
-            next.Counter = parsed[0]; next.Container = parsed[1]; next.PinKey = parsed[2]; next.MarkerKey = parsed[3]; next.SortKey = parsed[4]; next.DemandKey = parsed[5]; next.StoreKey = parsed[6];
+            next.Counter = parsed[0]; next.Container = parsed[1]; next.PinKey = parsed[2]; next.MarkerKey = parsed[3]; next.SortKey = parsed[4];
             pending = next;
             Status = Texts.T("已保存；当前操作结束后生效。语言修改后请重新打开面板。", "Saved; applies after the current gesture. Reopen this panel after changing language.");
         }
@@ -137,15 +130,6 @@ namespace StarterMod
             foreach (var entry in entries) saved[entry.Key] = entry.Value.BoxedValue;
             OrganizerInput.ConfigurationChanged();
             InspectionOverlay.ConfigurationChanged();
-            CustomerDemandOverlay.ConfigurationChanged();
-        }
-        internal static void ToggleDemand()
-        {
-            Current.DemandEnabled = !Current.DemandEnabled;
-            ((ConfigEntry<bool>)entries["demand_enabled"]).Set(Current.DemandEnabled);
-            saved["demand_enabled"] = Current.DemandEnabled;
-            if (pending != null) pending.DemandEnabled = Current.DemandEnabled;
-            CustomerDemandOverlay.ConfigurationChanged();
         }
         internal static void RememberSort(bool big, bool end)
         {

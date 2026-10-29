@@ -20,7 +20,7 @@ Markers indicate item categories, not a guarantee that law enforcement will find
 [h2]Usage and settings[/h2]
 Open Better Hotkeys settings in Mods and click Apply. Settings persist across saves. Changes take effect after the current mouse gesture/drag ends. Auto follows the game language (Chinese or English fallback); reopen the panel after changing language.
 
-0.2.1: while this mod is actually enabled, the native control-hint overlay's shortcut region shows a dynamic list of currently effective bindings (refreshed approximately every 0.15 seconds). Disabled, unbound and conflicting shortcuts are labeled. TakeOver shows our actions; VanillaWithHelpers shows native transfer keys. Applied binding changes require no restart. Disabling the mod, including disabling after an input error, restores the original region. Other shop hints are unchanged.
+0.2.2: native shortcut hints are no longer replaced. Consult the mod settings for your effective bindings. The mod now observes only completed game language initialization. Restart the game after updating.
 
 [h2]Default controls[/h2]
 
@@ -59,4 +59,8 @@ When reporting an issue, include your game and mod versions, reproduction steps,
 Next, I plan to add a hotkey to highlight the items customers are asking for, making them easier to find. This feature is not available yet.
 
 [h2]Version information[/h2]
-Author: FIELD9z. Mod version: 0.2.1. Locally targeted internal game version: 0.46D.
+Author: FIELD9z. Mod version: 0.2.2. Locally targeted internal game version: 0.46D.
+
+[h2]Source / 源码[/h2]
+[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys]GitHub — FIELD9z / probably-stolen-better-hotkeys[/url]
+0.2.2 source branch: codex/0.2.2-text-fix

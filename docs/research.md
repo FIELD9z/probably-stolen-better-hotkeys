@@ -103,3 +103,8 @@
 - 默认 H/J 不在 KeyBindHelper 原生默认表中；运行时继续检查用户改键和协调器预设。
 - 主库存为扫描根，受支持容器逐层枚举；不将全拥有物品API的销售／机器等库存误当收纳目标。标签容器保护独立查询已存规则，避免锁定后从目标枚举消失而被移动。
 - 已完成正式版编译和逻辑验证；尚未进行游戏内验证或安装。
+
+
+## 2026-10-29 0.2.2 maintenance text hotfix
+
+Reconstructed 0.2.1 feature scope from the earliest 0.3 snapshot; not a byte-for-byte historical restoration. Removes native hint replacement and development demand/storage features. LocaleSnapshot observes only already-loaded localization settings and a valid completed selected-locale handle; it does not initialize, wait for, or change the game language. Native UI rendering still requires in-game verification. Build: zero warnings/errors; 90 logic checks and game binding checks passed.

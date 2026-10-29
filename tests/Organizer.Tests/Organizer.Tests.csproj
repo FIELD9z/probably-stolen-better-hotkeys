@@ -10,9 +10,5 @@
     <Compile Include="../../src/StarterMod/DirectTransfer.cs" Link="DirectTransfer.cs" />
     <Compile Include="../../src/StarterMod/InspectionRules.cs" Link="InspectionRules.cs" />
     <Compile Include="../../src/StarterMod/Shortcut.cs" Link="Shortcut.cs" />
-    <Compile Include="../../src/StarterMod/Preferences.cs" Link="Preferences.cs" />
-    <Compile Include="../../src/StarterMod/ControlHintRows.cs" Link="ControlHintRows.cs" />
-    <Compile Include="../../src/StarterMod/StorageMatchRules.cs" Link="StorageMatchRules.cs" />
-    <Compile Include="../../src/StarterMod/StorageRule.cs" Link="StorageRule.cs" />
   </ItemGroup>
 </Project>

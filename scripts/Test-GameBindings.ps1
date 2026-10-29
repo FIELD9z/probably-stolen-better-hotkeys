@@ -41,13 +41,16 @@ try {
     }
     $ownership = Calls $mod 'StarterMod.Settings' 'get_OwnsInput'
     if (-not ($ownership -match 'ModEntry::get_Active') -or -not ($ownership -match 'Settings::get_Current')) { throw 'Input ownership must require an enabled mod and runtime preferences.' }
-    $ui = $game.MainModule.Types | Where-Object Name -EQ 'StoreUIManager'
-    if (-not ($ui.Fields | Where-Object { $_.Name -eq 'controlHintOverlay' -and $_.IsPublic })) { throw 'Native control-hint overlay binding missing.' }
-    if (-not ($ui.Methods.Name -contains 'Update')) { throw 'Native control-hint refresh target missing.' }
-    $hintCalls = Calls $mod 'StarterMod.ControlHints' 'Tick'
-    if (-not ($hintCalls -match 'ModEntry::get_Active') -or -not ($hintCalls -match 'ControlHints::Restore')) { throw 'Control hints must respect activation and restore vanilla UI.' }
-    foreach ($lifecycle in @('OnDisable','Fail')) {
-        if (-not ((Calls $mod 'StarterMod.ModEntry' $lifecycle) -match 'ControlHints::Restore')) { throw "Control hint restoration missing: $lifecycle" }
+    # Maintenance package must not contain development features or native hint-panel mutation.
+    if ($mod.MainModule.Types.FullName -match 'StarterMod\.(CustomerDemandOverlay|AutoStorage|StorageEditor|ControlHints|ControlHintRefreshPatch)$') {
+        throw 'Development feature or native hint replacement leaked into the maintenance build.'
+    }
+    foreach ($type in $mod.MainModule.Types) {
+        foreach ($method in $type.Methods) {
+            if ($method.HasBody -and ($method.Body.Instructions.Operand -match 'StoreUIManager::controlHintOverlay')) {
+                throw "Native shortcut overlay access remains: $($type.FullName).$($method.Name)"
+            }
+        }
     }
     Write-Output 'Game binding checks passed. Runtime Harmony dispatch and UI behavior still require in-game testing.'
 } finally {

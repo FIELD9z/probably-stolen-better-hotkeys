@@ -1,12 +1,12 @@
 # Better Hotkeys / 更好的快捷键
 
-FIELD9z 制作的正式版快捷键 Mod（0.3.0）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记、顾客需求高亮、分页标签收纳及中英文 ModConfig。
+FIELD9z 制作的正式版快捷键 Mod（0.2.2）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记及中英文 ModConfig。
 
 打开游戏 Mods 中本 Mod 的设置，可调整组合键、功能开关、标记触发与显示、提示及输入兼容模式。默认操作保持不变。详见 [中英文使用说明](docs/user-guide.md)、[功能规格](docs/organizer-spec.md)及[发布说明](docs/workshop.md)。
 
 English: Better Hotkeys by FIELD9z adds configurable transfer/pin chords, header sorting and stolen/contraband markers. Open this mod's settings in Mods; select Auto, English or 简体中文. See the [bilingual user guide](docs/user-guide.md).
 
-0.3.0 新增 H 需求高亮、J 按标签收纳，以及容器标题栏的收纳设置。储藏升级后每页独立规则，支持当前可见页 / 全部页模式。代码与自动检查已完成，尚待游戏内验证，未自动安装。详见 [新功能规格与验收](docs/demand-storage-spec.md)。
+0.2.2 维护版本：保留已发布快捷键功能范围，移除原生快捷提示接管；使用 Mod 设置及使用说明查看实际绑定。顾客需求与自动收纳开发功能不包含在此分支。
 
 ## 开始开发
 
@@ -43,3 +43,6 @@ English: Better Hotkeys by FIELD9z adds configurable transfer/pin chords, header
 - [开发指南（中文）](https://github.com/dragonpan2/probably-stolen-modding/blob/main/ModdingGuide.zh-CN.md)
 - [快速入门（中文）](https://github.com/dragonpan2/probably-stolen-modding/blob/main/README.zh-CN.md)
 - [API 变更记录](https://github.com/dragonpan2/probably-stolen-modding/blob/main/APIChanges.md)
+
+
+Source / 源码：[GitHub](https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/codex/0.2.2-text-fix)。本分支为 0.2.2 维护版；主分支含开发功能。

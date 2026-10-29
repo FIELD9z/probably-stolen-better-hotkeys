@@ -10,9 +10,6 @@ namespace StarterMod
         internal float DoubleInterval = .35f, Opacity = 1f, Refresh = .2f;
         internal int Width = 2;
         internal Shortcut Counter = Parse("Shift"), Container = Parse("Ctrl"), PinKey = Parse("Alt"), MarkerKey = Parse("B"), SortKey = Parse("S");
-        internal bool DemandEnabled = true, AutoStore = true, StoreAllPages = false;
-        internal string DemandColor = "Cyan";
-        internal Shortcut DemandKey = Parse("H"), StoreKey = Parse("J");
         internal static Shortcut Parse(string key) { Shortcut.TryParse(key, out var result); return result; }
     }
 }

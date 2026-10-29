@@ -54,10 +54,6 @@ namespace StarterMod
         internal static void Reset()
         {
             InspectionOverlay.Reset();
-            CustomerDemandOverlay.Reset();
-            StorageEditor.Reset();
-            StorageRulesStore.Reset();
-            AutoStorage.Reset();
             if (gesture?.Dragging == true && ItemMouseDragHandler.current != null)
                 ItemMouseDragHandler.current.Cancel();
             gesture = null;
@@ -97,16 +93,7 @@ namespace StarterMod
                 grid != targetGrid || targetGrid!.IsInsertLocked())) ClearTarget();
             highlight.Refresh();
 
-            StorageEditor.Tick();
-            var blocked = OrganizerWorld.Blocked() || StorageEditor.IsOpen;
-            var moving = UIDragHandler.isDraggingAnyUI || (ItemMouseDragHandler.current?.IsDraggingItem ?? false) || (ItemMultiSelectHandler.current?.IsGroupDragging ?? false);
-            if (!blocked && !moving && RuntimeBindings.Down(Settings.Current.DemandKey) && RuntimeBindings.Allowed(Settings.Current.DemandKey))
-            {
-                Settings.ToggleDemand();
-                Notice(Settings.Current.DemandEnabled ? Texts.T("顾客需求高亮已开启", "Customer demand enabled") : Texts.T("顾客需求高亮已关闭", "Customer demand disabled"));
-            }
-            try { CustomerDemandOverlay.Tick(blocked); }
-            catch (Exception error) { CustomerDemandOverlay.Reset(); Settings.Current.DemandEnabled = false; ModEntry.Log?.Error("Demand overlay disabled: " + error); }
+            var blocked = OrganizerWorld.Blocked();
             try { InspectionOverlay.Tick(blocked); }
             catch (Exception error) { InspectionOverlay.Reset(); Settings.Current.Markers = false; ModEntry.Log?.Error("Marker module disabled: " + error); }
             var node = OrganizerWorld.PointerNode();
@@ -114,8 +101,6 @@ namespace StarterMod
             var scoped = OrganizerWorld.InScope(hovered);
 
             if (gesture != null) return ContinueGesture(blocked, hovered);
-            if (!AutoStorage.BeforeInput(blocked)) return false;
-            if (StorageEditor.IsOpen) return false;
             if (blocked) return true;
 
             var window = node?.FindParentWindow();
