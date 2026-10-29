@@ -41,10 +41,12 @@ namespace StarterMod
             Binding("container_key", "Ctrl", "容器转移键＋左键", "Container chord + left click");
             Binding("pin_key", "Alt", "固定键＋左键", "Pin chord + left click");
             Binding("marker_key", "B", "标记键", "Marker chord");
-            Binding("demand_key", "H", "顾客需求高亮开关", "Toggle customer demand");
-            Binding("store_key", "J", "按标签收纳 / 按住并点击", "Store by tags / hold and click");
+            Binding("demand_key", "D", "顾客需求高亮开关", "Toggle customer demand");
+            Binding("store_key", "C", "按规则收纳 / 按住并点击", "Store by rules / hold and click");
             Bool("demand_enabled", true, "06 Demand / 需求", "需求高亮（记忆开关）", "Demand highlight (remembered toggle)");
-            Bool("auto_store", true, "07 Storage / 收纳", "按标签快速收纳", "Quick store by tags");
+            Bool("auto_store", true, "07 Storage / 收纳", "按规则快速收纳", "Quick store by rules");
+            Bool("empty_storage_fallback", false, "07 Storage / 收纳", "无可用规则目标时使用空规则容器", "Fall back to unconfigured containers");
+            Bool("force_manual_storage", false, "07 Storage / 收纳", "手动指定目标时允许强制放入（不再提醒）", "Allow manual rule override without asking", "仅绕过本 Mod 收纳规则；自动收纳仍遵守规则。关闭此项恢复提醒。", "Only bypasses this mod's storage rules; automatic storage still obeys them. Turn off to restore prompts.");
             Choice("store_scope", "Open", new[] { "Open", "All" }, "07 Storage / 收纳", "目标范围：当前可见页 / 全部页", "Targets: visible pages / all pages");
             Binding("sort_key", "S", "独立整理键", "Independent sort chord");
             Bool("equivalent_modifiers", true, "02 Keys / 按键", "左右修饰键等价", "Treat left/right modifiers equally", "关闭时 Shift/Ctrl/Alt 代表左键；右键请写 RightShift/RightCtrl/RightAlt。", "When off, Shift/Ctrl/Alt mean left-side keys. Use RightShift/RightCtrl/RightAlt for the right side.");
@@ -84,6 +86,7 @@ namespace StarterMod
         {
             if (id != Id) return;
             var next = new Preferences {
+                EmptyStorageFallback = Get<bool>("empty_storage_fallback"), ForceManualStorage = Get<bool>("force_manual_storage"),
                 DemandEnabled = Get<bool>("demand_enabled"), AutoStore = Get<bool>("auto_store"), StoreAllPages = Get<string>("store_scope") == "All", DemandColor = Get<string>("demand_color"),
                 Takeover = Get<string>("input_mode") == "TakeOver", Transfer = Get<bool>("transfer_enabled"), Pin = Get<bool>("pin_enabled"), Sort = Get<bool>("sort_enabled"), Markers = Get<bool>("markers_enabled"),
                 Equivalent = Get<bool>("equivalent_modifiers"), FollowSort = Get<bool>("follow_sort_key"), Batch = Get<bool>("batch_selected"), HeaderOnly = Get<bool>("target_header_only"), TargetBorder = Get<bool>("target_border"),
@@ -138,6 +141,13 @@ namespace StarterMod
             OrganizerInput.ConfigurationChanged();
             InspectionOverlay.ConfigurationChanged();
             CustomerDemandOverlay.ConfigurationChanged();
+        }
+        internal static void RememberManualOverride()
+        {
+            Current.ForceManualStorage = true;
+            if (pending != null) pending.ForceManualStorage = true;
+            ((ConfigEntry<bool>)entries["force_manual_storage"]).Set(true);
+            saved["force_manual_storage"] = true;
         }
         internal static void ToggleDemand()
         {

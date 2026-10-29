@@ -57,7 +57,7 @@ namespace StarterMod
             Add("Esc", T("关闭界面 / 打开主菜单", "Close UI / open main menu"));
             Add(nativeKey("advance_dialogue"), T("跳过对话打字效果", "Skip dialogue typewriter"));
             Bound(p.DemandKey, true, "{key}", T("顾客需求高亮开关（记忆状态）", "Toggle customer demand (remembered)"));
-            Bound(p.StoreKey, p.AutoStore, T("{key} / 按住＋左键", "{key} / hold + click"), T("选区按标签收纳 / 连续点击收纳", "Store selection by tags / click items to store"));
+            Bound(p.StoreKey, p.AutoStore, T("{key} / 按住＋左键", "{key} / hold + click"), T("选区按规则收纳 / 连续点击收纳", "Store selection by rules / click items to store"));
             return rows;
         }
     }

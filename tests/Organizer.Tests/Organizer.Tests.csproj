@@ -14,5 +14,6 @@
     <Compile Include="../../src/StarterMod/ControlHintRows.cs" Link="ControlHintRows.cs" />
     <Compile Include="../../src/StarterMod/StorageMatchRules.cs" Link="StorageMatchRules.cs" />
     <Compile Include="../../src/StarterMod/StorageRule.cs" Link="StorageRule.cs" />
+    <Compile Include="../../src/StarterMod/StorageItemRules.cs" Link="StorageItemRules.cs" />
   </ItemGroup>
 </Project>

@@ -1,12 +1,14 @@
 # Better Hotkeys / 更好的快捷键
 
-FIELD9z 制作的正式版快捷键 Mod（0.3.0）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记、顾客需求高亮、分页标签收纳及中英文 ModConfig。
+FIELD9z 制作的正式版快捷键 Mod（0.4.0）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记、顾客需求高亮、分页标签收纳及中英文 ModConfig。
 
 打开游戏 Mods 中本 Mod 的设置，可调整组合键、功能开关、标记触发与显示、提示及输入兼容模式。默认操作保持不变。详见 [中英文使用说明](docs/user-guide.md)、[功能规格](docs/organizer-spec.md)及[发布说明](docs/workshop.md)。
 
 English: Better Hotkeys by FIELD9z adds configurable transfer/pin chords, header sorting and stolen/contraband markers. Open this mod's settings in Mods; select Auto, English or 简体中文. See the [bilingual user guide](docs/user-guide.md).
 
-0.3.0 新增 H 需求高亮、J 按标签收纳，以及容器标题栏的收纳设置。储藏升级后每页独立规则，支持当前可见页 / 全部页模式。代码与自动检查已完成，尚待游戏内验证，未自动安装。详见 [新功能规格与验收](docs/demand-storage-spec.md)。
+0.3.0 新增 D 需求高亮、C 按标签收纳，以及容器标题栏的收纳设置。储藏升级后每页独立规则，支持当前可见页 / 全部页模式。代码与自动检查已完成，尚待游戏内验证，未自动安装。详见 [新功能规格与验收](docs/demand-storage-spec.md)。
+
+0.4.0 增加同种物品白／黑名单、连续点选、非占位虚影预览和手动目标冲突确认。自动收纳按“白名单 → 标签 → 可选空规则兜底”执行，黑名单全程排除。仍需游戏内验证，未自动部署。
 
 ## 开始开发
 
@@ -43,3 +45,19 @@ English: Better Hotkeys by FIELD9z adds configurable transfer/pin chords, header
 - [开发指南（中文）](https://github.com/dragonpan2/probably-stolen-modding/blob/main/ModdingGuide.zh-CN.md)
 - [快速入门（中文）](https://github.com/dragonpan2/probably-stolen-modding/blob/main/README.zh-CN.md)
 - [API 变更记录](https://github.com/dragonpan2/probably-stolen-modding/blob/main/APIChanges.md)
+
+## 开源与可审查性 / Source transparency
+
+本项目自己的 Mod 源码采用 [MIT License](LICENSE)，作者 FIELD9z。Probably Stolen 及 Unity、Harmony 等第三方程序集不包含在仓库中，也不由本项目重新授权。自行编译需要合法安装的正式版游戏；按照上方步骤配置 `.local/Game.props` 后运行 `scripts/Build.ps1`。
+
+源码中的 `manifest.xml` 申请 `reflection-external`，用于读取正式版游戏内部输入、选择和窗口成员；相关实现见 `GameAccess.cs`、`InputPatches.cs` 和 UI 模块。仓库不包含游戏 DLL、存档、本机配置或构建产物。
+
+可独立运行逻辑测试（无需游戏程序集）：
+
+```powershell
+dotnet run --project tests/Organizer.Tests/Organizer.Tests.csproj -c Release
+```
+
+当前 0.4.0 通过正式版编译、139 项逻辑检查及程序集绑定检查，但新增功能仍在游戏内测试阶段。公开源码供玩家审查与自行编译；它不是对任意来源二进制文件的认证。请核对下载来源和对应源码版本。
+
+The mod's own source is MIT-licensed. Game and third-party assemblies are excluded and retain their own licenses. Build locally against a legitimate full-game installation; local paths, saves and build outputs are not published. The `reflection-external` capability supports the version-sensitive game input/UI integration. Source availability enables inspection and local builds, but does not authenticate binaries from arbitrary sources. Version 0.4.0 is still undergoing in-game testing.

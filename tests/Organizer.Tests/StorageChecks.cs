@@ -21,9 +21,31 @@ internal static class StorageChecks
         var a = DirectTransfer.Move(item, first, out _);
         var b = DirectTransfer.Move(item, second, out _);
         check("stack split across pages preserves total and remainder", a == 7 && b == 6 && item.unitCount == original - 13);
+        var specific = new StorageRule { AllowedItems = new[] { "drink" }, DeniedItems = new[] { "poison" }, Tags = new[] { "food" }, Priority = -100 };
+        check("explicit item outranks every tag priority", StorageItemRules.Rank(specific, "drink", _ => false, false) == 0 && StorageItemRules.Rank(new StorageRule { Tags = new[] { "food" }, Priority = 999 }, "drink", _ => true, false) == 1);
+        check("blacklist excludes matching tags and fallback", StorageItemRules.Rank(specific, "poison", _ => true, true) == -1);
+        specific.DeniedItems = new[] { "drink" };
+        check("blacklist overrides whitelist", StorageItemRules.Rank(specific, "drink", _ => true, true) == -1);
+        check("mixed mode accepts unrelated item via tags", StorageItemRules.Rank(specific, "apple", _ => true, false) == 1);
+        specific.ItemsOnly = true;
+        check("items-only cannot fall through to tag or empty tier", StorageItemRules.Rank(specific, "apple", _ => true, true) == -1);
+        check("fallback disabled by default", StorageItemRules.Rank(null, "apple", _ => true, false) == -1);
+        check("empty-rule fallback uses last tier", StorageItemRules.Rank(new StorageRule { Name = "Spare" }, "apple", _ => false, true) == 2);
+        check("deny-only container is not an empty fallback", StorageItemRules.Rank(new StorageRule { DeniedItems = new[] { "gun" } }, "apple", _ => false, true) == -1);
+        check("plain manual insertion remains unrestricted", StorageItemRules.ManualAllowed(null, "apple", _ => false));
+        check("manual rule check catches denied item", !StorageItemRules.ManualAllowed(specific, "drink", _ => true));
+        check("empty items-only reports diagnostic", StorageItemRules.Diagnostic(new StorageRule { ItemsOnly = true }) == "EmptyWhitelist");
+        check("fully denied whitelist reports diagnostic", StorageItemRules.Diagnostic(specific) == "DeniedWhitelist");
+        check("plain unconfigured container does not report error", StorageItemRules.Diagnostic(new StorageRule()) == "");
+        check("deny-only mixed mode reports no receivers", StorageItemRules.Diagnostic(new StorageRule { DeniedItems = new[] { "gun" } }) == "NoReceivers");
+        var upgraded = StorageRuleCodec.Read(StorageRuleCodec.Write(specific))!;
+        check("item rules roundtrip modes and ordered lists", upgraded.ItemsOnly && upgraded.AllowedItems.SequenceEqual(specific.AllowedItems) && upgraded.DeniedItems.SequenceEqual(specific.DeniedItems));
+        var legacy = StorageRuleCodec.Read("VGVzdA==|0|5|dHlwZTpndW4=")!;
+        check("legacy tag rule migrates without changing behavior", legacy.Name == "Test" && legacy.Priority == 5 && !legacy.ItemsOnly && legacy.AllowedItems.Length == 0 && legacy.Tags.Single() == "type:gun");
+        check("invalid new mode does not become open fallback", StorageRuleCodec.Read("|0|0||2||") == null);
         var p = new Preferences();
         var rows = ControlHintRows.Build(true, p, false, x => x, (_, _) => "");
-        check("demand toggle remains advertised when disabled so it can be reenabled", rows.Any(r => r.Key == "H" && r.Action.Contains("demand")));
-        check("automatic storage hint describes both gestures", rows.Any(r => r.Key.StartsWith("J /") && r.Action.Contains("selection")));
+        check("demand toggle remains advertised when disabled so it can be reenabled", rows.Any(r => r.Key == "D" && r.Action.Contains("demand")));
+        check("automatic storage hint describes both gestures", rows.Any(r => r.Key.StartsWith("C /") && r.Action.Contains("selection")));
     }
 }

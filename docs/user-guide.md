@@ -1,4 +1,4 @@
-# Better Hotkeys / 更好的快捷键 — 0.3.0
+# Better Hotkeys / 更好的快捷键 — 0.4.0
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -8,16 +8,28 @@ Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
 0.2.1：原生操作提示面板的快捷键区域在 Mod 实际启用时显示动态列表，使用当前已生效的绑定，约 0.15 秒刷新；关闭、未绑定和冲突状态明确显示。接管模式显示助手动作，原生＋辅助模式显示原生转移键。改键后无需重启；停用 Mod 或输入模块故障导致停用时恢复原生区域。其他店铺说明不改动。此提示布局仍待游戏内验证。
 
+### 0.4.0 物品规则与虚影
+
+- 默认键为 **D** 需求高亮、**C** 按规则收纳。
+- 容器／每页可选择“物品＋标签”或“仅允许物品白名单”。点击“点选添加允许物品／拒绝物品”后，面板暂时隐藏；连续左键点击真实物品记录**同种物品**，数量、朝向和位置不影响识别。Esc 或右键结束并返回草稿，再点保存生效，取消不保存规则。原生分页可以切换；即使切换目标窗口页签，草稿仍属于打开编辑器时的原始页。
+- 容器顶部独立预览区分允许／拒绝两行，白边／黑边的半透明图标按添加顺序排列。可横向滚动；悬停查看名称，点击移除该条规则（立即保存）。虚影不是游戏物品，不占格子和容量。小箭头展开标签逻辑，长说明可悬停查看。图标资源缺失时显示问号，规则保留。
+- 对每个待收物品，先排除所有命中黑名单的容器，再尝试明确白名单目标，之后才尝试标签目标；“仅白名单”目标不进入标签阶段。同一物品同时在白／黑名单中时拒绝优先。各层内再按数字优先级与稳定顺序分配。
+- 白名单满后继续标签目标；设置中的“无可用规则目标时使用空规则容器”默认关闭，打开后最后尝试既无标签又无物品规则的容器。仅设置名称的容器仍属于空规则；仅白名单模式或仅含黑名单的容器不属于空规则。所有阶段遵守 Open／All 范围。
+- “仅白名单但名单为空”“白名单全部被拒绝”“混合模式没有接收规则”会出现配置提醒。普通空规则容器显示“未配置”；满空间及当前没有匹配品不是配置错误。
+- 本 Mod **Ctrl＋左键明确目标转移**遇到拒收规则时，每批提醒一次，列出冲突种类和数量。可选“仅转移符合项／全部强制放入／取消”。只有选择强制放入并勾选“不再提醒”才保存全局偏好；可在 Mod 设置中关闭“手动指定目标时允许强制放入”恢复提醒。C 自动收纳永远遵守规则。
+- 强制只绕过 Mod 规则，仍检查游戏容量、锁定、固定物品和类型限制。不改原生拖放或原生兼容模式的转移流程。未配置容器的手动操作保持原样。
+- 0.3.0 已保存标签规则自动兼容，默认仍为物品＋标签模式，白／黑名单为空。
+
 ### 0.3.0 顾客需求与标签收纳
 
-- **H** 开关当前顾客的需求高亮。首次默认开启，状态跨重启保存；下一位顾客自动更新。青色内框表示物品匹配需求，右上角标表示容器内有匹配物品，两者可以同时出现。不按预算过滤；订单高亮表示该物品可贡献，不表示数量已经凑齐。未知特殊订单明确提示无法识别。
-- **J** 立即收纳选区；持续按住 J，再逐个点击物品可连续收纳，点击不触发拖动。H/J 都可在 Mod 设置中改键；冲突时不会执行。
+- **D** 开关当前顾客的需求高亮。首次默认开启，状态跨重启保存；下一位顾客自动更新。青色内框表示物品匹配需求，右上角标表示容器内有匹配物品，两者可以同时出现。不按预算过滤；订单高亮表示该物品可贡献，不表示数量已经凑齐。未知特殊订单明确提示无法识别。
+- **C** 立即收纳选区；持续按住 C，再逐个点击物品可连续收纳，点击不触发拖动。D/C 都可在 Mod 设置中改键；冲突时不会执行。
 - 点击自有容器标题栏的**设置图标**，编辑当前容器／当前页的名称、标签、满足任意／全部及优先级。名称是 Mod 显示别名，完整保存；标题空间不足时只影响显示，不截断保存内容。
 - 标签可搜索游戏分类、公开品质／条件和受支持的离散状态；本次不提供耐久、纯度等数值范围条件。标签不读取隐藏真假属性。已有规则随当前存档保存。
 - 默认 **Open** 范围只使用打开且当前可见的页；设置为 **All** 可使用玩家库存中全部合规储藏页及嵌套容器，包括关闭页，不切换当前页面。待售区、顾客物品、垃圾和机器输入口不作为目标。
 - 储藏升级后**每页独立名称和规则**；原第 1 页的规则继续保留。优先级越大越先尝试，相同优先级按容器身份和页号稳定排序；满后尝试下一目标，允许拆分堆叠，不重排目标内原有物品。
 - 固定物品及已设置收纳标签的容器跳过；普通未贴标签容器按自身属性整只转移。未匹配／放不下的物品留在原处并提示数量。
-- **空标签仅表示不参与 J 自动收纳，手动放入与原有 Shift/Ctrl 转移不受影响。**
+- **空标签仅表示不参与 C 自动收纳，手动放入与原有 Shift/Ctrl 转移不受影响。**
 
 这些新增功能已通过编译与逻辑检查；标题栏布局、跨页转移、保存／读档仍需在游戏内验证。
 
@@ -96,10 +108,21 @@ Checks cover public game bindings, available storage-coordinator presets and dia
 
 ## 0.3.0 — Customer demand and tagged storage
 
-- **H** toggles customer demand markers, enabled initially and remembered globally. An inset border marks matching items; a top-right badge marks containers holding matches. Budgets are ignored. An order marker means the item contributes, not that the total quantity is fulfilled. Unknown special requests display an unsupported notice.
-- **J** stores the selected items; hold J and click individual items to store repeatedly without dragging. Both keys can be changed in Mod settings and are checked for conflicts.
+- **D** toggles customer demand markers, enabled initially and remembered globally. An inset border marks matching items; a top-right badge marks containers holding matches. Budgets are ignored. An order marker means the item contributes, not that the total quantity is fulfilled. Unknown special requests display an unsupported notice.
+- **C** stores the selected items; hold C and click individual items to store repeatedly without dragging. Both keys can be changed in Mod settings and are checked for conflicts.
 - Use the **settings icon in a container header** to name and tag the current container/page, select any/all matching, and set priority. Names are complete Mod aliases; limited title space may shorten their display only. Rules are saved separately per game save.
 - Every upgraded storage page has independent rules. **Open** targets only visible current pages; **All** includes closed pages and eligible nested storage in the player's inventory, without switching tabs. Sale areas, client property, trash and machine intakes are excluded.
 - Higher priority is tried first; ties use stable owner identity and page order. Stacks may split across destinations. Pinned items and tagged storage containers are skipped. Unmatched/full items remain at the source. Empty tags affect only automatic storage, never manual insertion or existing transfer shortcuts.
 - Searchable tags cover game categories, public conditions and supported discrete states. Numeric rules such as durability/purity are deferred. Hidden truth is not revealed by tag matching.
 - Runtime layout, cross-page transfers and save/reload still require in-game validation.
+
+
+## 0.4.0 — Specific-item rules
+
+Choose Items + Tags or Whitelist Only per container/page. Pick allowed/denied items repeatedly, then Esc/right-click to return to the draft; Save commits rules. Identification uses item kind, not the individual instance. Changing tabs does not redirect the draft to another page.
+
+Automatic storage excludes blacklisted destinations first, then tries explicit allowlists, then tag matches, then optional unconfigured destinations. Full destinations fall through. The final fallback is off by default; each tier retains numeric priority and the Open/All scope. Whitelist-only and deny-only configurations are never unconfigured fallbacks.
+
+Independent allow/deny preview strips show translucent item images with white/black borders. These are UI images, not inventory items. Scroll horizontally, hover for names, click to remove immediately. The arrow expands tag rules. Configuration warnings cover definite empty/contradictory rules only.
+
+This mod's explicit-target shortcut asks once per batch when destination rules reject items. Choose matching-only, override-all or cancel. Remembering overrides is global and reversible in Mod settings. It never affects automatic storage or bypasses native game restrictions. Native drag/drop remains unchanged.

@@ -58,6 +58,9 @@ namespace StarterMod
             StorageEditor.Reset();
             StorageRulesStore.Reset();
             AutoStorage.Reset();
+            ManualStoragePrompt.Reset();
+            StorageItemPicker.Reset();
+            StorageRulePreview.Reset();
             if (gesture?.Dragging == true && ItemMouseDragHandler.current != null)
                 ItemMouseDragHandler.current.Cancel();
             gesture = null;
@@ -84,7 +87,7 @@ namespace StarterMod
         internal static bool BeforeInput(InputActionManager manager)
         {
             ModEntry.EnsureHooks();
-            if (gesture == null && !Input.GetMouseButton(0) && !UIDragHandler.isDraggingAnyUI &&
+            if (!StorageItemPicker.IsPicking && !ManualStoragePrompt.IsOpen && gesture == null && !Input.GetMouseButton(0) && !UIDragHandler.isDraggingAnyUI &&
                 (ItemMouseDragHandler.current == null || !ItemMouseDragHandler.current.IsDraggingItem) &&
                 (ItemMultiSelectHandler.current == null || !ItemMultiSelectHandler.current.IsGroupDragging)) Settings.ApplyPending();
             if (Settings.OwnsInput) GameAccess.ResetQuick(manager);
@@ -97,8 +100,11 @@ namespace StarterMod
                 grid != targetGrid || targetGrid!.IsInsertLocked())) ClearTarget();
             highlight.Refresh();
 
+            if (StorageItemPicker.IsPicking)
+            { StorageEditor.Tick(); StorageRulePreview.Tick(); return StorageItemPicker.BeforeInput(); }
             StorageEditor.Tick();
-            var blocked = OrganizerWorld.Blocked() || StorageEditor.IsOpen;
+            StorageRulePreview.Tick();
+            var blocked = OrganizerWorld.Blocked() || StorageEditor.IsOpen || ManualStoragePrompt.IsOpen || StorageItemPicker.IsPicking;
             var moving = UIDragHandler.isDraggingAnyUI || (ItemMouseDragHandler.current?.IsDraggingItem ?? false) || (ItemMultiSelectHandler.current?.IsGroupDragging ?? false);
             if (!blocked && !moving && RuntimeBindings.Down(Settings.Current.DemandKey) && RuntimeBindings.Allowed(Settings.Current.DemandKey))
             {
@@ -115,7 +121,7 @@ namespace StarterMod
 
             if (gesture != null) return ContinueGesture(blocked, hovered);
             if (!AutoStorage.BeforeInput(blocked)) return false;
-            if (StorageEditor.IsOpen) return false;
+            if (StorageEditor.IsOpen || ManualStoragePrompt.IsOpen) return false;
             if (blocked) return true;
 
             var window = node?.FindParentWindow();
@@ -236,6 +242,19 @@ namespace StarterMod
                     Texts.T("此来源不支持该路线：柜台转移连接销售柜台，容器转移连接库存与容器。", "Unsupported route: counter transfer connects the sales counter; container transfer connects inventory and the selected container."), true);
                 return;
             }
+            var storage = destination == Place.Container && targetWindow != null ? StorageTargets.FromWindow(targetWindow) : null;
+            var targetName = destination == Place.Counter ? Texts.T("出售柜台", "Sales counter") : destination == Place.Inventory ? Texts.T("库存", "Inventory") : targetWindow!.titleString;
+            if (storage != null)
+            {
+                ManualStoragePrompt.Confirm(storage, current.Items, force => TransferItems(current, target, targetName, storage, force));
+                return;
+            }
+            TransferItems(current, target, targetName, null, false);
+        }
+
+        private static void TransferItems(Gesture current, GameGridInventory target, string targetName, StorageTarget? storage, bool force)
+        {
+            if (!ModEntry.Active || !OrganizerWorld.InStore || (storage != null && !StorageTargets.IsEligible(storage))) return;
             var moved = 0; var remaining = 0; var skipped = current.OtherSources;
             var reasons = new HashSet<string>();
             // Grid Y grows downward in the vanilla placement scan; snapshot order before mutations.
@@ -243,13 +262,14 @@ namespace StarterMod
             {
                 if (!OrganizerWorld.InScope(item) || item.parentInventory != current.Source)
                 { skipped++; reasons.Add(Texts.T("来源已变化或物品不可操作", "Source changed or item cannot be moved")); continue; }
+                if (storage != null && !force && !ManualStoragePrompt.Accepts(storage, item))
+                { remaining += item.unitCount; skipped++; reasons.Add(Texts.T("目标收纳规则不匹配", "Destination rules reject the item")); continue; }
                 var requested = item.unitCount;
                 var count = DirectTransfer.Move(item, target, out var reason);
                 moved += count; remaining += Math.Max(0, requested - count);
                 if (count == 0) skipped++;
                 if (reason.Length > 0) reasons.Add(reason);
             }
-            var targetName = destination == Place.Counter ? Texts.T("出售柜台", "Sales counter") : destination == Place.Inventory ? Texts.T("库存", "Inventory") : targetWindow!.titleString;
             TransferNotice(Texts.T($"目标：{targetName}。已转移 {moved} 个，来源剩余 {remaining} 个，跳过 {skipped} 项。", $"Target: {targetName}. Moved {moved}, remaining {remaining}, skipped {skipped} item(s). ") +
                 (reasons.Count == 0 ? "" : Texts.T("原因：", "Reason: ") + string.Join("; ", reasons)), remaining != 0 || skipped != 0 || reasons.Count != 0);
         }

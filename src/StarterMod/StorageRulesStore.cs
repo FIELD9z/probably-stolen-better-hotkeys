@@ -13,7 +13,7 @@ namespace StarterMod
             if (PlayerStore.Instance == null || owner.uniqueId == 0) return false;
             var prefix = Prefix + owner.uniqueId + ":";
             return ModHelper.GetModDataKeys(Settings.Id).Where(key => key.StartsWith(prefix, StringComparison.Ordinal))
-                .Any(key => StorageRuleCodec.Read(ModHelper.GetModData(Settings.Id, key, ""))?.Tags.Length > 0);
+                .Any(key => StorageItemRules.HasLogic(StorageRuleCodec.Read(ModHelper.GetModData(Settings.Id, key, ""))));
         }
         internal static void Set(StorageTarget target, StorageRule rule)
         {
