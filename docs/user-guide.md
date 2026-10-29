@@ -1,4 +1,4 @@
-# Better Hotkeys / 更好的快捷键 — 0.4.0
+# Better Hotkeys / 更好的快捷键 — 0.4.1
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -6,7 +6,7 @@ Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
 在 Mods 中打开 Better Hotkeys 的设置，修改后点击应用。设置跨存档保存；当前鼠标手势或拖动结束后生效。语言可选 Auto（跟随游戏，中文以外使用英文）、English、简体中文；修改语言后重新打开面板。
 
-0.2.1：原生操作提示面板的快捷键区域在 Mod 实际启用时显示动态列表，使用当前已生效的绑定，约 0.15 秒刷新；关闭、未绑定和冲突状态明确显示。接管模式显示助手动作，原生＋辅助模式显示原生转移键。改键后无需重启；停用 Mod 或输入模块故障导致停用时恢复原生区域。其他店铺说明不改动。此提示布局仍待游戏内验证。
+历史行为（已在 0.4.1 移除）：0.2.1 的原生操作提示面板的快捷键区域在 Mod 实际启用时显示动态列表，使用当前已生效的绑定，约 0.15 秒刷新；关闭、未绑定和冲突状态明确显示。接管模式显示助手动作，原生＋辅助模式显示原生转移键。改键后无需重启；停用 Mod 或输入模块故障导致停用时恢复原生区域。其他店铺说明不改动。此提示布局仍待游戏内验证。
 
 ### 0.4.0 物品规则与虚影
 
@@ -126,3 +126,8 @@ Automatic storage excludes blacklisted destinations first, then tries explicit a
 Independent allow/deny preview strips show translucent item images with white/black borders. These are UI images, not inventory items. Scroll horizontally, hover for names, click to remove immediately. The arrow expands tag rules. Configuration warnings cover definite empty/contradictory rules only.
 
 This mod's explicit-target shortcut asks once per batch when destination rules reject items. Choose matching-only, override-all or cancel. Remembering overrides is global and reversible in Mod settings. It never affects automatic storage or bypasses native game restrictions. Native drag/drop remains unchanged.
+
+
+0.4.1：保留原生快捷键提示，不再隐藏或替换原提示区域。在本 Mod 设置底部点击「Better Hotkeys 快捷键说明」查看独立说明（应用改键后重新打开刷新）。程序集及安装目录统一为 BetterHotkeys；内部 ID 保持 probably_stolen_organizer，已有设置与规则沿用。升级前退出游戏，移走旧 Mods/StarterMod 目录，避免重复安装。
+
+0.4.1 preserves native shortcut hints. Open the independent shortcut guide from this mod’s settings; apply binding changes and reopen to refresh. Assembly/package name: BetterHotkeys; the internal mod ID is unchanged. Remove the old StarterMod installation before installing the renamed package.

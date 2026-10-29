@@ -1,4 +1,4 @@
-using StarterMod;
+using BetterHotkeys;
 internal static class StorageChecks
 {
     internal static void Run(Action<string, bool> check)

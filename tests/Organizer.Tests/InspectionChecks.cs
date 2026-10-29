@@ -1,4 +1,4 @@
-using StarterMod;
+using BetterHotkeys;
 
 internal static class InspectionChecks
 {

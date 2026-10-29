@@ -1,5 +1,5 @@
 // Small deterministic doubles for testing the transfer boundary; these do not emulate Unity or validate game loading.
-namespace StarterMod;
+namespace BetterHotkeys;
 
 internal static class Texts { internal static string T(string zh, string en) => en; }
 

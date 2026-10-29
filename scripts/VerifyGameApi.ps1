@@ -16,7 +16,7 @@ function RequireMember([string]$typeName, [string]$member, [string]$kind) {
     if (-not ($members | Where-Object Name -EQ $member)) { throw "Missing $kind $typeName::$member" }
     $script:checks++
 }
-$access = Get-Content (Join-Path $repoRoot 'src/StarterMod/GameAccess.cs') -Raw
+$access = Get-Content (Join-Path $repoRoot 'src/BetterHotkeys/GameAccess.cs') -Raw
 foreach ($match in [regex]::Matches($access, '(Field|Method)\(typeof\((\w+)\), "([^"]+)"\)')) {
     RequireMember $match.Groups[2].Value $match.Groups[3].Value $match.Groups[1].Value
 }

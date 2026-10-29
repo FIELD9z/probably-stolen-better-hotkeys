@@ -1,4 +1,4 @@
-using StarterMod;
+using BetterHotkeys;
 
 var passed = 0;
 void Check(string name, bool condition)

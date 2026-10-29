@@ -113,3 +113,11 @@
 - 物品定义目录是Func<GameItem>工厂，不能靠实例化获取纯预览。因此Observe已有真实物品的atlas/path/name并存当前ModData，虚影仅使用Unity Image。缺图明确显示问号，不删规则。
 - PixelWindow.Validate根据heightPixels反向调整内容，故预览只调整渲染inner偏移、背景高度、resize位置，不改库存或窗口逻辑高度。Validate前撤销，之后重施；按实际Canvas世界边界纠正可移动窗口，避免底边越界。嵌套不可移动窗口不强行位移。
 - 独立审查核对模式、草稿生命周期、原生UI事件、预览Reset恢复。正式版Build 0警告/0错误；139项逻辑检查、程序集绑定检查及git diff --check通过。未部署、启动游戏或上传；窗口缩放/重排/虚影点击仍待实机验证。
+
+
+## 2026-10-29 Better Hotkeys 0.4.1：独立说明与正式文件名
+
+- 用户要求保留原生快捷键提示。删除 StoreUIManager.Update 提示接管补丁，不再读取 controlHintOverlay、不隐藏或替换其子节点。
+- 本机 ModConfigWindow.Open(LoadedMod) 返回 CustomUIWindow；仅在本 Mod 配置页追加“快捷键说明”按钮，打开独立可关闭窗口，显示已生效绑定。应用改键后重新打开刷新，不修改原生提示文字。
+- 源码目录、项目、命名空间、程序集与打包目录统一 BetterHotkeys。内部 Mod ID 和配置键不变，保留存档规则。脚本、测试引用与清单同步。
+- 编译 0 警告/0 错误，139 项逻辑检查和实际程序集检查通过；新增检查防止原生提示区引用和旧替换补丁回归。已退出游戏后备份旧安装，部署 Mods/BetterHotkeys，移走 Mods/StarterMod；DLL 哈希一致。独立说明布局待游戏内验证。
