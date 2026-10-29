@@ -47,7 +47,9 @@ namespace BetterHotkeys
             Bool("auto_store", true, "07 Storage / 收纳", "按规则快速收纳", "Quick store by rules");
             Bool("empty_storage_fallback", false, "07 Storage / 收纳", "无可用规则目标时使用空规则容器", "Fall back to unconfigured containers");
             Bool("force_manual_storage", false, "07 Storage / 收纳", "手动指定目标时允许强制放入（不再提醒）", "Allow manual rule override without asking", "仅绕过本 Mod 收纳规则；自动收纳仍遵守规则。关闭此项恢复提醒。", "Only bypasses this mod's storage rules; automatic storage still obeys them. Turn off to restore prompts.");
-            Choice("store_scope", "Open", new[] { "Open", "All" }, "07 Storage / 收纳", "目标范围：当前可见页 / 全部页", "Targets: visible pages / all pages");
+            // Versioned key applies the new default once to existing installations; later user choices persist.
+            Choice("store_scope_v2", "All", new[] { "All", "Open" }, "07 Storage / 收纳", "目标范围：All 全部页 / Open 当前可见页", "Targets: All pages / Open visible pages",
+                "默认 All：包括关闭窗口的合规储藏页。Open：仅打开且可见的页。", "All (default): eligible pages including closed windows. Open: only open, visible pages.");
             Binding("sort_key", "S", "独立整理键", "Independent sort chord");
             Bool("equivalent_modifiers", true, "02 Keys / 按键", "左右修饰键等价", "Treat left/right modifiers equally", "关闭时 Shift/Ctrl/Alt 代表左键；右键请写 RightShift/RightCtrl/RightAlt。", "When off, Shift/Ctrl/Alt mean left-side keys. Use RightShift/RightCtrl/RightAlt for the right side.");
             Bool("follow_sort_key", true, "02 Keys / 按键", "整理跟随游戏键位", "Follow game's sort binding");
@@ -87,7 +89,7 @@ namespace BetterHotkeys
             if (id != Id) return;
             var next = new Preferences {
                 EmptyStorageFallback = Get<bool>("empty_storage_fallback"), ForceManualStorage = Get<bool>("force_manual_storage"),
-                DemandEnabled = Get<bool>("demand_enabled"), AutoStore = Get<bool>("auto_store"), StoreAllPages = Get<string>("store_scope") == "All", DemandColor = Get<string>("demand_color"),
+                DemandEnabled = Get<bool>("demand_enabled"), AutoStore = Get<bool>("auto_store"), StoreAllPages = Get<string>("store_scope_v2") == "All", DemandColor = Get<string>("demand_color"),
                 Takeover = Get<string>("input_mode") == "TakeOver", Transfer = Get<bool>("transfer_enabled"), Pin = Get<bool>("pin_enabled"), Sort = Get<bool>("sort_enabled"), Markers = Get<bool>("markers_enabled"),
                 Equivalent = Get<bool>("equivalent_modifiers"), FollowSort = Get<bool>("follow_sort_key"), Batch = Get<bool>("batch_selected"), HeaderOnly = Get<bool>("target_header_only"), TargetBorder = Get<bool>("target_border"),
                 RememberSort = Get<bool>("remember_sort"), BigFirst = Get<bool>("sort_big_first"), FromEnd = Get<bool>("sort_from_end"),

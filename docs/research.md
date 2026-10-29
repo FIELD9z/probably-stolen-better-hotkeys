@@ -145,3 +145,10 @@
 - 标签采集返回复用 window.Show，未经过 OpenDraft 的 HideTooltip；原生 ItemTooltipHandler 更新被编辑器阻断，故鼠标仍在物品上时旧提示残留。
 - 点选进入 ending 阶段后调用原生 ItemTooltipHandler.UpdateReset（本机 IL 确认清除 currentTooltipListener 并隐藏提示），另调用 OverlayHandler.HideTooltip 兜底。鼠标释放后再回调返回面板，保留原有防穿透逻辑。
 - 已通过正式版编译和程序集绑定检查；鼠标停在物品上右键返回、移开后返回、名单点选及标签采集均需实机复测。
+
+
+## 2026-10-29 0.4.4：默认全部分页
+
+- 用户确认 C 默认全部分页。Preferences 与 ModConfig 默认同步为 All，复用已有 Enumerate(false) 和原生插入限制，不强制打开或切换窗口。
+- 范围键升级为 store_scope_v2，旧 store_scope 不再读取：现有安装首次升级也采用 All，后续用户选回 Open 仍持久化。其他配置与规则不迁移。
+- 包含点选结束时重置原生物品提示的修复。
