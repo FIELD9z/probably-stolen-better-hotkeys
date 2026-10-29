@@ -15,6 +15,10 @@ namespace BetterHotkeys
             Reset();
             var conflicts = items.Where(i => !i.IsDestroyed() && !Accepts(target, i)).ToList();
             if (conflicts.Count == 0 || Settings.Current.ForceManualStorage) { commit(Settings.Current.ForceManualStorage); return; }
+            // The modal pauses native input updates, including tooltip exit handling.
+            // Reset its cached owner before showing the confirmation, not after transfer.
+            ItemTooltipHandler.current?.UpdateReset();
+            OverlayHandler.current?.HideTooltip();
             var b = CustomUIManager.Window(Settings.Id + ":manual-storage", Texts.T("目标收纳规则不接受部分物品", "Some items do not match the destination rules"), CustomUIManager.LAYER_FRONT)
                 .SetSize(520, 440).Center().SetCloseOnEscape(true);
             window = b.GetWindow();
