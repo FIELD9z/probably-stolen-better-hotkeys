@@ -3,7 +3,7 @@
   <ID>probably_stolen_organizer</ID>
   <Name>Better Hotkeys / 更好的快捷键</Name>
   <Author>FIELD9z</Author>
-  <ModVersion>0.2.2</ModVersion>
+  <ModVersion>0.2.3</ModVersion>
   <Description>Configurable transfer/pin hotkeys, header sorting and stolen/contraband markers. English / 简体中文。自定义转移与固定快捷键、标题栏整理及赃物/违禁品标记。</Description>
   <GameVersions>
     <Version>REPLACE_WITH_GAME_VERSION</Version>

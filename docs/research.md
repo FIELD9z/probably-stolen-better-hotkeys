@@ -108,3 +108,12 @@
 ## 2026-10-29 0.2.2 maintenance text hotfix
 
 Reconstructed 0.2.1 feature scope from the earliest 0.3 snapshot; not a byte-for-byte historical restoration. Removes native hint replacement and development demand/storage features. LocaleSnapshot observes only already-loaded localization settings and a valid completed selected-locale handle; it does not initialize, wait for, or change the game language. Native UI rendering still requires in-game verification. Build: zero warnings/errors; 90 logic checks and game binding checks passed.
+
+
+## 2026-10-29 0.2.3 操作提示修正
+
+- 基于 codex/0.2.2-text-fix 维护分支，不引入 0.3/0.4 功能或独立动态说明。
+- 本机 ModConfigWindow.Apply IL 确认仅在有变更时触发 OnModConfigApplied；增加本 Mod 专属 Prefix 将本次反馈预置为无变更，实际校验回调覆盖该状态，Postfix 显示本次结果。
+- 整理冲突检查延后至启用、未拖动、有效标题栏、按键触发且来源受支持后；缺目标提示读取 HeaderOnly；标记提示按 Stolen/Contraband 开关组合生成，七种颜色均双语。
+- 转移数量描述限定为本次处理，未参与处理的其他来源仍只计入物品堆数，不冒称整个来源库存剩余数量。
+- 正式版构建零警告/错误、90项逻辑检查、程序集绑定检查通过；未启动游戏、部署或上传。上述自动检查不能代替 UI 及提示触发的实机回归。

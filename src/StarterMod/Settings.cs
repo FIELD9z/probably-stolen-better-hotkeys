@@ -74,6 +74,9 @@ namespace StarterMod
             ApplyPending();
         }
 
+        internal static void BeginApplyFeedback() =>
+            Status = Texts.T("没有新的设置变更。", "No new setting changes.");
+
         private static void Applied(string id)
         {
             if (id != Id) return;

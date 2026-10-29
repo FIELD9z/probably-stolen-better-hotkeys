@@ -117,13 +117,14 @@ namespace StarterMod
 
             var dragging = ItemMouseDragHandler.current != null && ItemMouseDragHandler.current.IsDraggingItem;
             var groupDragging = ItemMultiSelectHandler.current != null && ItemMultiSelectHandler.current.IsGroupDragging;
-            var sortPressed = Settings.Current.FollowSort ? KeyBindHelper.GetKeyDown("sort_menu") :
-                RuntimeBindings.Down(Settings.Current.SortKey) && RuntimeBindings.Allowed(Settings.Current.SortKey, true);
             if (Settings.Current.Sort && !dragging && !groupDragging && !UIDragHandler.isDraggingAnyUI && window != null &&
-                OrganizerWorld.IsHeader(node, window) && sortPressed)
+                OrganizerWorld.IsHeader(node, window))
             {
-                var sortGrid = OrganizerWorld.DirectGrid(window);
-                if (sortGrid != null && OrganizerWorld.Classify(sortGrid) != Place.Unsupported)
+                var sortPressed = Settings.Current.FollowSort ? KeyBindHelper.GetKeyDown("sort_menu") :
+                    RuntimeBindings.Down(Settings.Current.SortKey);
+                var sortGrid = sortPressed ? OrganizerWorld.DirectGrid(window) : null;
+                if (sortPressed && sortGrid != null && OrganizerWorld.Classify(sortGrid) != Place.Unsupported &&
+                    (Settings.Current.FollowSort || RuntimeBindings.Allowed(Settings.Current.SortKey, true)))
                 {
                     SortedFrame = Time.frameCount;
                     try {
@@ -217,7 +218,9 @@ namespace StarterMod
                 destination == Place.Container ? targetGrid : null;
             if (target == null)
             {
-                TransferNotice(destination == Place.Container ? Texts.T("请先点击一个已打开的自有容器，指定转移目标。", "Click an open, owned container to select a transfer target first.") :
+                TransferNotice(destination == Place.Container ? (Settings.Current.HeaderOnly
+                    ? Texts.T("请先点击已打开的自有容器的标题栏，指定转移目标。", "Click the header of an open, owned container to select a transfer target first.")
+                    : Texts.T("请先点击一个已打开的自有容器窗口，指定转移目标。", "Click an open, owned container window to select a transfer target first.")) :
                     Texts.T("此来源不支持该路线：柜台转移连接销售柜台，容器转移连接库存与容器。", "Unsupported route: counter transfer connects the sales counter; container transfer connects inventory and the selected container."), true);
                 return;
             }
@@ -235,7 +238,7 @@ namespace StarterMod
                 if (reason.Length > 0) reasons.Add(reason);
             }
             var targetName = destination == Place.Counter ? Texts.T("出售柜台", "Sales counter") : destination == Place.Inventory ? Texts.T("库存", "Inventory") : targetWindow!.titleString;
-            TransferNotice(Texts.T($"目标：{targetName}。已转移 {moved} 个，来源剩余 {remaining} 个，跳过 {skipped} 项。", $"Target: {targetName}. Moved {moved}, remaining {remaining}, skipped {skipped} item(s). ") +
+            TransferNotice(Texts.T($"目标：{targetName}。本次处理：转移 {moved} 个，未转移 {remaining} 个。未执行转移的物品堆：{skipped}（含其他来源）。", $"Target: {targetName}. Moved {moved} units; {remaining} units not moved among processed stacks. {skipped} stacks skipped (including other inventories). ") +
                 (reasons.Count == 0 ? "" : Texts.T("原因：", "Reason: ") + string.Join("; ", reasons)), remaining != 0 || skipped != 0 || reasons.Count != 0);
         }
 

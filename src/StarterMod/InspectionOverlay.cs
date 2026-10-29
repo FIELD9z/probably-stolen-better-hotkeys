@@ -56,7 +56,7 @@ namespace StarterMod
                 nextRefresh = 0;
                 if (!enabled) ClearFrames();
                 if (prefs.MarkerNotice && prefs.Trigger != "Hold") OrganizerInput.Notice(enabled ?
-                    Texts.T($"标记开启：赃物 {prefs.StolenColor} / 违禁品 {prefs.ContrabandColor} / 混合 {prefs.BothColor}。", $"Markers on: stolen {prefs.StolenColor} / contraband {prefs.ContrabandColor} / mixed {prefs.BothColor}.") : Texts.T("物品标记已关闭。", "Item markers off."));
+                    EnabledNotice(prefs) : Texts.T("物品标记已关闭。", "Item markers off."));
             }
             if (!enabled) return;
             foreach (var pair in frames)
@@ -64,6 +64,17 @@ namespace StarterMod
             if (Time.unscaledTime < nextRefresh) return;
             nextRefresh = Time.unscaledTime + prefs.Refresh;
             Refresh();
+        }
+
+        private static string EnabledNotice(Preferences prefs)
+        {
+            if (!prefs.Stolen && !prefs.Contraband)
+                return Texts.T("标记已开启，但赃物和违禁品类别均已关闭，不显示边框。", "Markers are on, but both categories are disabled; no borders will be shown.");
+            var categories = new List<string>();
+            if (prefs.Stolen) categories.Add(Texts.T("赃物：", "Stolen: ") + Texts.ColorName(prefs.StolenColor));
+            if (prefs.Contraband) categories.Add(Texts.T("违禁品：", "Contraband: ") + Texts.ColorName(prefs.ContrabandColor));
+            if (prefs.Stolen && prefs.Contraband) categories.Add(Texts.T("混合：", "Mixed: ") + Texts.ColorName(prefs.BothColor));
+            return Texts.T("标记开启：", "Markers on: ") + string.Join(" / ", categories);
         }
 
         private static ItemRisk DirectRisk(GraphNodeStorage node)

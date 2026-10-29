@@ -1,6 +1,6 @@
 # Better Hotkeys / 更好的快捷键
 
-FIELD9z 制作的正式版快捷键 Mod（0.2.2）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记及中英文 ModConfig。
+FIELD9z 制作的正式版快捷键 Mod（0.2.3）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记及中英文 ModConfig。
 
 打开游戏 Mods 中本 Mod 的设置，可调整组合键、功能开关、标记触发与显示、提示及输入兼容模式。默认操作保持不变。详见 [中英文使用说明](docs/user-guide.md)、[功能规格](docs/organizer-spec.md)及[发布说明](docs/workshop.md)。
 
@@ -46,3 +46,11 @@ English: Better Hotkeys by FIELD9z adds configurable transfer/pin chords, header
 
 
 Source / 源码：[GitHub](https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/codex/0.2.2-text-fix)。本分支为 0.2.2 维护版；主分支含开发功能。
+
+
+0.2.3 操作提示修正：整理冲突提示仅在实际整理上下文触发；缺少目标时按标题栏设置给出指引；标记开启提示反映类别开关并翻译颜色；转移摘要区分数量与物品堆、限定本次处理范围；无配置变更时不再复用上一次应用结果。未加入独立动态说明窗口。
+
+0.2.3 notice fixes: sorting conflicts are checked only in an actionable header context; destination guidance respects header-only selection; marker notices reflect enabled categories and localize color names; transfer summaries distinguish units from stacks and refer only to the current operation; applying unchanged settings no longer repeats stale feedback. No independent dynamic guide is included.
+
+
+0.2.3 source / 对应源码：[v0.2.3](https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.2.3)。
