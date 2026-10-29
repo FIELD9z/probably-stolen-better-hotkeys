@@ -3,16 +3,12 @@
 游戏里的物品转移逻辑我有点头大，经常不知道转移到哪去了，而且我都不知道我的违禁品放在哪个稀奇古怪的小角落了，治安部是怎么找到的？？！！我的模组啊啊啊！！！就这样，做了一下快捷键的优化，以及提醒自己违禁品放哪了。有问题欢迎在下方评论区反馈
 
 [h2]安装与操作[/h2]
-适用于 Probably Stolen 正式版。订阅后在 Mods 启用并按提示重启。需要 reflection-external 权限以接入原生输入、选区和界面。不要同时启用本地版与 Workshop 版。内部 Mod ID 保持不变，DLL 和目录为 BetterHotkeys。
+适用于 Probably Stolen 正式版。订阅后在 Mods 启用并按提示重启。
 Shift＋左键：库存／容器到出售柜台；柜台到库存。
 Ctrl＋左键：库存到已高亮的打开容器；容器到库存。
 Alt＋左键：固定／解除固定，支持同来源选区。
 悬停标题栏＋S（或游戏整理键）：整理容器。
 双击 B：开关赃物／违禁品标记，包含嵌套内容。
-
-[h2]设置与存档[/h2]
-在 Mods 调整按键、标记触发方式与颜色、提示和输入模式。TakeOver 接管原生快捷转移；VanillaWithHelpers 恢复原生转移并关闭本 Mod 转移／固定手势。其他输入 Mod 可能冲突。完整用法见 USER-GUIDE.md。
-规则和名称保存在当前存档 ModData；保存排除标签规则后降级需恢复升级前存档。不提供转移撤销，不添加遥测或联网功能。
 
 [h2]快捷收纳与需求高亮[/h2]
 [b]D[/b]：切换顾客需求高亮。
@@ -22,9 +18,4 @@ Alt＋左键：固定／解除固定，支持同来源选区。
 手动明确目标不符合规则时，可选择仅转移符合项、全部强制放入或取消；强制不绕过游戏容量、锁定与类型限制。
 保留原生快捷键提示；Mod 设置底部提供独立快捷键说明。
 
-[h2]版本信息[/h2]
-作者：FIELD9z
-Mod 版本：0.5.0
-适配的游戏内部版本：0.46D
-[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys]GitHub: FIELD9z / probably-stolen-better-hotkeys[/url]
-[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.0]0.5.0 source / 对应源码[/url]
+作者：FIELD9z｜版本：0.5.0

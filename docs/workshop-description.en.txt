@@ -7,16 +7,12 @@ So, here we are: some hotkey improvements, plus a way to remind myself where I s
 If you run into any issues, feel free to leave a comment below!
 
 [h2]Installation and controls[/h2]
-For the full release of Probably Stolen. Subscribe, enable in Mods and restart when prompted. Requires reflection-external for input, selection and UI integration. Avoid enabling local and Workshop copies together. Internal mod ID is unchanged; DLL and folder are BetterHotkeys.
+For the full release of Probably Stolen. Subscribe, enable in Mods and restart when prompted. 
 Shift + left click: inventory/container to sales counter; counter to inventory.
 Ctrl + left click: inventory to the highlighted open container; container to inventory.
 Alt + left click: pin/unpin; supports selections sharing the same source.
 Hover a header + S (or the game's sort key): sort that container.
 Double B: toggle stolen/contraband markers, including nested contents.
-
-[h2]Settings and saves[/h2]
-Customize keys, marker gestures/colors, notices and input mode in Mods. TakeOver replaces native quick transfers; VanillaWithHelpers restores them and disables our transfer/pin gestures. Other input mods may conflict. Full instructions: USER-GUIDE.md.
-Rules and names are stored in the current save's ModData. After saving excluded-tag rules, downgrading requires a pre-upgrade save. No transfer undo. No telemetry or network calls added by the mod.
 
 [h2]Quick storage and customer demand[/h2]
 [b]D[/b]: toggle customer-demand highlights.
@@ -26,7 +22,4 @@ Inspect items in the Tags tab and collect visible tags into either list. Right-c
 Manual destinations with rule conflicts offer matching-only transfer, an override, or cancellation. Overrides still respect native capacity, locks and type restrictions.
 Native shortcut hints remain intact. An independent shortcut guide is available at the bottom of the mod settings.
 
-[h2]Version information[/h2]
-Author: FIELD9z. Mod version: 0.5.0. Locally targeted internal game version: 0.46D.
-[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys]GitHub: FIELD9z / probably-stolen-better-hotkeys[/url]
-[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.0]0.5.0 source / 对应源码[/url]
+Author: FIELD9z | Version: 0.5.0
