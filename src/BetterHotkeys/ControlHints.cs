@@ -22,7 +22,7 @@ namespace BetterHotkeys
             // Mod actions are the first five and last two rows; vanilla rotation/dialogue hints stay native.
             for (var i = 0; i < rows.Count; i++)
                 if (i < 5 || i >= rows.Count - 2) b.AddLabel(rows[i].Key + " — " + rows[i].Action);
-            b.AddLabel(Texts.T("容器标题栏设置图标：名称、标签、允许／拒绝物品。点选物品时 Esc／右键结束；虚影不占格子。", "Container header settings: names, tags, allowed/denied items. Esc/right-click ends item picking; previews use no inventory space."));
+            b.AddLabel(Texts.T("容器标题栏设置图标：名称、标签、允许／拒绝物品。点选物品时 右键完成；虚影不占格子。", "Container header settings: names, tags, allowed/denied items. Right-click ends item picking; previews use no inventory space."));
             b.End(); b.AddButton(Texts.T("关闭", "Close"), Restore); b.Show();
         }
     }

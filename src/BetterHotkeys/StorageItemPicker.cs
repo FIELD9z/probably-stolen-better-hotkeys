@@ -23,7 +23,7 @@ namespace BetterHotkeys
         {
             Reset(); target = destination; run = PlayerStore.Instance;
             picked = onPicked; finished = onFinished; startedFrame = Time.frameCount;
-            OrganizerInput.Notice(Texts.T("点选模式：连续左键点击已打开容器中的物品；按 Esc 或右键结束。不会移动物品。", "Pick items from open containers with left clicks; Esc or right click returns. Items will not move."));
+            OrganizerInput.Notice(Texts.T("点选模式：连续左键点击已打开容器中的物品；右键完成并返回面板。不会移动物品。", "Pick items from open containers with left clicks; right click returns. Items will not move."));
         }
         internal static void Reset() { target = null; run = null; picked = null; finished = null; ending = validEnd = consumingItemClick = navigationClick = false; }
 
@@ -32,12 +32,11 @@ namespace BetterHotkeys
             if (target == null) return true;
             var valid = ModEntry.Active && ReferenceEquals(run, PlayerStore.Instance) && TargetValid(target);
             if (!valid) { ending = true; validEnd = false; }
-            if (!ending && (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))) { ending = true; validEnd = true; }
+            if (!ending && Input.GetMouseButtonDown(1)) { ending = true; validEnd = true; }
             if (ending)
             {
                 // Retain ownership through every release, including the right click used to finish.
-                if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) ||
-                    Input.GetKey(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Escape)) return false;
+                if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) return false;
                 var callback = finished; var resume = valid && validEnd;
                 Reset(); callback?.Invoke(resume); return false;
             }
