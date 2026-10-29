@@ -121,7 +121,8 @@ namespace BetterHotkeys
 
             if (gesture != null) return ContinueGesture(blocked, hovered);
             if (!AutoStorage.BeforeInput(blocked)) return false;
-            if (StorageEditor.IsOpen || ManualStoragePrompt.IsOpen || ControlHints.IsOpen) return false;
+            if (StorageEditor.IsOpen) { StorageEditor.InspectClickedItem(); return false; }
+            if (ManualStoragePrompt.IsOpen || ControlHints.IsOpen) return false;
             if (blocked) return true;
 
             var window = node?.FindParentWindow();

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -14,9 +13,6 @@ namespace BetterHotkeys
     {
         internal static Action<StorageTarget, string, bool>? RemoveItem { get; set; } = StorageEditor.RemoveItem;
         private static readonly Dictionary<PixelWindow, Panel> panels = new Dictionary<PixelWindow, Panel>();
-        private static readonly FieldInfo[] Backgrounds = new[] { "background", "outsideBorder", "machineryPlate", "machineryIntake" }
-            .Select(name => GameAccess.Field(typeof(PixelWindow), name)).ToArray();
-        private static readonly FieldInfo ResizeButton = GameAccess.Field(typeof(PixelWindow), "bottomResizeButton");
         private static float next;
         private static bool failed;
 
@@ -50,8 +46,6 @@ namespace BetterHotkeys
                 ModEntry.Log?.Warning("Storage preview restored after UI error: " + error.Message);
             }
         }
-        internal static void BeforeValidate(PixelWindow window)
-        { if (panels.TryGetValue(window, out var panel)) panel.UndoLayout(); }
         internal static void AfterValidate(PixelWindow window)
         {
             if (!ModEntry.Active || !panels.TryGetValue(window, out var panel)) return;
@@ -64,13 +58,11 @@ namespace BetterHotkeys
             private readonly PixelWindow window;
             private readonly GameObject root;
             private readonly TMP_FontAsset font;
-            private readonly List<(RectTransform rect, Vector2 size, Vector2 position)> changed = new List<(RectTransform, Vector2, Vector2)>();
             private StorageTarget target;
             private StorageRule rule = null!;
             private string signature = "";
             private bool expanded;
             private float height;
-            private bool laidOut;
             internal Panel(StorageTarget target)
             {
                 this.target = target; window = target.Window;
@@ -82,97 +74,61 @@ namespace BetterHotkeys
             }
             internal void Refresh(StorageTarget current, StorageRule value)
             {
+                if (target.Page != current.Page) { expanded = false; signature = ""; }
                 target = current; rule = value;
                 var key = current.Page + ":" + StorageRuleCodec.Write(value) + ":" + window.widthPixels + ":" + Settings.Language + ":" + LocHelper.GetCurrentLocaleCode();
                 if (signature != key) { signature = key; Build(); }
                 ApplyLayout();
             }
-            internal void UndoLayout()
-            {
-                if (!laidOut) return;
-                foreach (var entry in changed)
-                    if (entry.rect != null) { entry.rect.sizeDelta = entry.size; entry.rect.anchoredPosition = entry.position; }
-                changed.Clear(); laidOut = false;
-            }
-            private void Remember(RectTransform rect)
-            { if (!changed.Any(entry => entry.rect == rect)) changed.Add((rect, rect.sizeDelta, rect.anchoredPosition)); }
             internal void ApplyLayout()
             {
-                if (root == null || window.inner == null) return;
-                if (laidOut) { ClampVisibleBounds(); return; }
-                var inner = window.inner.rectTransform;
-                var top = -inner.anchoredPosition.y;
-                var rect = (RectTransform)root.transform;
-                Place(rect, inner.anchoredPosition.x, top, Math.Max(48, window.widthPixels - window.xPadding * 2), height);
-                Remember(inner); inner.anchoredPosition += new Vector2(0, -height);
-                foreach (var field in Backgrounds)
-                    if (field.GetValue(window) is TreeNodeRender node && node != null)
-                    { Remember(node.rectTransform); node.rectTransform.sizeDelta += new Vector2(0, height); }
-                if (ResizeButton.GetValue(window) is TreeNodeRender resize && resize != null)
-                { Remember(resize.rectTransform); resize.rectTransform.anchoredPosition += new Vector2(0, -height); }
-                laidOut = true;
-                ClampVisibleBounds();
-            }
-            private void ClampVisibleBounds()
-            {
-                if (!window.canMove || window.handler == null) return;
+                if (root == null || window.handler == null) return;
                 var handler = window.handler.rectTransform;
-                var parent = handler.parent;
-                if (parent == null) return;
-                // Native movable windows may live on LetterboxManager.DockRoot. Nested window
-                // renderers, however, belong to their owner's layout and must not be translated here.
-                if (parent.GetComponentInParent<TreeNodeRender>() != null) return;
                 var canvas = handler.GetComponentInParent<Canvas>();
                 var viewport = canvas == null ? null : canvas.rootCanvas.transform as RectTransform;
-                if (viewport == null || viewport.rect.height <= 0) return;
-                var minimum = float.PositiveInfinity;
-                var maximum = float.NegativeInfinity;
-                var corners = new Vector3[4];
-                void Include(RectTransform bounds)
+                var width = expanded ? Math.Min(180, Math.Max(48, window.widthPixels - window.xPadding * 2)) : 14;
+                var x = window.widthPixels + 2f;
+                if (viewport != null)
                 {
-                    bounds.GetWorldCorners(corners);
-                    foreach (var corner in corners)
+                    var corners = new Vector3[4]; viewport.GetWorldCorners(corners);
+                    var left = handler.InverseTransformPoint(corners[0]).x;
+                    var right = handler.InverseTransformPoint(corners[2]).x;
+                    if (x + width > right) x = -width - 2;
+                    if (x < left)
                     {
-                        var y = viewport.InverseTransformPoint(corner).y;
-                        minimum = Math.Min(minimum, y); maximum = Math.Max(maximum, y);
+                        if (expanded) { expanded = false; Build(); ApplyLayout(); OrganizerInput.Notice(Texts.T("侧边空间不足，请先移动仓库窗口。", "Move the storage window to make room beside it.")); return; }
+                        Place((RectTransform)root.transform, Math.Max(0, window.widthPixels - 32), -14, width, height);
+                        return;
                     }
                 }
-                Include((RectTransform)root.transform);
-                foreach (var field in Backgrounds)
-                    if (field.GetValue(window) is TreeNodeRender node && node != null && node.gameObject.activeInHierarchy)
-                        Include(node.rectTransform);
-                var title = GameAccess.TitleNode(window);
-                if (title != null) Include(title.rectTransform);
-                var low = viewport.rect.yMin + 2;
-                var high = viewport.rect.yMax - 2;
-                float delta;
-                if (maximum - minimum > high - low)
-                    delta = high - maximum; // Oversized: keep its title/top visible, never alternate edges.
-                else if (minimum < low) delta = low - minimum;
-                else if (maximum > high) delta = high - maximum;
-                else return;
-                if (Math.Abs(delta) < .25f) return;
-                var worldDelta = viewport.TransformVector(new Vector3(0, delta, 0));
-                var parentDelta = parent.InverseTransformVector(worldDelta);
-                handler.anchoredPosition += new Vector2(parentDelta.x, parentDelta.y);
+                Place((RectTransform)root.transform, x, 0, width, height);
             }
             private void Build()
             {
-                UndoLayout();
                 foreach (Transform child in root.transform) { child.gameObject.SetActive(false); UnityEngine.Object.Destroy(child.gameObject); }
-                var width = Math.Max(48, window.widthPixels - window.xPadding * 2);
+                var width = Math.Min(180, Math.Max(48, window.widthPixels - window.xPadding * 2));
                 var diagnostic = StorageItemRules.Diagnostic(rule);
+                if (!expanded)
+                {
+                    height = 14;
+                    var background = root.GetComponent<Image>();
+                    if (background != null) background.enabled = false;
+                    Button(root.transform, ">", 0, 0, 14, 14, () => { expanded = true; Build(); ApplyLayout(); });
+                    return;
+                }
                 if (!StorageItemRules.HasLogic(rule))
                 {
                     height = 14;
                     var emptyBg = root.GetComponent<Image>() ?? root.AddComponent<Image>();
+                    emptyBg.enabled = true;
+                    Button(root.transform, "<", width - 18, 0, 18, 14, () => { expanded = false; Build(); ApplyLayout(); });
                     emptyBg.color = new Color(.08f, .09f, .11f, .97f); emptyBg.raycastTarget = true;
                     Text(root.transform, Texts.T("未配置", "Not configured"), 2, 0, width - 4, 14, Color.gray);
                     return;
                 }
                 height = 68 + (expanded ? 36 : 0) + (diagnostic.Length == 0 ? 0 : 16);
                 var bg = root.GetComponent<Image>() ?? root.AddComponent<Image>();
-                bg.color = new Color(.08f, .09f, .11f, .97f); bg.raycastTarget = true;
+                bg.enabled = true; bg.color = new Color(.08f, .09f, .11f, .97f); bg.raycastTarget = true;
                 Button(root.transform, expanded ? "v" : ">", width - 18, 0, 18, 14, () => { expanded = !expanded; Build(); ApplyLayout(); });
                 Text(root.transform, Texts.T("允许", "Allow"), 2, 0, width - 22, 12, Color.white);
                 Row(rule.AllowedItems, false, 12, width);
@@ -245,7 +201,7 @@ namespace BetterHotkeys
                 });
                 Text(rect, value, 3, 0, width - 3, h, Color.white);
             }
-            public void Dispose() { UndoLayout(); if (root != null) { root.SetActive(false); UnityEngine.Object.Destroy(root); } }
+            public void Dispose() { if (root != null) { root.SetActive(false); UnityEngine.Object.Destroy(root); } }
         }
         private static RectTransform Rect(string name, Transform parent, float x, float y, float w, float h)
         { var go = new GameObject(name, typeof(RectTransform)); var rect = (RectTransform)go.transform; rect.SetParent(parent, false); Place(rect,x,y,w,h); return rect; }
@@ -256,7 +212,6 @@ namespace BetterHotkeys
     [HarmonyPatch(typeof(PixelWindow), "Validate")]
     internal static class StoragePreviewLayoutPatch
     {
-        private static void Prefix(PixelWindow __instance) => StorageRulePreview.BeforeValidate(__instance);
         private static void Postfix(PixelWindow __instance) => StorageRulePreview.AfterValidate(__instance);
     }
 }

@@ -33,9 +33,19 @@ namespace BetterHotkeys
         private static CustomUIWindow? editor;
         private static StorageTarget? editing;
         private static float nextRefresh;
+        private static GameObject? tagPage;
+        private static Action<GameItemElement>? inspectItem;
+        internal static void InspectClickedItem()
+        {
+            if (!IsOpen || tagPage == null || !tagPage.activeInHierarchy || !Input.GetMouseButtonDown(0)) return;
+            var item = OrganizerWorld.PointerNode()?.FindParentElement() as GameItemElement;
+            if (item != null && OrganizerWorld.InScope(item) && item.handler != null && item.handler.gameObject.activeInHierarchy)
+                inspectItem?.Invoke(item);
+        }
         internal static bool IsOpen => editor != null && editor.IsAlive && editor.IsVisible;
         internal static void Reset()
         {
+            tagPage = null; inspectItem = null;
             StorageItemPicker.Reset();
             editor?.Close(); editor = null; editing = null;
             var oldHeaders = headers.Values.ToList(); headers.Clear();
@@ -185,18 +195,43 @@ namespace BetterHotkeys
             b.End();
             b.End();
             b.BeginTab(Texts.T("标签规则", "Tags"));
+            tagPage = b.CurrentContainer.gameObject;
             b.AddDropdown(new[] { Texts.T("满足任意标签", "Match any tag"), Texts.T("满足全部标签", "Match all tags") }, rule.All ? 1 : 0, null, "match");
             b.AddLabel(Texts.T("仅允许物品模式下，标签不参与分流。", "Tags do not route items in allowed-items-only mode."));
-            var rows = new List<(string label, CustomUIElement element)>();
+            var sampled = new HashSet<string>(StringComparer.Ordinal);
+            var rows = new List<(string id, string label, CustomUIElement element)>();
+            b.AddLabel(Texts.T("左键点选物品查看标签；勾选或采集后保存。", "Left-click an item to inspect tags; select or collect, then Save."), "sample");
+            inspectItem = item => {
+                sampled.Clear();
+                foreach (var option in options)
+                    if (StorageTagCatalog.Matches(item, option.Id)) sampled.Add(option.Id);
+                window.Get("sample").SetText(item.name + Texts.T(" — 可见标签：", " — visible tags: ") + sampled.Count);
+                foreach (var row in rows) row.element.SetVisible(sampled.Contains(row.id));
+            };
+            b.BeginRow();
+            b.AddButton(Texts.T("点选物品（右键返回）", "Pick item (right-click returns)"), () => {
+                if (!StorageItemPicker.TargetValid(target)) return;
+                window.Hide();
+                StorageItemPicker.Start(target, item => inspectItem?.Invoke(item), resume => {
+                    if (resume && window.IsAlive && ReferenceEquals(run, PlayerStore.Instance)) window.Show();
+                    else window.Close();
+                });
+            });
+            b.AddButton(Texts.T("采集这些标签", "Collect these tags"), () => {
+                foreach (var row in rows.Where(row => sampled.Contains(row.id)))
+                { chosen.Add(row.id); row.element.SetBool(true, false); }
+            });
+            b.AddButton(Texts.T("显示全部", "Show all"), () => { foreach (var row in rows) row.element.SetVisible(true); });
+            b.End();
             b.AddInput(Texts.T("搜索游戏分类 / 属性", "Search game categories / attributes"), "", null, "search", query => {
                 foreach (var row in rows) row.element.SetVisible(row.label.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0);
             });
-            b.BeginScroll(230);
+            b.BeginScroll(160);
             foreach (var option in options)
             {
                 var id = option.Id;
                 b.AddToggle(option.Label, chosen.Contains(id), value => { if (value) chosen.Add(id); else chosen.Remove(id); });
-                rows.Add((option.Label, b.Last));
+                rows.Add((id, option.Label, b.Last));
             }
             // Preserve previously saved rules even if their attribute is not currently observable.
             foreach (var id in chosen.Except(options.Select(o => o.Id)).ToArray())
