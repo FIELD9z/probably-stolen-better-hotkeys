@@ -121,10 +121,12 @@ namespace BetterHotkeys
         }
         private static void OpenDraft(StorageTarget target, StorageRule rule)
         {
+            StorageRulePreview.CollapseAll();
             OverlayHandler.current?.HideTooltip();
             editor?.Close(); editing = target;
             var run = PlayerStore.Instance;
             var chosen = new HashSet<string>(rule.Tags, StringComparer.Ordinal);
+            var excluded = new HashSet<string>(rule.DeniedTags, StringComparer.Ordinal);
             var allowed = rule.AllowedItems.Distinct(StringComparer.Ordinal).ToList();
             var denied = rule.DeniedItems.Distinct(StringComparer.Ordinal).ToList();
             var options = StorageTagCatalog.Options();
@@ -151,7 +153,7 @@ namespace BetterHotkeys
                 { window.Get("error").SetText(Texts.T("优先级必须是整数。", "Priority must be an integer.")); return false; }
                 draft = new StorageRule { Name = window.Get("name").GetString(), Tags = chosen.OrderBy(x => x, StringComparer.Ordinal).ToArray(),
                     All = window.Get("match").GetIndex() == 1, Priority = priority, ItemsOnly = window.Get("items_mode").GetIndex() == 1,
-                    AllowedItems = allowed.ToArray(), DeniedItems = denied.ToArray() };
+                    AllowedItems = allowed.ToArray(), DeniedItems = denied.ToArray(), DeniedTags = excluded.OrderBy(x => x, StringComparer.Ordinal).ToArray() };
                 return true;
             }
             void Pick(bool reject)
@@ -197,9 +199,12 @@ namespace BetterHotkeys
             b.BeginTab(Texts.T("标签规则", "Tags"));
             tagPage = b.CurrentContainer.gameObject;
             b.AddDropdown(new[] { Texts.T("满足任意标签", "Match any tag"), Texts.T("满足全部标签", "Match all tags") }, rule.All ? 1 : 0, null, "match");
-            b.AddLabel(Texts.T("仅允许物品模式下，标签不参与分流。", "Tags do not route items in allowed-items-only mode."));
+            b.AddLabel(Texts.T("允许标签按任意／全部匹配；命中任一排除标签始终拒绝。", "Allow tags match any/all; any excluded tag always rejects."));
             var sampled = new HashSet<string>(StringComparer.Ordinal);
             var rows = new List<(string id, string label, CustomUIElement element)>();
+            var allowControls = new Dictionary<string, CustomUIElement>();
+            var denyControls = new Dictionary<string, CustomUIElement>();
+            b.AddDropdown(new[] { Texts.T("采集到允许标签", "Collect as allowed tags"), Texts.T("采集到排除标签", "Collect as excluded tags") }, 0, null, "collect_mode");
             b.AddLabel(Texts.T("左键点选物品查看标签；勾选或采集后保存。", "Left-click an item to inspect tags; select or collect, then Save."), "sample");
             inspectItem = item => {
                 sampled.Clear();
@@ -218,8 +223,12 @@ namespace BetterHotkeys
                 });
             });
             b.AddButton(Texts.T("采集这些标签", "Collect these tags"), () => {
-                foreach (var row in rows.Where(row => sampled.Contains(row.id)))
-                { chosen.Add(row.id); row.element.SetBool(true, false); }
+                var reject = window.Get("collect_mode").GetIndex() == 1;
+                foreach (var id in sampled)
+                {
+                    (reject ? excluded : chosen).Add(id);
+                    (reject ? denyControls : allowControls)[id].SetBool(true, false);
+                }
             });
             b.AddButton(Texts.T("显示全部", "Show all"), () => { foreach (var row in rows) row.element.SetVisible(true); });
             b.End();
@@ -227,16 +236,21 @@ namespace BetterHotkeys
                 foreach (var row in rows) row.element.SetVisible(row.label.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0);
             });
             b.BeginScroll(160);
+            foreach (var id in chosen.Concat(excluded).Except(options.Select(o => o.Id)).ToArray())
+                options.Add(new StorageTagOption(id, StorageTagCatalog.Label(id)));
             foreach (var option in options)
             {
                 var id = option.Id;
-                b.AddToggle(option.Label, chosen.Contains(id), value => { if (value) chosen.Add(id); else chosen.Remove(id); });
-                rows.Add((id, option.Label, b.Last));
-            }
-            // Preserve previously saved rules even if their attribute is not currently observable.
-            foreach (var id in chosen.Except(options.Select(o => o.Id)).ToArray())
-            {
-                b.AddToggle(StorageTagCatalog.Label(id), true, value => { if (value) chosen.Add(id); else chosen.Remove(id); });
+                b.BeginColumn();
+                var row = CustomUIElement.Bind(b.CurrentContainer.gameObject, "tag_rule_" + id);
+                b.AddLabel(option.Label);
+                b.BeginRow();
+                b.AddToggle(Texts.T("允许", "Allow"), chosen.Contains(id), value => { if (value) chosen.Add(id); else chosen.Remove(id); });
+                allowControls[id] = b.Last;
+                b.AddToggle(Texts.T("排除（优先）", "Exclude (wins)"), excluded.Contains(id), value => { if (value) excluded.Add(id); else excluded.Remove(id); });
+                denyControls[id] = b.Last;
+                b.End(); b.End();
+                rows.Add((id, option.Label, row));
             }
             b.End();
             b.End();

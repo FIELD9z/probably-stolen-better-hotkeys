@@ -16,6 +16,8 @@ namespace BetterHotkeys
         private static float next;
         private static bool failed;
 
+        internal static void CollapseAll()
+        { foreach (var panel in panels.Values) panel.Collapse(); }
         internal static void Reset()
         {
             foreach (var panel in panels.Values) panel.Dispose();
@@ -72,6 +74,8 @@ namespace BetterHotkeys
                 root = new GameObject("Better Hotkeys storage rule preview", typeof(RectTransform));
                 root.transform.SetParent(window.handler.transform, false);
             }
+            internal void Collapse()
+            { if (expanded) { expanded = false; Build(); ApplyLayout(); } }
             internal void Refresh(StorageTarget current, StorageRule value)
             {
                 if (target.Page != current.Page) { expanded = false; signature = ""; }
@@ -126,7 +130,7 @@ namespace BetterHotkeys
                     Text(root.transform, Texts.T("未配置", "Not configured"), 2, 0, width - 4, 14, Color.gray);
                     return;
                 }
-                height = 68 + (expanded ? 36 : 0) + (diagnostic.Length == 0 ? 0 : 16);
+                height = 68 + (expanded ? 52 : 0) + (diagnostic.Length == 0 ? 0 : 16);
                 var bg = root.GetComponent<Image>() ?? root.AddComponent<Image>();
                 bg.enabled = true; bg.color = new Color(.08f, .09f, .11f, .97f); bg.raycastTarget = true;
                 Button(root.transform, expanded ? "v" : ">", width - 18, 0, 18, 14, () => { expanded = !expanded; Build(); ApplyLayout(); });
@@ -139,10 +143,11 @@ namespace BetterHotkeys
                 {
                     var text = rule.ItemsOnly ? Texts.T("仅白名单物品", "Whitelist items only") :
                         (rule.All ? Texts.T("标签：全部满足", "Tags: all match") : Texts.T("标签：任一满足", "Tags: any match")) + "\n" + string.Join(" / ", rule.Tags.Select(StorageTagCatalog.Label));
-                    var summary = Text(root.transform, text, 2, y, width - 4, 34, Color.white);
+                    if (rule.DeniedTags.Length != 0) text += "\n" + Texts.T("排除：", "Exclude: ") + string.Join(" / ", rule.DeniedTags.Select(StorageTagCatalog.Label));
+                    var summary = Text(root.transform, text, 2, y, width - 4, 50, Color.white);
                     summary.raycastTarget = true;
                     CustomUIElement.Bind(summary.gameObject, "Storage rule summary").SetTooltip(text);
-                    y += 36;
+                    y += 52;
                 }
                 if (diagnostic.Length != 0)
                 {

@@ -9,7 +9,7 @@ namespace BetterHotkeys
         {
             if (rule != null)
             {
-                if (rule.DeniedItems.Contains(itemId, StringComparer.Ordinal)) return -1;
+                if (rule.DeniedTags.Any(matchTag) || rule.DeniedItems.Contains(itemId, StringComparer.Ordinal)) return -1;
                 if (rule.AllowedItems.Contains(itemId, StringComparer.Ordinal)) return 0;
                 if (rule.ItemsOnly) return -1;
                 if (StorageMatchRules.Matches(rule.Tags, rule.All, matchTag)) return 1;
@@ -17,7 +17,7 @@ namespace BetterHotkeys
             return fallback && !HasLogic(rule) ? 2 : -1;
         }
         internal static bool HasLogic(StorageRule? rule) => rule != null &&
-            (rule.ItemsOnly || rule.Tags.Length != 0 || rule.AllowedItems.Length != 0 || rule.DeniedItems.Length != 0);
+            (rule.ItemsOnly || rule.DeniedTags.Length != 0 || rule.Tags.Length != 0 || rule.AllowedItems.Length != 0 || rule.DeniedItems.Length != 0);
         internal static bool ManualAllowed(StorageRule? rule, string itemId, Func<string, bool> matchTag) =>
             !HasLogic(rule) || Rank(rule, itemId, matchTag, false) >= 0;
         internal static string Diagnostic(StorageRule? rule)
