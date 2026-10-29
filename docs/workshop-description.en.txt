@@ -7,7 +7,7 @@ So, here we are: some hotkey improvements, plus a way to remind myself where I s
 If you run into any issues, feel free to leave a comment below!
 
 [h2]Installation and controls[/h2]
-For the full release of Probably Stolen. Subscribe, enable in Mods and restart when prompted. 
+For the full release of Probably Stolen. Subscribe, enable in Mods and restart when prompted.
 Shift + left click: inventory/container to sales counter; counter to inventory.
 Ctrl + left click: inventory to the highlighted open container; container to inventory.
 Alt + left click: pin/unpin; supports selections sharing the same source.

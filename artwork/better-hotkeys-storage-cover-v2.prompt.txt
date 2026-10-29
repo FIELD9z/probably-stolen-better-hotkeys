@@ -1,0 +1,17 @@
+Generated with built-in image_gen; old cover used as style reference.
+
+Use case: ads-marketing. Create a new square Steam Workshop mod cover inspired by the attached OLD COVER (style reference, not text to preserve). Keep its dark purple inventory-grid background, mint cyan pixel-art frame and chunky ivory/mint keycaps, small colorful pixel inventory items, polished retro game aesthetic. New name and information-rich layout, excellent readable Chinese typography, no tiny illegible filler.
+Title at top (about upper 25%): "BETTER HOTKEYS" on first line, "& STORAGE" on second line. Chinese subtitle "更好的快捷键与收纳".
+Main area: six clearly separated keycap/action entries arranged in two columns, all six equal importance, generous spacing. Exact key/action pairs:
+"Shift + 左键" / "柜台快捷转移"
+"Ctrl + 左键" / "容器快捷转移"
+"Alt + 左键" / "批量固定"
+"S" / "悬停标题栏整理"
+"双击 B" / "赃物／违禁品标记"
+"D" / "顾客需求高亮"
+Below these a prominent wide mint keycap entry:
+"C" / "按规则快捷收纳"
+Smaller explanatory line under C: "选中后按 C，或按住 C 点选"
+Bottom feature line in smaller but clear Chinese: "全部分页收纳 · 物品／标签黑白名单 · 点选采集标签"
+Small footer: "默认快捷键 · 支持自定义" and author "FIELD9z".
+Small decorative pixel inventory items with red/yellow borders can fill gaps but must not compete with text. Title compact enough to fit ALL seven controls and footer. No arrows, no diagram connectors. This is promotional cover typography with keyboard keys, not a flowchart. Preserve correct spelling of all Chinese labels and key names. Square high resolution opaque image.
