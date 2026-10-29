@@ -1,4 +1,4 @@
-# Better Hotkeys / 更好的快捷键 — 0.4.1
+# Better Hotkeys / 更好的快捷键 — 0.4.2
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -11,7 +11,7 @@ Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 ### 0.4.0 物品规则与虚影
 
 - 默认键为 **D** 需求高亮、**C** 按规则收纳。
-- 容器／每页可选择“物品＋标签”或“仅允许物品白名单”。点击“点选添加允许物品／拒绝物品”后，面板暂时隐藏；连续左键点击真实物品记录**同种物品**，数量、朝向和位置不影响识别。Esc 或右键结束并返回草稿，再点保存生效，取消不保存规则。原生分页可以切换；即使切换目标窗口页签，草稿仍属于打开编辑器时的原始页。
+- 容器／每页可选择“物品＋标签”或“仅允许物品白名单”。点击“点选添加允许物品／拒绝物品”后，面板暂时隐藏；连续左键点击真实物品记录**同种物品**，数量、朝向和位置不影响识别。右键完成并返回草稿，再点保存生效，取消不保存规则。原生分页可以切换；即使切换目标窗口页签，草稿仍属于打开编辑器时的原始页。
 - 容器顶部独立预览区分允许／拒绝两行，白边／黑边的半透明图标按添加顺序排列。可横向滚动；悬停查看名称，点击移除该条规则（立即保存）。虚影不是游戏物品，不占格子和容量。小箭头展开标签逻辑，长说明可悬停查看。图标资源缺失时显示问号，规则保留。
 - 对每个待收物品，先排除所有命中黑名单的容器，再尝试明确白名单目标，之后才尝试标签目标；“仅白名单”目标不进入标签阶段。同一物品同时在白／黑名单中时拒绝优先。各层内再按数字优先级与稳定顺序分配。
 - 白名单满后继续标签目标；设置中的“无可用规则目标时使用空规则容器”默认关闭，打开后最后尝试既无标签又无物品规则的容器。仅设置名称的容器仍属于空规则；仅白名单模式或仅含黑名单的容器不属于空规则。所有阶段遵守 Open／All 范围。
@@ -119,7 +119,7 @@ Checks cover public game bindings, available storage-coordinator presets and dia
 
 ## 0.4.0 — Specific-item rules
 
-Choose Items + Tags or Whitelist Only per container/page. Pick allowed/denied items repeatedly, then Esc/right-click to return to the draft; Save commits rules. Identification uses item kind, not the individual instance. Changing tabs does not redirect the draft to another page.
+Choose Items + Tags or Whitelist Only per container/page. Pick allowed/denied items repeatedly, then right-click to return to the draft; Save commits rules. Identification uses item kind, not the individual instance. Changing tabs does not redirect the draft to another page.
 
 Automatic storage excludes blacklisted destinations first, then tries explicit allowlists, then tag matches, then optional unconfigured destinations. Full destinations fall through. The final fallback is off by default; each tier retains numeric priority and the Open/All scope. Whitelist-only and deny-only configurations are never unconfigured fallbacks.
 
@@ -131,3 +131,6 @@ This mod's explicit-target shortcut asks once per batch when destination rules r
 0.4.1：保留原生快捷键提示，不再隐藏或替换原提示区域。在本 Mod 设置底部点击「Better Hotkeys 快捷键说明」查看独立说明（应用改键后重新打开刷新）。程序集及安装目录统一为 BetterHotkeys；内部 ID 保持 probably_stolen_organizer，已有设置与规则沿用。升级前退出游戏，移走旧 Mods/StarterMod 目录，避免重复安装。
 
 0.4.1 preserves native shortcut hints. Open the independent shortcut guide from this mod’s settings; apply binding changes and reopen to refresh. Assembly/package name: BetterHotkeys; the internal mod ID is unchanged. Remove the old StarterMod installation before installing the renamed package.
+
+
+0.4.2：收纳规则分为基本设置、物品名单、标签规则三个页签。点选入口旁标明右键完成；Esc 不再完成点选。缩小标题栏齿轮，打开规则面板时清除原生悬浮提示。保留原有标签名称与规则格式。

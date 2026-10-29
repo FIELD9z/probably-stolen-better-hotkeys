@@ -9,6 +9,17 @@ namespace BetterHotkeys
 {
     internal static class StorageEditor
     {
+        private sealed class HeaderButton : MachineryButton
+        {
+            private static readonly System.Reflection.FieldInfo IconNode = GameAccess.Field(typeof(MachineryButton), "iconNode");
+            internal HeaderButton(Action click) : base(CustomUIManager.Instance.spriteSetting, click, 12) { }
+            public override void Validate()
+            {
+                base.Validate();
+                var icon = IconNode.GetValue(this) as TreeNodeRender;
+                if (icon != null) MachineryStyle.Place(icon, 2, 2, 8, 8);
+            }
+        }
         private sealed class Header
         {
             internal PixelWindow Window = null!;
@@ -53,11 +64,11 @@ namespace BetterHotkeys
                 if (!headers.TryGetValue(w, out var h))
                 {
                     h = new Header { Window = w, Original = w.titleString, Overflow = ((TreeNodeRender)TitleText.GetValue(w)).text.overflowMode };
-                    h.Button = new MachineryButton(CustomUIManager.Instance.spriteSetting, () => {
+                    h.Button = new HeaderButton(() => {
                         if (!ModEntry.Active || IsOpen || StorageItemPicker.IsPicking || ManualStoragePrompt.IsOpen || OrganizerWorld.Blocked()) return;
                         var current = StorageTargets.FromWindow(w);
                         if (current != null) Open(current);
-                    }, 16);
+                    });
                     w.AddHeaderButton(h.Button); headers.Add(w, h);
                 }
                 if (w.titleString != h.Applied && w.titleString != h.Original) h.Original = w.titleString;
@@ -77,7 +88,7 @@ namespace BetterHotkeys
             if ((int)window.style == 1 || !headers.TryGetValue(window, out var h)) return;
             var close = (TreeNodeRender)CloseButton.GetValue(window);
             var rect = h.Button.handler.rectTransform;
-            rect.anchoredPosition = new Vector2(close.rectTransform.anchoredPosition.x - 19, close.rectTransform.anchoredPosition.y);
+            rect.anchoredPosition = new Vector2(close.rectTransform.anchoredPosition.x - 15, close.rectTransform.anchoredPosition.y);
             rect.SetAsLastSibling();
             var title = (TreeNodeRender)TitleText.GetValue(window);
             title.text.overflowMode = TextOverflowModes.Ellipsis;
@@ -100,6 +111,7 @@ namespace BetterHotkeys
         }
         private static void OpenDraft(StorageTarget target, StorageRule rule)
         {
+            OverlayHandler.current?.HideTooltip();
             editor?.Close(); editing = target;
             var run = PlayerStore.Instance;
             var chosen = new HashSet<string>(rule.Tags, StringComparer.Ordinal);
@@ -107,16 +119,21 @@ namespace BetterHotkeys
             var denied = rule.DeniedItems.Distinct(StringComparer.Ordinal).ToList();
             var options = StorageTagCatalog.Options();
             var b = CustomUIManager.Window(Settings.Id + ":storage", Texts.T("收纳规则 — 第 ", "Storage rules — page ") + (target.Page + 1), CustomUIManager.LAYER_FRONT)
-                .SetSize(560, 720).Center().SetCloseOnEscape(true);
+                .SetSize(580, 590).Center().SetCloseOnEscape(false);
             editor = b.GetWindow();
             var window = editor;
             b.AddLabel(Texts.T("物品按同种记录；拒绝优先。修改仅在保存后生效。", "Items are matched by kind; denials win. Changes apply only after Save."));
-            b.BeginScroll(480);
+            b.BeginTabs();
+            b.BeginTab(Texts.T("基本设置", "General"));
+            b.AddHeader(Texts.T("容器与分流", "Container and routing"));
             b.AddInput(Texts.T("容器 / 分页名称", "Container / page name"), rule.Name, null, "name");
             b.AddDropdown(new[] { Texts.T("物品 + 标签", "Items + tags"), Texts.T("仅允许物品白名单", "Allowed items only") }, rule.ItemsOnly ? 1 : 0, null, "items_mode");
-            b.AddDropdown(new[] { Texts.T("满足任意标签", "Match any tag"), Texts.T("满足全部标签", "Match all tags") }, rule.All ? 1 : 0, null, "match");
+
             b.AddLabel(Texts.T("优先级（整数，越大越优先）", "Priority (integer; higher first)"));
             b.AddInput("0", rule.Priority.ToString(System.Globalization.CultureInfo.InvariantCulture), null, "priority");
+            b.AddLabel(Texts.T("允许物品优先分流，其次匹配标签；拒绝名单始终优先排除。", "Allowed items route first, then tags; denied items are always excluded."));
+            b.End();
+            b.BeginTab(Texts.T("物品名单", "Item lists"));
             bool Capture(out StorageRule draft)
             {
                 draft = new StorageRule();
@@ -144,10 +161,17 @@ namespace BetterHotkeys
                     else { window.Close(); if (ReferenceEquals(editor, window)) { editor = null; editing = null; } }
                 });
             }
+            b.BeginRow();
             b.AddButton(Texts.T("点选添加允许物品", "Pick allowed items"), () => Pick(false));
+            b.AddLabel(Texts.T("右键完成", "Right-click to finish"));
+            b.End();
+            b.BeginRow();
             b.AddButton(Texts.T("点选添加拒绝物品", "Pick denied items"), () => Pick(true));
-            b.BeginScroll(110);
+            b.AddLabel(Texts.T("右键完成", "Right-click to finish"));
+            b.End();
+            b.BeginScroll(230);
             b.AddLabel(Texts.T("已选物品（取消勾选移除，保存后生效）", "Selected items (uncheck to remove, then Save)"));
+            if (allowed.Count == 0 && denied.Count == 0) b.AddLabel(Texts.T("尚未添加物品。点击上方按钮，再左键点选已打开容器中的物品。", "No items yet. Use a button above, then left-click items in open containers."));
             foreach (var id in allowed.ToArray())
             {
                 var value = id;
@@ -159,11 +183,15 @@ namespace BetterHotkeys
                 b.AddToggle(Texts.T("拒绝：", "Deny: ") + StorageItemDisplay.Name(value), true, keep => { if (keep) { if (!denied.Contains(value)) denied.Add(value); } else denied.Remove(value); });
             }
             b.End();
+            b.End();
+            b.BeginTab(Texts.T("标签规则", "Tags"));
+            b.AddDropdown(new[] { Texts.T("满足任意标签", "Match any tag"), Texts.T("满足全部标签", "Match all tags") }, rule.All ? 1 : 0, null, "match");
+            b.AddLabel(Texts.T("仅允许物品模式下，标签不参与分流。", "Tags do not route items in allowed-items-only mode."));
             var rows = new List<(string label, CustomUIElement element)>();
             b.AddInput(Texts.T("搜索游戏分类 / 属性", "Search game categories / attributes"), "", null, "search", query => {
                 foreach (var row in rows) row.element.SetVisible(row.label.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0);
             });
-            b.BeginScroll(180);
+            b.BeginScroll(230);
             foreach (var option in options)
             {
                 var id = option.Id;
@@ -177,7 +205,10 @@ namespace BetterHotkeys
             }
             b.End();
             b.End();
+            b.EndTabs();
+            b.AddFlexibleSpace();
             b.AddLabel("", "error");
+            b.BeginRow();
             b.AddButton(Texts.T("保存", "Save"), () => {
                 if (!ModEntry.Active || !ReferenceEquals(run, PlayerStore.Instance) || !StorageItemPicker.TargetValid(target)) { window.Close(); return; }
                 if (!Capture(out var draft)) return;
@@ -187,6 +218,7 @@ namespace BetterHotkeys
                 } catch (Exception e) { window.Get("error").SetText(Texts.T("保存失败：", "Save failed: ") + e.Message); }
             });
             b.AddButton(Texts.T("取消", "Cancel"), () => window.Close());
+            b.End();
             b.Show();
         }
     }

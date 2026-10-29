@@ -121,3 +121,13 @@
 - 本机 ModConfigWindow.Open(LoadedMod) 返回 CustomUIWindow；仅在本 Mod 配置页追加“快捷键说明”按钮，打开独立可关闭窗口，显示已生效绑定。应用改键后重新打开刷新，不修改原生提示文字。
 - 源码目录、项目、命名空间、程序集与打包目录统一 BetterHotkeys。内部 Mod ID 和配置键不变，保留存档规则。脚本、测试引用与清单同步。
 - 编译 0 警告/0 错误，139 项逻辑检查和实际程序集检查通过；新增检查防止原生提示区引用和旧替换补丁回归。已退出游戏后备份旧安装，部署 Mods/BetterHotkeys，移走 Mods/StarterMod；DLL 哈希一致。独立说明布局待游戏内验证。
+
+
+## 2026-10-29 Better Hotkeys 0.4.2：收纳界面测试修正
+
+- 本机 MachineryButton.Validate 按 sprite.rect 绘制 iconNode，构造参数 size 只控制底板。局部 HeaderButton 子类在 Validate 后将图标限定为 8×8，底板 12×12，不修改其他原生按钮。
+- 打开规则面板时调用本机 OverlayHandler.HideTooltip，避免原生输入暂停后残留悬浮提示。
+- 点选仅右键完成并等待鼠标释放，移除 Esc 完成路径；编辑窗口也不使用 Esc 关闭。游戏其他入口仍可能响应 Esc，故点选应使用右键。
+- 使用本机已存在的 BeginTabs/BeginTab/EndTabs 与 BeginRow，拆为基本设置、物品名单、标签规则，取消嵌套滚动；底部并排保存/取消。引入 TextRenderingModule 本机引用，Private=false。
+- 标签目录、匹配和隐藏规则未改动。原生 AddFeatureSection 有 isDisabled / IsInitiallyShown / GetPublicHidden / IsExposed 门槛，不能据此推断存在全局遇见解锁目录。
+- 实机需验证齿轮比例、提示关闭、页签与草稿保存、右键完成及中英文布局；编译和逻辑测试不代替实机结果。
