@@ -1,0 +1,32 @@
+{
+  "source": "分类收纳.mp4",
+  "segments": [
+    [
+      1.0,
+      3.1
+    ],
+    [
+      5.0,
+      5.7
+    ],
+    [
+      8.9,
+      14.75
+    ]
+  ],
+  "hold_seconds": 1,
+  "duration": 9.65,
+  "crop": [
+    1844,
+    1000,
+    0,
+    1086
+  ],
+  "note": "Sidebar display segments removed; source unchanged. Key labels are editorial overlays, not recorded input events.",
+  "workshop_export": {
+    "width": 640,
+    "height": 480,
+    "fps": 8,
+    "palette_colors": 80
+  }
+}

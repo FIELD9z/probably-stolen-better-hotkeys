@@ -1,0 +1,27 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1200
+PlayResY: 900
+ScaledBorderAndShadow: yes
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Title,Microsoft YaHei,36,&H00E8F7F5,&H00E8F7F5,&H00231B1A,&H00231B1A,-1,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Chinese,Microsoft YaHei,23,&H00CDC5B8,&H00CDC5B8,&H00231B1A,&H00231B1A,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Caption,Microsoft YaHei,24,&H00E8F7F5,&H00E8F7F5,&H00231B1A,&H00231B1A,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Key,Consolas,36,&H00231B1A,&H00231B1A,&H00C4E78A,&H00C4E78A,-1,0,0,0,100,100,0,0,3,12,0,5,0,0,0,1
+Style: Brand,Consolas,17,&H00859280,&H00859280,&H00231B1A,&H00231B1A,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:09.65,Title,,0,0,0,,{\pos(28,12)}STORE BY CATEGORY
+Dialogue: 0,0:00:00.00,0:00:09.65,Chinese,,0,0,0,,{\pos(30,59)}按分类自动收纳 · 每个分页独立规则
+Dialogue: 0,0:00:00.00,0:00:09.65,Brand,,0,0,0,,{\pos(975,875)}FIELD9z / MOD DEMO
+Dialogue: 0,0:00:00.00,0:00:03.85,Caption,,0,0,0,,{\pos(28,828)\fad(80,80)}Food / materials / medical supplies: separate page rules.
+Dialogue: 0,0:00:00.00,0:00:03.85,Chinese,,0,0,0,,{\pos(30,863)\fad(80,80)}食品 / 材料 / 医疗品 · 名称直接显示分类
+Dialogue: 0,0:00:03.85,0:00:06.30,Caption,,0,0,0,,{\pos(28,828)\fad(80,80)}Hold C and click: items go to matching pages.
+Dialogue: 0,0:00:03.85,0:00:06.30,Chinese,,0,0,0,,{\pos(30,863)\fad(80,80)}按住 C 点选物品，自动收纳到匹配分页
+Dialogue: 0,0:00:06.30,0:00:09.65,Caption,,0,0,0,,{\pos(28,828)\fad(80,80)}Switch pages to see the sorted items.
+Dialogue: 0,0:00:06.30,0:00:09.65,Chinese,,0,0,0,,{\pos(30,863)\fad(80,80)}切换分页，查看分类收纳结果
+Dialogue: 2,0:00:03.85,0:00:06.30,Key,,0,0,0,,{\pos(1000,47)\fad(65,160)\fscx90\fscy90\t(0,110,\fscx100\fscy100)}C + CLICK
