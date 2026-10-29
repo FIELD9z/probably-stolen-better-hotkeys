@@ -35,6 +35,10 @@ namespace BetterHotkeys
             if (!ending && Input.GetMouseButtonDown(1)) { ending = true; validEnd = true; }
             if (ending)
             {
+                // Native tooltip updates stop while the editor owns input. Clear both the
+                // cached listener and the visible overlay before returning to either editor path.
+                ItemTooltipHandler.current?.UpdateReset();
+                OverlayHandler.current?.HideTooltip();
                 // Retain ownership through every release, including the right click used to finish.
                 if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) return false;
                 var callback = finished; var resume = valid && validEnd;
