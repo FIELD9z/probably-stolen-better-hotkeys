@@ -1,0 +1,62 @@
+The item transfer logic in this game makes my head spin a little. Half the time, I have no idea where my stuff went. And I don't even know which bizarre little corner I left my contraband in—HOW DOES LAW ENFORCEMENT KEEP FINDING IT??!! MY MODULES, AAAAAHHH!!!
+
+So, here we are: some hotkey improvements, plus a way to remind myself where I stashed my contraband.
+
+If you run into any issues, feel free to leave a comment below!
+
+[h2]Installation and activation[/h2]
+For the full release of Probably Stolen, not the Demo. Subscribe and let Steam finish downloading, then enable Better Hotkeys in the game's Mods menu and restart when prompted. The reflection-external capability is required to access native input, selection and UI members.
+If you previously installed this mod manually, avoid enabling both the local and Workshop copies.
+
+[h2]Choosing a transfer destination[/h2]
+Open an owned container and click its window. Confirm the target highlight on its header, then Ctrl + left click an item in your main inventory. By default, clicking anywhere in the window can select it; a header-only option is available.
+Choose a target again after it is closed or becomes invalid. Another container will not be selected automatically. Hovering a header to sort does not change the transfer target. Main inventory does not include the space inside bags or boxes stored in it.
+
+[h2]Batch actions and nested markers[/h2]
+Select items using the game's normal selection controls, then transfer or pin an item within that selection. Only selected items sharing its direct source inventory are affected. Clicking outside the selection affects only the clicked item. Batch pinning uses the clicked item's original state to decide whether to pin or unpin the group.
+By default, container markers include nested contents and pages. Open a marked bag or box to see markers on its contents or the next nested container. Containers are not opened automatically and no path list is shown. A purple container border can also mean separate stolen and contraband items inside, rather than one item belonging to both categories.
+Markers indicate item categories, not a guarantee that law enforcement will find them. They are cleared when leaving the shop, loading a save or disabling the mod.
+
+[h2]Usage and settings[/h2]
+Open Better Hotkeys settings in Mods and click Apply. Settings persist across saves. Changes take effect after the current mouse gesture/drag ends. Auto follows the game language (Chinese or English fallback); reopen the panel after changing language.
+
+0.2.1: while this mod is actually enabled, the native control-hint overlay's shortcut region shows a dynamic list of currently effective bindings (refreshed approximately every 0.15 seconds). Disabled, unbound and conflicting shortcuts are labeled. TakeOver shows our actions; VanillaWithHelpers shows native transfer keys. Applied binding changes require no restart. Disabling the mod, including disabling after an input error, restores the original region. Other shop hints are unchanged.
+
+[h2]Default controls[/h2]
+
+[b]Shift + left click[/b] — Inventory/owned container → sales counter; sales counter → inventory
+[b]Ctrl + left click[/b] — Inventory → last clicked open owned container; container → inventory; no route from counter
+[b]Alt + left click[/b] — Pin/unpin; selected items in the same direct inventory are processed together
+[b]Hover header + game sort key (default S)[/b] — Sort that inventory; remembers the last vanilla menu sort choice by default
+[b]Double B[/b] — Toggle stolen/contraband markers: yellow/red/purple for stolen/contraband/both
+
+Pinned items stay put. Partial transfers are allowed; no automatic rerouting or destination sorting. Normal dragging, wheel quantity adjustment and Shift half-stack dragging remain available. No new single-item key is added.
+
+[h2]Configuration[/h2]
+
+- General: language, input mode, separate transfer/pin/header-sort/marker toggles.
+- Keys: editable text chords such as Shift, RightAlt, Ctrl+Q or B. None/blank clears a binding. Supports A–Z, F1–F12 except reserved F8/F9, Space, Tab, BackQuote, Home, End, PageUp, PageDown, Insert, and left/right Shift/Ctrl/Alt. At most one ordinary key per chord. T conflicts with the game's hardcoded mouse-smoothing toggle and is blocked at runtime. Left/right equivalence is on by default; when off, unqualified modifiers mean left-side keys.
+- Markers: Press to toggle, DoublePress to toggle, or Hold to show; adjustable double-press interval (0.15–0.8 seconds).
+- Behavior: same-inventory batch actions, header-only target selection, target highlight, remember menu sorting or use a fixed large/small-first and start/end preference.
+- Appearance: stolen/contraband toggles, nested contents, owned-only filter, seven color presets for each category, border width (1–4), opacity (0.2–1), refresh interval (0.1–0.5 seconds). Read-only markers do not run security inspections or change heat.
+- Notices: Exceptions (default), All or Off for transfers; independent target-change and marker-toggle notices.
+
+Bindings use text fields, not key-capture widgets. Invalid/overlapping bindings restore the previous valid configuration; reopen the panel to see restored values. External conflicts are checked when an action is attempted; the conflicting action is named and the shortcut is skipped.
+
+[h2]Compatibility[/h2]
+
+TakeOver (default) disables vanilla quick transfer. Turning off our transfer module or clearing a binding does not restore vanilla routes.
+
+VanillaWithHelpers restores vanilla transfer and disables our transfer/pin gestures and drag-quantity override, while retaining header sorting and markers. Disabling this mod in Mods makes its patches inactive.
+
+Checks cover public game bindings, available storage-coordinator presets and diagnostic logging of shared critical Harmony patch targets. Other mods that poll keys independently cannot be fully detected. Transfer gestures consume native input dispatch and may affect other input mods. No universal compatibility guarantee is made.
+
+[h2]Saves and feedback[/h2]
+No new save schema is added. Transfers, pinning and sorting change normal game state and are saved by the game. No cross-container transfer undo is provided. Settings are shared across saves. This mod adds no telemetry or network calls.
+When reporting an issue, include your game and mod versions, reproduction steps, key bindings and other input mods. Screenshots or relevant logs are helpful too.
+
+[h2]Planned feature[/h2]
+Next, I plan to add a hotkey to highlight the items customers are asking for, making them easier to find. This feature is not available yet.
+
+[h2]Version information[/h2]
+Author: FIELD9z. Mod version: 0.2.1. Locally targeted internal game version: 0.46D.

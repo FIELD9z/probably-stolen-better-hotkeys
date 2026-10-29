@@ -1,0 +1,6 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory).local/Game.props" Condition="Exists('$(MSBuildThisFileDirectory).local/Game.props')" />
+  <PropertyGroup>
+    <GameManagedDir>$(GameDir)\Probably Stolen_Data\Managed</GameManagedDir>
+  </PropertyGroup>
+</Project>

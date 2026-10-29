@@ -1,0 +1,105 @@
+# Better Hotkeys / 更好的快捷键 — 0.3.0
+
+Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
+
+## 中文
+
+在 Mods 中打开 Better Hotkeys 的设置，修改后点击应用。设置跨存档保存；当前鼠标手势或拖动结束后生效。语言可选 Auto（跟随游戏，中文以外使用英文）、English、简体中文；修改语言后重新打开面板。
+
+0.2.1：原生操作提示面板的快捷键区域在 Mod 实际启用时显示动态列表，使用当前已生效的绑定，约 0.15 秒刷新；关闭、未绑定和冲突状态明确显示。接管模式显示助手动作，原生＋辅助模式显示原生转移键。改键后无需重启；停用 Mod 或输入模块故障导致停用时恢复原生区域。其他店铺说明不改动。此提示布局仍待游戏内验证。
+
+### 0.3.0 顾客需求与标签收纳
+
+- **H** 开关当前顾客的需求高亮。首次默认开启，状态跨重启保存；下一位顾客自动更新。青色内框表示物品匹配需求，右上角标表示容器内有匹配物品，两者可以同时出现。不按预算过滤；订单高亮表示该物品可贡献，不表示数量已经凑齐。未知特殊订单明确提示无法识别。
+- **J** 立即收纳选区；持续按住 J，再逐个点击物品可连续收纳，点击不触发拖动。H/J 都可在 Mod 设置中改键；冲突时不会执行。
+- 点击自有容器标题栏的**设置图标**，编辑当前容器／当前页的名称、标签、满足任意／全部及优先级。名称是 Mod 显示别名，完整保存；标题空间不足时只影响显示，不截断保存内容。
+- 标签可搜索游戏分类、公开品质／条件和受支持的离散状态；本次不提供耐久、纯度等数值范围条件。标签不读取隐藏真假属性。已有规则随当前存档保存。
+- 默认 **Open** 范围只使用打开且当前可见的页；设置为 **All** 可使用玩家库存中全部合规储藏页及嵌套容器，包括关闭页，不切换当前页面。待售区、顾客物品、垃圾和机器输入口不作为目标。
+- 储藏升级后**每页独立名称和规则**；原第 1 页的规则继续保留。优先级越大越先尝试，相同优先级按容器身份和页号稳定排序；满后尝试下一目标，允许拆分堆叠，不重排目标内原有物品。
+- 固定物品及已设置收纳标签的容器跳过；普通未贴标签容器按自身属性整只转移。未匹配／放不下的物品留在原处并提示数量。
+- **空标签仅表示不参与 J 自动收纳，手动放入与原有 Shift/Ctrl 转移不受影响。**
+
+这些新增功能已通过编译与逻辑检查；标题栏布局、跨页转移、保存／读档仍需在游戏内验证。
+
+### 默认操作
+
+| 操作 | 效果 |
+| --- | --- |
+| Shift＋左键 | 库存/自有容器→出售柜台；出售柜台→库存 |
+| Ctrl＋左键 | 库存→最近点击的自有打开容器；容器→库存；柜台不执行 |
+| Alt＋左键 | 固定或解除固定；点击选区内物品时操作同来源选区 |
+| 悬停标题栏＋游戏整理键（默认 S） | 整理该容器，默认记住最近一次原生菜单排序方式 |
+| 双击 B | 开关赃物/违禁品标记；默认黄/红/紫分别表示赃物/违禁品/两者 |
+
+固定物品不会被转移。目标不足时允许部分接收，不自动绕路或整理目标。普通拖动、滚轮数量调整及 Shift 拖动半堆保留；不新增单取键。
+
+### 设置
+
+- 常规：语言、输入模式，转移、固定、标题栏整理、标记分别启停。
+- 按键：五个动作支持文本组合键，如 Shift、RightAlt、Ctrl+Q、B；None 或空白解除绑定。可用 A–Z、F1–F12（F8/F9 保留）、Space、Tab、BackQuote、Home、End、PageUp、PageDown、Insert 以及 Shift/Ctrl/Alt 的左右变体；最多一个普通键。T 被本机游戏硬编码占用，运行时提示冲突并不执行。左右等价默认开启；关闭后 Shift/Ctrl/Alt 表示左侧。
+- 标记触发：Press 单按开关、DoublePress 双击开关、Hold 按住显示；双击间隔 0.15–0.8 秒。
+- 行为：同来源批量操作；仅标题栏或容器任意区域指定目标；目标边框；记住最近排序或固定使用大/小件优先、起始/末端。
+- 标记：两类分别启停、嵌套汇总、仅自有物品、三种分类配色（七色预设）、宽度 1–4、透明度 0.2–1、扫描间隔 0.1–0.5 秒。扫描不会执行盘查或改变热度。
+- 提示：转移 Exceptions（仅异常，默认）、All、Off；目标变化和标记开关分别启停。
+
+按键字段是文本输入，不是按键捕获控件。应用时拒绝无效或重叠绑定，恢复上一套有效配置；重新打开面板查看恢复后的值。外部冲突在触发动作时检查并说明对象，不自动替换绑定。
+
+### 兼容模式
+
+TakeOver 默认接管原生快速转移。关闭助手转移或解绑某个动作仍不会恢复原生转移。
+
+VanillaWithHelpers 交还原生快速转移，同时关闭本 Mod 转移/固定手势及拖动数量覆盖；标题栏整理与标记仍可使用。要彻底停用所有补丁行为，可在 Mods 停用本 Mod。
+
+本 Mod 检查公开游戏绑定、可用储藏协调器预设，并在启用时记录其他 Mod 对相同关键输入方法的补丁。它无法完整发现其他 Mod 在独立 Update 中直接读取按键，不能保证所有组合兼容。快捷转移手势期间会消费原生输入分发，其他输入 Mod 可能受影响。
+
+## English
+
+Open Better Hotkeys settings in Mods and click Apply. Settings persist across saves. Changes take effect after the current mouse gesture/drag ends. Auto follows the game language (Chinese or English fallback); reopen the panel after changing language.
+
+0.2.1: while this mod is actually enabled, the native control-hint overlay's shortcut region shows a dynamic list of currently effective bindings (refreshed approximately every 0.15 seconds). Disabled, unbound and conflicting shortcuts are labeled. TakeOver shows our actions; VanillaWithHelpers shows native transfer keys. Applied binding changes require no restart. Disabling the mod, including disabling after an input error, restores the original region. Other shop hints are unchanged. The new layout still needs in-game verification.
+
+### Default controls
+
+| Control | Action |
+| --- | --- |
+| Shift + left click | Inventory/owned container → sales counter; sales counter → inventory |
+| Ctrl + left click | Inventory → last clicked open owned container; container → inventory; no route from counter |
+| Alt + left click | Pin/unpin; selected items in the same direct inventory are processed together |
+| Hover header + game sort key (default S) | Sort that inventory; remembers the last vanilla menu sort choice by default |
+| Double B | Toggle stolen/contraband markers: yellow/red/purple for stolen/contraband/both |
+
+Pinned items stay put. Partial transfers are allowed; no automatic rerouting or destination sorting. Normal dragging, wheel quantity adjustment and Shift half-stack dragging remain available. No new single-item key is added.
+
+### Configuration
+
+- General: language, input mode, separate transfer/pin/header-sort/marker toggles.
+- Keys: editable text chords such as Shift, RightAlt, Ctrl+Q or B. None/blank clears a binding. Supports A–Z, F1–F12 except reserved F8/F9, Space, Tab, BackQuote, Home, End, PageUp, PageDown, Insert, and left/right Shift/Ctrl/Alt. At most one ordinary key per chord. T conflicts with the game's hardcoded mouse-smoothing toggle and is blocked at runtime. Left/right equivalence is on by default; when off, unqualified modifiers mean left-side keys.
+- Markers: Press to toggle, DoublePress to toggle, or Hold to show; adjustable double-press interval (0.15–0.8 seconds).
+- Behavior: same-inventory batch actions, header-only target selection, target highlight, remember menu sorting or use a fixed large/small-first and start/end preference.
+- Appearance: stolen/contraband toggles, nested contents, owned-only filter, seven color presets for each category, border width (1–4), opacity (0.2–1), refresh interval (0.1–0.5 seconds). Read-only markers do not run security inspections or change heat.
+- Notices: Exceptions (default), All or Off for transfers; independent target-change and marker-toggle notices.
+
+Bindings use text fields, not key-capture widgets. Invalid/overlapping bindings restore the previous valid configuration; reopen the panel to see restored values. External conflicts are checked when an action is attempted; the conflicting action is named and the shortcut is skipped.
+
+### Compatibility
+
+TakeOver (default) disables vanilla quick transfer. Turning off our transfer module or clearing a binding does not restore vanilla routes.
+
+VanillaWithHelpers restores vanilla transfer and disables our transfer/pin gestures and drag-quantity override, while retaining header sorting and markers. Disabling this mod in Mods makes its patches inactive.
+
+Checks cover public game bindings, available storage-coordinator presets and diagnostic logging of shared critical Harmony patch targets. Other mods that poll keys independently cannot be fully detected. Transfer gestures consume native input dispatch and may affect other input mods. No universal compatibility guarantee is made.
+
+## Validation / 验证
+
+0.2.1 compiled against installed full-game DLLs with zero warnings/errors; 110 logic checks and assembly-binding checks passed. Actual panel layout, language changes, persistence across restart, pending changes during dragging, mode switching, marker alignment and combinations with other mods still require in-game verification. 编译与逻辑测试不等于游戏内验证通过。
+
+
+## 0.3.0 — Customer demand and tagged storage
+
+- **H** toggles customer demand markers, enabled initially and remembered globally. An inset border marks matching items; a top-right badge marks containers holding matches. Budgets are ignored. An order marker means the item contributes, not that the total quantity is fulfilled. Unknown special requests display an unsupported notice.
+- **J** stores the selected items; hold J and click individual items to store repeatedly without dragging. Both keys can be changed in Mod settings and are checked for conflicts.
+- Use the **settings icon in a container header** to name and tag the current container/page, select any/all matching, and set priority. Names are complete Mod aliases; limited title space may shorten their display only. Rules are saved separately per game save.
+- Every upgraded storage page has independent rules. **Open** targets only visible current pages; **All** includes closed pages and eligible nested storage in the player's inventory, without switching tabs. Sale areas, client property, trash and machine intakes are excluded.
+- Higher priority is tried first; ties use stable owner identity and page order. Stacks may split across destinations. Pinned items and tagged storage containers are skipped. Unmatched/full items remain at the source. Empty tags affect only automatic storage, never manual insertion or existing transfer shortcuts.
+- Searchable tags cover game categories, public conditions and supported discrete states. Numeric rules such as durability/purity are deferred. Hidden truth is not revealed by tag matching.
+- Runtime layout, cross-page transfers and save/reload still require in-game validation.
