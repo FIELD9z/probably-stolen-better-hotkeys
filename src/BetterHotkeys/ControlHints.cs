@@ -11,7 +11,7 @@ namespace BetterHotkeys
         internal static void Open(string layer)
         {
             Restore();
-            var b = CustomUIManager.Window(Settings.Id + ":help", Texts.T("Better Hotkeys — 快捷键说明", "Better Hotkeys — shortcut guide"), layer)
+            var b = CustomUIManager.Window(Settings.Id + ":help", Texts.T("Better Hotkeys & Storage — 快捷键说明", "Better Hotkeys & Storage — shortcut guide"), layer)
                 .SetSize(620, 560).Center().SetCloseOnEscape(true);
             help = b.GetWindow();
             b.BeginScroll(440);
@@ -35,7 +35,7 @@ namespace BetterHotkeys
             try
             {
                 var b = new CustomUIBuilder(CustomUIManager.Instance, __result, __result.ContentRoot);
-                b.AddButton(Texts.T("Better Hotkeys 快捷键说明", "Better Hotkeys shortcut guide"), () => ControlHints.Open(__result.layerId), "better_hotkeys_help");
+                b.AddButton(Texts.T("更好的快捷键与收纳 — 快捷键说明", "Better Hotkeys & Storage shortcut guide"), () => ControlHints.Open(__result.layerId), "better_hotkeys_help");
             }
             catch (Exception error) { ModEntry.Log?.Warning("Cannot add mod help entry: " + error.Message); }
         }

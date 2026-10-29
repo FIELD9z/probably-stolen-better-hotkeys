@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Manifest>
   <ID>probably_stolen_organizer</ID>
-  <Name>Better Hotkeys / 更好的快捷键</Name>
+  <Name>Better Hotkeys &amp; Storage / 更好的快捷键与收纳</Name>
   <Author>FIELD9z</Author>
-  <ModVersion>0.4.6</ModVersion>
+  <ModVersion>0.5.0</ModVersion>
   <Description>Configurable hotkeys, customer demand markers and tagged storage with per-page rules. English / 简体中文。自定义快捷键、顾客需求高亮、逐页标签收纳、明确目标转移、批量固定及赃物/违禁品标记。</Description>
   <GameVersions>
     <Version>REPLACE_WITH_GAME_VERSION</Version>

@@ -139,13 +139,13 @@ namespace BetterHotkeys
 
             var dragging = ItemMouseDragHandler.current != null && ItemMouseDragHandler.current.IsDraggingItem;
             var groupDragging = ItemMultiSelectHandler.current != null && ItemMultiSelectHandler.current.IsGroupDragging;
-            var sortPressed = Settings.Current.FollowSort ? KeyBindHelper.GetKeyDown("sort_menu") :
-                RuntimeBindings.Down(Settings.Current.SortKey) && RuntimeBindings.Allowed(Settings.Current.SortKey, true);
             if (Settings.Current.Sort && !dragging && !groupDragging && !UIDragHandler.isDraggingAnyUI && window != null &&
-                OrganizerWorld.IsHeader(node, window) && sortPressed)
+                OrganizerWorld.IsHeader(node, window))
             {
-                var sortGrid = OrganizerWorld.DirectGrid(window);
-                if (sortGrid != null && OrganizerWorld.Classify(sortGrid) != Place.Unsupported)
+                var sortPressed = Settings.Current.FollowSort ? KeyBindHelper.GetKeyDown("sort_menu") : RuntimeBindings.Down(Settings.Current.SortKey);
+                var sortGrid = sortPressed ? OrganizerWorld.DirectGrid(window) : null;
+                if (sortGrid != null && OrganizerWorld.Classify(sortGrid) != Place.Unsupported &&
+                    (Settings.Current.FollowSort || RuntimeBindings.Allowed(Settings.Current.SortKey, true)))
                 {
                     SortedFrame = Time.frameCount;
                     try {
@@ -239,7 +239,7 @@ namespace BetterHotkeys
                 destination == Place.Container ? targetGrid : null;
             if (target == null)
             {
-                TransferNotice(destination == Place.Container ? Texts.T("请先点击一个已打开的自有容器，指定转移目标。", "Click an open, owned container to select a transfer target first.") :
+                TransferNotice(destination == Place.Container ? (Settings.Current.HeaderOnly ? Texts.T("请先点击已打开的自有容器标题栏。", "Click an open, owned container header first.") : Texts.T("请先点击一个已打开的自有容器，指定转移目标。", "Click an open, owned container to select a transfer target first.")) :
                     Texts.T("此来源不支持该路线：柜台转移连接销售柜台，容器转移连接库存与容器。", "Unsupported route: counter transfer connects the sales counter; container transfer connects inventory and the selected container."), true);
                 return;
             }
@@ -271,7 +271,7 @@ namespace BetterHotkeys
                 if (count == 0) skipped++;
                 if (reason.Length > 0) reasons.Add(reason);
             }
-            TransferNotice(Texts.T($"目标：{targetName}。已转移 {moved} 个，来源剩余 {remaining} 个，跳过 {skipped} 项。", $"Target: {targetName}. Moved {moved}, remaining {remaining}, skipped {skipped} item(s). ") +
+            TransferNotice(Texts.T($"目标：{targetName}。已转移 {moved} 个，本次未转移 {remaining} 个，跳过 {skipped} 堆（含其他来源）。", $"Target: {targetName}. Moved {moved}, remaining {remaining} processed units, skipped {skipped} stacks (including other sources). ") +
                 (reasons.Count == 0 ? "" : Texts.T("原因：", "Reason: ") + string.Join("; ", reasons)), remaining != 0 || skipped != 0 || reasons.Count != 0);
         }
 

@@ -1,4 +1,4 @@
-# Better Hotkeys / 更好的快捷键 — 0.4.6
+# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.0
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 

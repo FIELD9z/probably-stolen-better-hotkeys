@@ -95,6 +95,10 @@ namespace BetterHotkeys
     [HarmonyPatch(typeof(ModConfigWindow), "Apply")]
     internal static class ConfigFeedbackPatch
     {
+        private static void Prefix(ModConfig __1)
+        {
+            if (__1.ModId == Settings.Id) Settings.BeginApplyFeedback();
+        }
         private static void Postfix(CustomUIWindow __0, ModConfig __1)
         {
             if (__1.ModId != Settings.Id || __0 == null || !__0.IsAlive) return;

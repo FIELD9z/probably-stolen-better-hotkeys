@@ -1,3 +1,5 @@
+While working on hotkeys and storage, I realized I'd added quite a lot, so I changed the name. Quick storage has arrived! Welcome aboard! Report issues in the discussion area and I'll fix them as soon as I see them (why do my total assets keep rising while all my cash is gone?
+
 The item transfer logic in this game makes my head spin a little. Half the time, I have no idea where my stuff went. And I don't even know which bizarre little corner I left my contraband in—HOW DOES LAW ENFORCEMENT KEEP FINDING IT??!! MY MODULES, AAAAAHHH!!!
 
 So, here we are: some hotkey improvements, plus a way to remind myself where I stashed my contraband.
@@ -5,7 +7,7 @@ So, here we are: some hotkey improvements, plus a way to remind myself where I s
 If you run into any issues, feel free to leave a comment below!
 
 [h2]Installation and activation[/h2]
-For the full release of Probably Stolen, not the Demo. Subscribe and let Steam finish downloading, then enable Better Hotkeys in the game's Mods menu and restart when prompted. The reflection-external capability is required to access native input, selection and UI members.
+For the full release of Probably Stolen, not the Demo. Subscribe and let Steam finish downloading, then enable Better Hotkeys & Storage in the game's Mods menu and restart when prompted. The reflection-external capability is required to access native input, selection and UI members.
 If you previously installed this mod manually, avoid enabling both the local and Workshop copies.
 
 [h2]Choosing a transfer destination[/h2]
@@ -18,9 +20,12 @@ By default, container markers include nested contents and pages. Open a marked b
 Markers indicate item categories, not a guarantee that law enforcement will find them. They are cleared when leaving the shop, loading a save or disabling the mod.
 
 [h2]Usage and settings[/h2]
-Open Better Hotkeys settings in Mods and click Apply. Settings persist across saves. Changes take effect after the current mouse gesture/drag ends. Auto follows the game language (Chinese or English fallback); reopen the panel after changing language.
+Open Better Hotkeys & Storage settings in Mods and click Apply. Settings persist across saves. Changes take effect after the current mouse gesture/drag ends. Auto follows the game language (Chinese or English fallback); reopen the panel after changing language.
 
-0.2.1: while this mod is actually enabled, the native control-hint overlay's shortcut region shows a dynamic list of currently effective bindings (refreshed approximately every 0.15 seconds). Disabled, unbound and conflicting shortcuts are labeled. TakeOver shows our actions; VanillaWithHelpers shows native transfer keys. Applied binding changes require no restart. Disabling the mod, including disabling after an input error, restores the original region. Other shop hints are unchanged.
+[h2]Shortcut hints and v0.2.3[/h2]
+Native shortcut hints are no longer replaced or hidden. They describe the game's native controls and may differ from this mod's behavior; consult the mod settings and the controls below for your bindings. No independent dynamic shortcut guide is included yet.
+
+Version 0.2.3 improves operation notices: sorting conflicts are reported only when attempting header sorting; destination guidance respects header-only selection; marker notices reflect enabled categories and use localized color names; transfer summaries distinguish units from stacks; applying unchanged settings no longer repeats stale feedback. The v0.2.2 localization initialization fix is retained. Restart the game after updating.
 
 [h2]Default controls[/h2]
 
@@ -52,11 +57,18 @@ VanillaWithHelpers restores vanilla transfer and disables our transfer/pin gestu
 Checks cover public game bindings, available storage-coordinator presets and diagnostic logging of shared critical Harmony patch targets. Other mods that poll keys independently cannot be fully detected. Transfer gestures consume native input dispatch and may affect other input mods. No universal compatibility guarantee is made.
 
 [h2]Saves and feedback[/h2]
-No new save schema is added. Transfers, pinning and sorting change normal game state and are saved by the game. No cross-container transfer undo is provided. Settings are shared across saves. This mod adds no telemetry or network calls.
+Container names, page rules and preview records are stored in the current save's ModData. After saving new excluded-tag rules, downgrading requires restoring a pre-upgrade save too. Transfers, pinning and sorting change normal game state and are saved by the game. No cross-container transfer undo is provided. Settings are shared across saves. This mod adds no telemetry or network calls.
 When reporting an issue, include your game and mod versions, reproduction steps, key bindings and other input mods. Screenshots or relevant logs are helpful too.
 
-[h2]Planned feature[/h2]
-Next, I plan to add a hotkey to highlight the items customers are asking for, making them easier to find. This feature is not available yet.
+[h2]Quick storage and customer demand[/h2]
+[b]D[/b]: toggle customer-demand highlights.
+[b]C[/b]: store selected items by rules, or hold C and left-click items. All eligible pages are checked by default, including closed storage windows.
+Use a container header's gear to configure names, priorities, allowed/denied items and allowed/excluded tags. Allowed tags support any/all matching. Any excluded tag rejects the item, even if it is explicitly allowed. Item allowlists route before tags; pinned items are not moved automatically.
+Inspect items in the Tags tab and collect visible tags into either list. Right-click to finish picking; Save commits the draft. Opening the editor collapses the side preview.
+Manual destinations with rule conflicts offer matching-only transfer, an override, or cancellation. Overrides still respect native capacity, locks and type restrictions.
+Native shortcut hints remain intact. An independent shortcut guide is available at the bottom of the mod settings.
 
 [h2]Version information[/h2]
-Author: FIELD9z. Mod version: 0.2.1. Locally targeted internal game version: 0.46D.
+Author: FIELD9z. Mod version: 0.5.0. Locally targeted internal game version: 0.46D.
+[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys]GitHub: FIELD9z / probably-stolen-better-hotkeys[/url]
+[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.0]0.5.0 source / 对应源码[/url]

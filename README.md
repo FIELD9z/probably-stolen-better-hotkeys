@@ -1,6 +1,6 @@
-# Better Hotkeys / 更好的快捷键
+# Better Hotkeys & Storage / 更好的快捷键与收纳
 
-FIELD9z 制作的正式版快捷键 Mod（0.4.1）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记、顾客需求高亮、分页标签收纳及中英文 ModConfig。
+FIELD9z 制作的正式版快捷键 Mod（0.5.0）：明确目标的快速转移、批量固定、标题栏整理、赃物/违禁品标记、顾客需求高亮、分页标签收纳及中英文 ModConfig。
 
 打开游戏 Mods 中本 Mod 的设置，可调整组合键、功能开关、标记触发与显示、提示及输入兼容模式。默认操作保持不变。详见 [中英文使用说明](docs/user-guide.md)、[功能规格](docs/organizer-spec.md)及[发布说明](docs/workshop.md)。
 
@@ -66,3 +66,6 @@ The mod's own source is MIT-licensed. Game and third-party assemblies are exclud
 0.4.1：保留原生快捷键提示，不再隐藏或替换原提示区域。在本 Mod 设置底部点击「Better Hotkeys 快捷键说明」查看独立说明（应用改键后重新打开刷新）。程序集及安装目录统一为 BetterHotkeys；内部 ID 保持 probably_stolen_organizer，已有设置与规则沿用。升级前退出游戏，移走旧 Mods/StarterMod 目录，避免重复安装。
 
 0.4.1 preserves native shortcut hints. Open the independent shortcut guide from this mod’s settings; apply binding changes and reopen to refresh. Assembly/package name: BetterHotkeys; the internal mod ID is unchanged. Remove the old StarterMod installation before installing the renamed package.
+
+
+0.5.0 发布：更名“更好的快捷键与收纳 / Better Hotkeys & Storage”。包含需求高亮、分页规则收纳、物品与标签黑白名单、标签采集及预览修复，保留 0.2.3 的本地化与提示修复。内部 ID、DLL 和安装目录保持不变。

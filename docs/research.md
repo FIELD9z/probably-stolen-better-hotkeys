@@ -168,3 +168,10 @@
 - 上次仅在 StorageItemPicker ending 路径清理提示，ManualStoragePrompt.Confirm 开窗路径遗漏。确认框暂停原生输入，鼠标移出物品的提示清理也随之停止。
 - 仅在确实需要打开确认框时调用 ItemTooltipHandler.UpdateReset 和 OverlayHandler.HideTooltip，清除提示监听缓存与显示。无需确认的直接转移路径不变。ContinueGesture 当前帧返回 false，后续确认框开启期间继续阻止原生物品输入，不会同帧重建提示。
 - 实机复测：鼠标停在物品上触发确认，分别取消、仅转移符合项、全部强制放入；关闭后正常悬浮提示应恢复。
+
+
+## 2026-10-29 0.5.0 发布整合
+
+- 用户授权发布并更名为更好的快捷键与收纳 / Better Hotkeys & Storage，个人说明原样保留于中英文发布材料的中文原文。内部 ID、DLL 和安装目录不变。
+- 发布前发现 Workshop 0.2.3 独立热修未完全进入开发分支，移植 LocaleSnapshot 本地化初始化修复、配置反馈、标记颜色/类别与转移/整理提示修复；不采用热修分支删除新功能的变更。
+- 通过 152 项逻辑检查、正式版编译及程序集绑定检查；发布目标沿用 Workshop 3829363629。
