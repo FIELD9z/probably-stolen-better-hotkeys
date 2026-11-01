@@ -183,3 +183,11 @@
 - 扫描本机游戏及已安装 Workshop DLL 的 V 常量输入：游戏 PaperEditor.HandleKeys 用于粘贴，标记在编辑器内禁用；其他命中为非按键常量。静态检查不能排除动态配置或运行时预设冲突，保留原有运行时冲突检测。
 - Preferences 与 ModConfig 默认改为 V，保留 DoublePress。现有用户自定义配置不会因更新默认值被重置；本次本机安装另行备份并将 marker_key 从 B 改为 V。
 - 此补丁不修改对话阶段的标记限制。编译与安装不代表游戏内验证。
+
+## 2026-11-01 0.5.2：容器互转与成品来源
+
+- 用户确认普通点击指定目标，快捷点击不改目标；Ctrl 从其他容器送选定容器，从目标自身或无目标时返回库存。目标关闭/换页继续失效。柜台 Ctrl 不扩展。
+- 本机 Cecil 核对 MachineHelper.CreateMachineryWindow 将 MachineryPanelRow 附加到窗口；Furnace、Printer、BottlePrinter、ChemFinisher、Desequencer、Hydroponic 的 CreateMachineInventoryWindow 明确使用 output role，其中包含 GameSlotInventory。按可见窗口 GetPanel("output").content 与来源引用相等识别，不增加 Harmony 或缓存。
+- 设备仅开放独立成品来源，Shift/Ctrl/C 共用来源识别；设备目标枚举不变。继续使用 MayRemove/MaxNumRemove 与 SlotMarker.TryAcceptOnce，保留 Expel 等回调。不是按机器类名或本地化标题推断。
+- 正式版编译 0 警告/错误、165 项逻辑检查与程序集绑定检查通过。机器点击、回调更新、A/B 互转及分页失效仍需实机验证。
+- 许可证调查结束：游戏原生 OnPermitGranted/OnNewItemCreated/ReapplyPermits 通过 RemoveContrabandStatus 清除有效许可覆盖物品的违禁 tag；用户确认无需修改标记。标记键沿用 0.5.1 的 V。

@@ -126,7 +126,8 @@ namespace BetterHotkeys
             if (blocked) return true;
 
             var window = node?.FindParentWindow();
-            if (Settings.OwnsInput && Settings.Current.Transfer && Input.GetMouseButtonDown(0) && OrganizerWorld.IsContainer(window, out var clickedGrid) &&
+            if (Settings.OwnsInput && Settings.Current.Transfer && Input.GetMouseButtonDown(0) &&
+                ReadModifier() == Modifier.None && !TransferChordHeld() && OrganizerWorld.IsContainer(window, out var clickedGrid) &&
                 (!Settings.Current.HeaderOnly || OrganizerWorld.IsHeader(node, window!)))
             {
                 if (targetWindow != window || targetGrid != clickedGrid)
@@ -233,14 +234,15 @@ namespace BetterHotkeys
 
         private static void Transfer(Gesture current)
         {
-            var destination = OrganizerRules.Destination(OrganizerWorld.Classify(current.Source), current.Modifier);
+            var destination = OrganizerRules.Destination(OrganizerWorld.Classify(current.Source), current.Modifier,
+                targetGrid != null, ReferenceEquals(current.Source, targetGrid));
             GameGridInventory? target = destination == Place.Inventory ? EmporiumEntry.Instance.invElement :
                 destination == Place.Counter ? EmporiumEntry.Instance.backInvinvElement :
                 destination == Place.Container ? targetGrid : null;
             if (target == null)
             {
                 TransferNotice(destination == Place.Container ? (Settings.Current.HeaderOnly ? Texts.T("请先点击已打开的自有容器标题栏。", "Click an open, owned container header first.") : Texts.T("请先点击一个已打开的自有容器，指定转移目标。", "Click an open, owned container to select a transfer target first.")) :
-                    Texts.T("此来源不支持该路线：柜台转移连接销售柜台，容器转移连接库存与容器。", "Unsupported route: counter transfer connects the sales counter; container transfer connects inventory and the selected container."), true);
+                    Texts.T("此来源不支持该路线：可从库存、自有容器及设备成品区转移；柜台仅支持返回库存。", "Unsupported route: transfer from inventory, owned containers or machine outputs; the sales counter only returns to inventory."), true);
                 return;
             }
             var storage = destination == Place.Container && targetWindow != null ? StorageTargets.FromWindow(targetWindow) : null;
@@ -251,6 +253,16 @@ namespace BetterHotkeys
                 return;
             }
             TransferItems(current, target, targetName, null, false);
+        }
+
+        private static bool TransferChordHeld()
+        {
+            var prefs = Settings.Current;
+            // Includes custom non-modifier chords, even when a conflicting binding blocks execution.
+            return RuntimeBindings.Held(prefs.Counter) || RuntimeBindings.Held(prefs.Container) ||
+                RuntimeBindings.Held(prefs.PinKey) || RuntimeBindings.Held(prefs.StoreKey) ||
+                RuntimeBindings.Held(prefs.DemandKey) || RuntimeBindings.Held(prefs.MarkerKey) ||
+                (prefs.FollowSort ? KeyBindHelper.GetKey("sort_menu") : RuntimeBindings.Held(prefs.SortKey));
         }
 
         private static void TransferItems(Gesture current, GameGridInventory target, string targetName, StorageTarget? storage, bool force)

@@ -1,4 +1,4 @@
-# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.1
+# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.2
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -37,8 +37,8 @@ Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
 | 操作 | 效果 |
 | --- | --- |
-| Shift＋左键 | 库存/自有容器→出售柜台；出售柜台→库存 |
-| Ctrl＋左键 | 库存→最近点击的自有打开容器；容器→库存；柜台不执行 |
+| Shift＋左键 | 库存/自有容器/设备成品区→出售柜台；出售柜台→库存 |
+| Ctrl＋左键 | 库存/其他容器/设备成品区→选定自有容器；从目标容器取出→库存；无目标时容器/成品→库存；柜台不执行 |
 | Alt＋左键 | 固定或解除固定；点击选区内物品时操作同来源选区 |
 | 悬停标题栏＋游戏整理键（默认 S） | 整理该容器，默认记住最近一次原生菜单排序方式 |
 | 双击 V | 开关赃物/违禁品标记；默认黄/红/紫分别表示赃物/违禁品/两者 |
@@ -74,8 +74,8 @@ Open Better Hotkeys settings in Mods and click Apply. Settings persist across sa
 
 | Control | Action |
 | --- | --- |
-| Shift + left click | Inventory/owned container → sales counter; sales counter → inventory |
-| Ctrl + left click | Inventory → last clicked open owned container; container → inventory; no route from counter |
+| Shift + left click | Inventory/owned container/machine output → sales counter; sales counter → inventory |
+| Ctrl + left click | Inventory/other container/output → selected owned container; from selected target → inventory; no target: container/output → inventory; no route from counter |
 | Alt + left click | Pin/unpin; selected items in the same direct inventory are processed together |
 | Hover header + game sort key (default S) | Sort that inventory; remembers the last vanilla menu sort choice by default |
 | Double V | Toggle stolen/contraband markers: yellow/red/purple for stolen/contraband/both |
@@ -146,3 +146,13 @@ This mod's explicit-target shortcut asks once per batch when destination rules r
 
 
 0.4.6：手动强制收纳确认框打开前清除物品详情提示及其缓存，避免提示遮住确认按钮；确认与转移规则不变。
+
+## 0.5.2 — 容器互转与设备成品 / Container transfers and machine outputs
+
+普通左键点击已打开的自有容器选定目标（可设置为仅标题栏），快捷操作不会改选目标。关闭目标窗口或切换其分页后，必须重新指定目标。目标容器自身的 Ctrl 点击仍返回库存；没有目标时库存物品提示先选目标，容器与成品区物品返回库存。手动目标规则冲突仍提示确认。
+
+设备仅支持可见、未锁窗口中原生标为 output 的独立成品区，包括单物品槽。已核对熔炉、打印机、瓶子打印机、化学处理设备、解序设备、水培设备的正式版输出绑定。Shift 送出售柜台；Ctrl 按上述目标规则；C 按收纳规则分配。原料、燃料、加工位及没有明确 output 区域的设备不扩展，设备不作为收纳目标。固定、原生取出/容量/插入限制继续有效。
+
+A plain left click selects an open owned container (header-only remains optional). Shortcut actions preserve that target. Closing its window or changing its page clears it. Ctrl from the target returns to inventory; without a target, container/output items return to inventory while inventory items prompt for a target. Manual rule-conflict confirmation is unchanged.
+
+Machine sources must be native output panels in visible, unlocked owned windows; both grid and single-slot outputs are supported. Shift sends to the sales counter, Ctrl follows the target rules, and C stores by rules. Inputs, fuel, processing slots and machines without explicit output panels are excluded; machines are not storage destinations. Native removal/placement restrictions and pinning still apply. Build and automated checks do not replace in-game verification.

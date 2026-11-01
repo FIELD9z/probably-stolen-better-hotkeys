@@ -14,6 +14,8 @@ var routes = new[] {
     (Place.Container, Modifier.Shift, Place.Counter),
     (Place.Inventory, Modifier.Ctrl, Place.Container),
     (Place.Container, Modifier.Ctrl, Place.Inventory),
+    (Place.MachineOutput, Modifier.Shift, Place.Counter),
+    (Place.MachineOutput, Modifier.Ctrl, Place.Inventory),
     (Place.Counter, Modifier.Ctrl, Place.Unsupported)
 };
 foreach (var (source, modifier, expected) in routes)
@@ -22,6 +24,13 @@ foreach (var source in Enum.GetValues<Place>())
     foreach (var modifier in new[] { Modifier.None, Modifier.Alt, Modifier.Ctrl | Modifier.Shift, Modifier.Alt | Modifier.Shift })
         Check($"no transfer {source} / {modifier}", OrganizerRules.Destination(source, modifier) == Place.Unsupported);
 Check("unsupported source never transfers", OrganizerRules.Destination(Place.Unsupported, Modifier.Shift) == Place.Unsupported);
+Check("Ctrl A to selected B", OrganizerRules.Destination(Place.Container, Modifier.Ctrl, true, false) == Place.Container);
+Check("Ctrl selected B returns to inventory", OrganizerRules.Destination(Place.Container, Modifier.Ctrl, true, true) == Place.Inventory);
+Check("Ctrl machine output to selected B", OrganizerRules.Destination(Place.MachineOutput, Modifier.Ctrl, true, false) == Place.Container);
+Check("Ctrl inventory still requires container target", OrganizerRules.Destination(Place.Inventory, Modifier.Ctrl, false, false) == Place.Container);
+Check("selected B does not affect Shift output to sales", OrganizerRules.Destination(Place.MachineOutput, Modifier.Shift, true, false) == Place.Counter);
+Check("selected B does not open Ctrl route from counter", OrganizerRules.Destination(Place.Counter, Modifier.Ctrl, true, false) == Place.Unsupported);
+Check("selected B does not admit unsupported source", OrganizerRules.Destination(Place.Unsupported, Modifier.Ctrl, true, false) == Place.Unsupported);
 
 Check("click is deferred until release", OrganizerRules.Evaluate(Modifier.Shift, Modifier.Shift, false, false, false, true) == GestureResult.Pending);
 Check("shift click transfers", OrganizerRules.Evaluate(Modifier.Shift, Modifier.Shift, false, false, true, true) == GestureResult.Transfer);

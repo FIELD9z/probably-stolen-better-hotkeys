@@ -41,6 +41,13 @@ try {
     }
     $ownership = Calls $mod 'BetterHotkeys.Settings' 'get_OwnsInput'
     if (-not ($ownership -match 'ModEntry::get_Active') -or -not ($ownership -match 'Settings::get_Current')) { throw 'Input ownership must require an enabled mod and runtime preferences.' }
+    # Production outputs are distinct native panel roles, including single-slot inventories.
+    foreach ($machine in @('MachineFurnace','MachinePrinter','MachineBottlePrinter','MachineChemFinisher','MachineDesequencer','MachineHydroponic')) {
+        $factory = ($game.MainModule.Types | Where-Object Name -EQ $machine).Methods | Where-Object Name -EQ 'CreateMachineInventoryWindow'
+        if (-not ($factory.Body.Instructions | Where-Object { $_.OpCode.Name -eq 'ldstr' -and [string]$_.Operand -eq 'output' })) { throw "Native output role missing: $machine" }
+        if (-not ((Calls $game $machine 'CreateMachineInventoryWindow') -match 'MachineHelper::Panel')) { throw "Native panel factory missing: $machine" }
+    }
+    if (-not ((Calls $mod 'BetterHotkeys.OrganizerWorld' 'Classify') -match 'MachineryPanelRow::GetPanel')) { throw 'Machine source classification must inspect native panel roles.' }
     if ($mod.MainModule.Types.Name -contains 'ControlHintRefreshPatch') { throw 'Native hint replacement patch must be absent.' }
     foreach ($type in $mod.MainModule.Types) {
         foreach ($method in $type.Methods) {

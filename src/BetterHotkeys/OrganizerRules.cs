@@ -2,7 +2,7 @@ using System;
 
 namespace BetterHotkeys
 {
-    internal enum Place { Unsupported, Inventory, Counter, Container }
+    internal enum Place { Unsupported, Inventory, Counter, Container, MachineOutput }
     [Flags]
     internal enum Modifier { None = 0, Shift = 1, Ctrl = 2, Alt = 4 }
     internal enum GestureResult { Pending, Transfer, Pin, Drag, Cancel }
@@ -10,14 +10,15 @@ namespace BetterHotkeys
     // No Unity dependencies: the agreed routes and click/drag boundary are testable outside the game.
     internal static class OrganizerRules
     {
-        internal static Place Destination(Place source, Modifier modifier)
+        internal static Place Destination(Place source, Modifier modifier, bool hasTarget = false, bool sourceIsTarget = false)
         {
             if (modifier == Modifier.Shift)
                 return source == Place.Counter ? Place.Inventory :
-                    source == Place.Inventory || source == Place.Container ? Place.Counter : Place.Unsupported;
+                    source == Place.Inventory || source == Place.Container || source == Place.MachineOutput ? Place.Counter : Place.Unsupported;
             if (modifier == Modifier.Ctrl)
                 return source == Place.Inventory ? Place.Container :
-                    source == Place.Container ? Place.Inventory : Place.Unsupported;
+                    source == Place.Container || source == Place.MachineOutput ?
+                        (hasTarget && !sourceIsTarget ? Place.Container : Place.Inventory) : Place.Unsupported;
             return Place.Unsupported;
         }
 

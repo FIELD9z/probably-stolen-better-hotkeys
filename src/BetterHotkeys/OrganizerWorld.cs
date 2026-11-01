@@ -79,7 +79,17 @@ namespace BetterHotkeys
             if (inventory == EmporiumEntry.Instance.backInvinvElement) return Place.Counter;
             if (WindowsHandler.current == null) return Place.Unsupported;
             foreach (var window in WindowsHandler.current.visibleWindows)
+            {
                 if (IsContainer(window, out var grid) && grid == inventory) return Place.Container;
+                // Native machine factories give finished goods an explicit output role.
+                // Accept grid AND single-slot outputs, never input/fuel/processing inventories.
+                if (window != null && window.IsVisible() && !window.isLocked && window.parentItems.Count > 0 &&
+                    window.parentItems.All(owner => owner != null && GeneralHelper.IsItemOwned(owner) &&
+                        !GeneralHelper.IsInsideNonOwnedContainer(owner)) &&
+                    window.childElement is MachineryPanelRow panels &&
+                    panels.GetPanel("output")?.content is GameInventory output && ReferenceEquals(output, inventory))
+                    return Place.MachineOutput;
+            }
             return Place.Unsupported;
         }
 

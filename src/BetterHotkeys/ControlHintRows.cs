@@ -35,8 +35,8 @@ namespace BetterHotkeys
             var click = T("{key} + 左键", "{key} + Click");
             if (p.Takeover)
             {
-                Bound(p.Counter, p.Transfer, click, T("库存/容器 → 出售柜台；柜台 → 库存", "Inventory/container → sales counter; counter → inventory"));
-                Bound(p.Container, p.Transfer, click, T("库存 → 所选自有容器；容器 → 库存", "Inventory → selected owned container; container → inventory"));
+                Bound(p.Counter, p.Transfer, click, T("库存/容器/成品区 → 出售柜台；柜台 → 库存", "Inventory/container/output → sales counter; counter → inventory"));
+                Bound(p.Container, p.Transfer, click, T("送往所选容器；从目标取回库存；无目标时容器/成品回库存", "To selected owned container; from target back to inventory; no target: container/output to inventory"));
                 Bound(p.PinKey, p.Pin, click, T("固定 / 解除固定", "Pin / unpin"));
             }
             else
