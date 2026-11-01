@@ -55,3 +55,7 @@ So, here we are: some hotkey improvements, plus a way to remind myself where I s
 If you run into any issues, feel free to leave a comment below!
 
 Author: FIELD9z | Version: 0.5.3
+
+[h2]Source[/h2]
+[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys]GitHub repository[/url]
+[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.3]Source for version 0.5.3[/url]

@@ -9,6 +9,9 @@ Existing Workshop item: https://steamcommunity.com/sharedfiles/filedetails/?id=3
 Descriptions: workshop-description.zh-CN.txt and workshop-description.en.txt.
 Package: dist/BetterHotkeys (BetterHotkeys.dll, manifest.xml, USER-GUIDE.md and THIRD-PARTY-NOTICES.txt).
 Release notes: release-0.5.3.md. Internal ID and configuration identities retained.
+Source repository: https://github.com/FIELD9z/probably-stolen-better-hotkeys
+Versioned source: https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.3
+Keep both source links in each localized description when simplifying or updating it.
 Local publication records reside under .local/workshop. Never create a replacement item for an update.
 
 ## Published 2026-11-01
