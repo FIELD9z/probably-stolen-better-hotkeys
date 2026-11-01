@@ -1,4 +1,4 @@
-# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.2
+# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.3
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -156,3 +156,27 @@ This mod's explicit-target shortcut asks once per batch when destination rules r
 A plain left click selects an open owned container (header-only remains optional). Shortcut actions preserve that target. Closing its window or changing its page clears it. Ctrl from the target returns to inventory; without a target, container/output items return to inventory while inventory items prompt for a target. Manual rule-conflict confirmation is unchanged.
 
 Machine sources must be native output panels in visible, unlocked owned windows; both grid and single-slot outputs are supported. Shift sends to the sales counter, Ctrl follows the target rules, and C stores by rules. Inputs, fuel, processing slots and machines without explicit output panels are excluded; machines are not storage destinations. Native removal/placement restrictions and pinning still apply. Build and automated checks do not replace in-game verification.
+
+## 0.5.3 — 分类目录与拼音搜索 / Categorized catalogs and pinyin search
+
+- 物品名单和标签规则上方始终独立显示已选允许／排除项，支持逐项移除、分别清空；搜索、折叠或点选物品筛选不会隐藏这些已选规则。修改仍需点击保存，取消不改变规则。
+- 物品目录记录本存档中曾在打开窗口内显示的自有物品；关闭容器的内容不提前收录，卖掉后目录仍保留。旧点选记录及现有名单继续可用，缺少类别的放入“其他 / 类别未记录”。不创建游戏物品来生成目录。
+- 物品按游戏原生主类折叠分组，跨类物品可出现在多个组；搜索跨全部分类并去重。标签分为主要类别、其他类型／属性、属性／品质、状态；旧的未知项保留并可移除。
+- 搜索支持显示名称的中英文文字、拼音首字母、全拼、大小写和中英数字混合，例如“手枪”可搜 sq、shouqiang。ü 可输入 v、ü 或 u:。多音字接受读音表中的多种读音，因此可能出现额外匹配；这是检索辅助，不改变物品名称。
+- 标签点选仍可查看和采集物品标签；开始输入搜索会退出点选筛选，搜索全部标签。“显示全部”清除筛选。允许／排除冲突依然由排除优先。
+- 目录、名称和规则随当前存档保存，读档不混用其他存档目录；拼音字典内置，运行时不联网。名称采用最近一次实际观察时的游戏显示名称。
+
+Selected allow/exclude lists remain visible independently of filters, with per-entry removal and per-group clearing. Changes still require Save; Cancel discards rule edits. The item catalog remembers owned items displayed in open windows in the current save, including items later sold. Closed-container contents are not discovered automatically; old picked entries and existing rules remain available.
+
+Browse collapsible native major categories (an item may belong to several) or search globally with deduplicated results. Tags are grouped by major category, other types/attributes, properties/qualities, and states. Search supports displayed Chinese/English names, pinyin initials/full syllables, mixed Latin/digits, and alternative readings. Use v, ü, or u: for ü. Search exits sampled-tag filtering; Show all clears it. Search data is embedded and offline. Remembered names reflect the most recent observed game display name.
+
+### 本次游戏内复测 / In-game checks for this update
+
+1. 打开 A/B，普通点击 B 后 Ctrl 点击 A：物品入 B；再 Ctrl 点击 B 内物品：返回库存。确认快捷点击不改变目标边框。
+2. 关闭 B 或切换其储藏页，确认目标失效；无目标时 A 中物品回库存，库存中的物品提示先选目标。
+3. 在有独立 output 区域的设备产出物品，分别测试 Shift、Ctrl、C；原料／燃料／加工位应不被转移。验证固定物品、满目标与不允许取出物品仍受限制。
+4. 搜索 sq / shouqiang，展开分类、点选采集标签后，仍能在上方删除已选标签；清空一组不影响另一组。分别测试保存与取消、重新开窗与读档。
+5. 只打开外层箱子，确认内部未展开内容不会进入目录；打开内层后确认收录。卖掉物品后仍能搜索；换存档不应混入旧目录。
+6. 检查长名称、省略号悬停提示、允许／排除两个滚动区及不同 UI 缩放下的窗口布局。
+
+Compilation, logic tests and native API binding checks passed; these checks do not exercise Unity layout, actual item callbacks or in-game save/reload.

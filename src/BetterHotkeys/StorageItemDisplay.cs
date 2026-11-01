@@ -14,11 +14,11 @@ namespace BetterHotkeys
         private static string Decode(string text) => Encoding.UTF8.GetString(Convert.FromBase64String(text));
         internal static void Observe(GameItem item)
         {
-            // Called on the existing selected item, never on a fabricated preview instance.
+            // Observe an existing visible or picked item, never a fabricated preview instance.
             if (PlayerStore.Instance == null || string.IsNullOrEmpty(item.identifier)) return;
             var data = string.Join("|", Encode(item.spriteAtlasPath), Encode(item.spritePath), Encode(item.GetDisplayName(false)), item.useSpriteFromMod ? "1" : "0");
+            if (ModHelper.GetModData(Settings.Id, Prefix + item.identifier, "") == data) return;
             ModHelper.SetModData(Settings.Id, Prefix + item.identifier, data);
-            sprites.Remove(item.identifier);
         }
         private static string[]? Read(string id)
         {
@@ -30,6 +30,8 @@ namespace BetterHotkeys
             catch (FormatException) { return null; }
         }
         internal static string Name(string id) => Read(id)?[2] ?? id;
+        internal static IEnumerable<string> KnownIds() => PlayerStore.Instance == null ? Array.Empty<string>() :
+            ModHelper.GetModDataKeys(Settings.Id).Where(key => key.StartsWith(Prefix, StringComparison.Ordinal)).Select(key => key.Substring(Prefix.Length));
         internal static Sprite? Sprite(string id)
         {
             var data = Read(id);

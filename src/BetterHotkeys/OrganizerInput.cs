@@ -57,6 +57,7 @@ namespace BetterHotkeys
             CustomerDemandOverlay.Reset();
             StorageEditor.Reset();
             StorageRulesStore.Reset();
+            StorageItemCatalog.Reset();
             AutoStorage.Reset();
             ManualStoragePrompt.Reset();
             StorageItemPicker.Reset();
@@ -99,6 +100,7 @@ namespace BetterHotkeys
             if (targetWindow != null && (!OrganizerWorld.IsContainer(targetWindow, out var grid) ||
                 grid != targetGrid || targetGrid!.IsInsertLocked())) ClearTarget();
             highlight.Refresh();
+            StorageItemCatalog.Tick();
 
             if (StorageItemPicker.IsPicking)
             { StorageEditor.Tick(); StorageRulePreview.Tick(); return StorageItemPicker.BeforeInput(); }

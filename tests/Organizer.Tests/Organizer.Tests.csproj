@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../src/BetterHotkeys/CatalogSearch.cs" Link="CatalogSearch.cs" />
+    <Compile Include="../../src/BetterHotkeys/StorageCatalogModel.cs" Link="StorageCatalogModel.cs" />
+    <EmbeddedResource Include="../../src/BetterHotkeys/Data/pinyin.tsv" LogicalName="BetterHotkeys.pinyin.tsv" />
     <Compile Include="../../src/BetterHotkeys/OrganizerRules.cs" Link="OrganizerRules.cs" />
     <Compile Include="../../src/BetterHotkeys/DirectTransfer.cs" Link="DirectTransfer.cs" />
     <Compile Include="../../src/BetterHotkeys/InspectionRules.cs" Link="InspectionRules.cs" />

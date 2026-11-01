@@ -68,7 +68,7 @@ namespace BetterHotkeys
                     consumingItemClick = true;
                     if (OrganizerWorld.InScope(item) && item.handler?.FindParentWindow()?.IsVisible() == true &&
                         item.handler.gameObject.activeInHierarchy && !string.IsNullOrEmpty(item.identifier))
-                    { StorageItemDisplay.Observe(item); picked?.Invoke(item); }
+                    { StorageItemCatalog.Observe(item); picked?.Invoke(item); }
                     return false;
                 }
                 // Native page tabs and window headers retain their ordinary click handling.

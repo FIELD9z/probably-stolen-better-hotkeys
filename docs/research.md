@@ -191,3 +191,12 @@
 - 设备仅开放独立成品来源，Shift/Ctrl/C 共用来源识别；设备目标枚举不变。继续使用 MayRemove/MaxNumRemove 与 SlotMarker.TryAcceptOnce，保留 Expel 等回调。不是按机器类名或本地化标题推断。
 - 正式版编译 0 警告/错误、165 项逻辑检查与程序集绑定检查通过。机器点击、回调更新、A/B 互转及分页失效仍需实机验证。
 - 许可证调查结束：游戏原生 OnPermitGranted/OnNewItemCreated/ReapplyPermits 通过 RemoveContrabandStatus 清除有效许可覆盖物品的违禁 tag；用户确认无需修改标记。标记键沿用 0.5.1 的 V。
+
+## 2026-11-01 0.5.3：独立已选区、原生主类目录与离线拼音
+
+- 用户确认已选标签独立显示、允许/排除分别清空、保存后生效；首拼+全拼搜索跨类别；已观察物品目录按原生主类分组，多类物品在浏览时可重复、搜索去重。许可证标记不变。
+- Cecil 核实 TypeHelper.MAJOR_TYPES_LIST 提供 11 个主类；GetGameItemType 没有父子映射。物品目录只保存实际命中的主类；标签按 type/condition/feature/state 来源分组，不编造树状继承。
+- 每秒从 visibleWindows 的可见 active UI 图读取自有物品，要求 middle active + parent window visible，遇到 GameItem 即停止递归，关闭容器内容不扫描。打开内容窗口作为独立 root。只持久化当前 PlayerStore.ModData 下的名称/图片元数据及主类；保留旧观察记录和当前名单，不实例化物品工厂。此处“已观察”是窗口中已显示，不代表玩家主动点击或注意过，也不做屏幕遮挡判定。
+- 独立已选允许/排除列表不受候选筛选影响。分类默认折叠，搜索和采集结果平铺去重；查找切回全目录，采集仅追加。所有规则编辑均是草稿，唯一保存入口仍是 StorageRulesStore.Set。未知旧项不丢弃。
+- 拼音使用 Unicode Unihan 17.0.0 kMandarin/kHanyuPinyin，并通过 kSimplifiedVariant/kTraditionalVariant 共享读音；44,361 字，约 453 KiB。固定源 ZIP SHA256，生成脚本 scripts/Generate-Pinyin.py，许可随包发布。DLL 内嵌资源，无运行时网络或新增外部程序集。多音字用有限状态匹配避免组合数量爆炸，接受候选读音而非语境消歧。
+- 新增覆盖首拼、全拼、多音、简繁、ü、补充平面、英文/数字及规则筛选隔离的检查。正式版编译 0 警告/错误，189 项逻辑检查及绑定检查通过；独立只读审查未发现范围内阻断。UI 布局、滚动、事件回调、存档读写和机器真实取出仍待实机验证，见使用说明验收步骤。

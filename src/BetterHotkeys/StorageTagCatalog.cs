@@ -61,6 +61,16 @@ namespace BetterHotkeys
             return choices.Values.OrderBy(option => option.Label, StringComparer.CurrentCulture).ToList();
         }
 
+        internal static string Group(string id)
+        {
+            if (id.StartsWith("type:", StringComparison.Ordinal))
+                return TypeHelper.MAJOR_TYPES_LIST.Contains(id.Substring(5)) ? Texts.T("主要类别", "Major categories") : Texts.T("其他类型 / 属性", "Other types / attributes");
+            if (id.StartsWith("condition:", StringComparison.Ordinal) || id.StartsWith("feature:", StringComparison.Ordinal))
+                return Texts.T("属性 / 品质", "Properties / qualities");
+            if (id.StartsWith("state:", StringComparison.Ordinal)) return Texts.T("状态", "States");
+            return Texts.T("旧规则 / 未知类别", "Legacy / unknown category");
+        }
+
         internal static bool Matches(GameItem item, string id)
         {
             if (id == "state:stolen") return item.IsTag("STOLEN_TAG");

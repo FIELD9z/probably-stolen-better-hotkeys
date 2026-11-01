@@ -21,7 +21,7 @@ function FileHashes([string]$directory) {
     return $hashes
 }
 AssertGameClosed
-$dirty = & git -C $repoRoot status --porcelain -- src scripts tests docs/user-guide.md docs/research.md
+$dirty = & git -C $repoRoot status --porcelain -- src scripts tests docs/user-guide.md docs/research.md THIRD-PARTY-NOTICES.txt
 if ($LASTEXITCODE -ne 0 -or $dirty) { throw 'Commit verified code, tests, scripts and packaged documentation before installing.' }
 $commit = (& git -C $repoRoot rev-parse HEAD).Trim()
 if ($LASTEXITCODE -ne 0) { throw 'Cannot resolve installation commit.' }
@@ -30,7 +30,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Cannot resolve installation commit.' }
 if ($manifest.Manifest.ModVersion -ne $sourceManifest.Manifest.ModVersion) { throw 'Package version is stale; rebuild.' }
 foreach ($pair in @(
     @('src/BetterHotkeys/bin/Release/netstandard2.1/BetterHotkeys.dll', 'BetterHotkeys.dll'),
-    @('docs/user-guide.md', 'USER-GUIDE.md')
+    @('docs/user-guide.md', 'USER-GUIDE.md'),
+    @('THIRD-PARTY-NOTICES.txt', 'THIRD-PARTY-NOTICES.txt')
 )) {
     if ((Get-FileHash -LiteralPath (Join-Path $repoRoot $pair[0])).Hash -ne (Get-FileHash -LiteralPath (Join-Path $package $pair[1])).Hash) { throw "Package file is stale: $($pair[1])" }
 }

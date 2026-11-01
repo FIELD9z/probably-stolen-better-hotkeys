@@ -131,7 +131,7 @@ namespace BetterHotkeys
             var denied = rule.DeniedItems.Distinct(StringComparer.Ordinal).ToList();
             var options = StorageTagCatalog.Options();
             var b = CustomUIManager.Window(Settings.Id + ":storage", Texts.T("收纳规则 — 第 ", "Storage rules — page ") + (target.Page + 1), CustomUIManager.LAYER_FRONT)
-                .SetSize(580, 590).Center().SetCloseOnEscape(false);
+                .SetSize(680, 720).Center().SetCloseOnEscape(false);
             editor = b.GetWindow();
             var window = editor;
             b.AddLabel(Texts.T("物品按同种记录；拒绝优先。修改仅在保存后生效。", "Items are matched by kind; denials win. Changes apply only after Save."));
@@ -181,37 +181,23 @@ namespace BetterHotkeys
             b.AddButton(Texts.T("点选添加拒绝物品", "Pick denied items"), () => Pick(true));
             b.AddLabel(Texts.T("右键完成", "Right-click to finish"));
             b.End();
-            b.BeginScroll(230);
-            b.AddLabel(Texts.T("已选物品（取消勾选移除，保存后生效）", "Selected items (uncheck to remove, then Save)"));
-            if (allowed.Count == 0 && denied.Count == 0) b.AddLabel(Texts.T("尚未添加物品。点击上方按钮，再左键点选已打开容器中的物品。", "No items yet. Use a button above, then left-click items in open containers."));
-            foreach (var id in allowed.ToArray())
-            {
-                var value = id;
-                b.AddToggle(Texts.T("允许：", "Allow: ") + StorageItemDisplay.Name(value), true, keep => { if (keep) { if (!allowed.Contains(value)) allowed.Add(value); } else allowed.Remove(value); });
-            }
-            foreach (var id in denied.ToArray())
-            {
-                var value = id;
-                b.AddToggle(Texts.T("拒绝：", "Deny: ") + StorageItemDisplay.Name(value), true, keep => { if (keep) { if (!denied.Contains(value)) denied.Add(value); } else denied.Remove(value); });
-            }
-            b.End();
+            b.AddLabel(Texts.T("目录记录本存档中已显示的物品；展开类别或搜索添加。", "Browse categories or search items previously displayed in this save."));
+            _ = new StorageCatalogBrowser(b, new StorageCatalogModel(StorageItemCatalog.Options(allowed.Concat(denied)), allowed, denied), 200);
             b.End();
             b.BeginTab(Texts.T("标签规则", "Tags"));
             tagPage = b.CurrentContainer.gameObject;
             b.AddDropdown(new[] { Texts.T("满足任意标签", "Match any tag"), Texts.T("满足全部标签", "Match all tags") }, rule.All ? 1 : 0, null, "match");
             b.AddLabel(Texts.T("允许标签按任意／全部匹配；命中任一排除标签始终拒绝。", "Allow tags match any/all; any excluded tag always rejects."));
-            var sampled = new HashSet<string>(StringComparer.Ordinal);
-            var rows = new List<(string id, string label, CustomUIElement element)>();
-            var allowControls = new Dictionary<string, CustomUIElement>();
-            var denyControls = new Dictionary<string, CustomUIElement>();
+            StorageCatalogBrowser? tags = null;
+            CustomUIElement? collectButton = null;
             b.AddDropdown(new[] { Texts.T("采集到允许标签", "Collect as allowed tags"), Texts.T("采集到排除标签", "Collect as excluded tags") }, 0, null, "collect_mode");
             b.AddLabel(Texts.T("左键点选物品查看标签；勾选或采集后保存。", "Left-click an item to inspect tags; select or collect, then Save."), "sample");
             inspectItem = item => {
-                sampled.Clear();
-                foreach (var option in options)
-                    if (StorageTagCatalog.Matches(item, option.Id)) sampled.Add(option.Id);
-                window.Get("sample").SetText(item.name + Texts.T(" — 可见标签：", " — visible tags: ") + sampled.Count);
-                foreach (var row in rows) row.element.SetVisible(sampled.Contains(row.id));
+                if (tags == null) return;
+                var sampled = options.Where(option => StorageTagCatalog.Matches(item, option.Id)).Select(option => option.Id).ToArray();
+                tags.Inspect(sampled);
+                window.Get("sample").SetText(item.name + Texts.T(" — 可见标签：", " — visible tags: ") + sampled.Length);
+                collectButton?.SetInteractable(sampled.Length != 0);
             };
             b.BeginRow();
             b.AddButton(Texts.T("点选物品（右键返回）", "Pick item (right-click returns)"), () => {
@@ -224,35 +210,19 @@ namespace BetterHotkeys
             });
             b.AddButton(Texts.T("采集这些标签", "Collect these tags"), () => {
                 var reject = window.Get("collect_mode").GetIndex() == 1;
-                foreach (var id in sampled)
-                {
-                    (reject ? excluded : chosen).Add(id);
-                    (reject ? denyControls : allowControls)[id].SetBool(true, false);
-                }
+                tags?.Collect(reject);
             });
-            b.AddButton(Texts.T("显示全部", "Show all"), () => { foreach (var row in rows) row.element.SetVisible(true); });
+            collectButton = b.Last; collectButton.SetInteractable(false);
+            b.AddButton(Texts.T("显示全部", "Show all"), () => tags?.ShowAll());
             b.End();
-            b.AddInput(Texts.T("搜索游戏分类 / 属性", "Search game categories / attributes"), "", null, "search", query => {
-                foreach (var row in rows) row.element.SetVisible(row.label.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0);
-            });
-            b.BeginScroll(160);
             foreach (var id in chosen.Concat(excluded).Except(options.Select(o => o.Id)).ToArray())
-                options.Add(new StorageTagOption(id, StorageTagCatalog.Label(id)));
-            foreach (var option in options)
-            {
-                var id = option.Id;
-                b.BeginColumn();
-                var row = CustomUIElement.Bind(b.CurrentContainer.gameObject, "tag_rule_" + id);
-                b.AddLabel(option.Label);
-                b.BeginRow();
-                b.AddToggle(Texts.T("允许", "Allow"), chosen.Contains(id), value => { if (value) chosen.Add(id); else chosen.Remove(id); });
-                allowControls[id] = b.Last;
-                b.AddToggle(Texts.T("排除（优先）", "Exclude (wins)"), excluded.Contains(id), value => { if (value) excluded.Add(id); else excluded.Remove(id); });
-                denyControls[id] = b.Last;
-                b.End(); b.End();
-                rows.Add((id, option.Label, row));
-            }
-            b.End();
+                options.Add(new StorageTagOption(id, StorageTagCatalog.Label(id) + " [" + id + "]"));
+            tags = new StorageCatalogBrowser(b, new StorageCatalogModel(options.Select(option =>
+                new CatalogOption(option.Id, option.Label, StorageTagCatalog.Group(option.Id))), chosen, excluded), 150);
+            tags.OnBrowseAll = () => {
+                window.Get("sample").SetText(Texts.T("正在浏览全部标签；可点选物品筛选。", "Browsing all tags; pick an item to filter."));
+                collectButton.SetInteractable(false);
+            };
             b.End();
             b.EndTabs();
             b.AddFlexibleSpace();

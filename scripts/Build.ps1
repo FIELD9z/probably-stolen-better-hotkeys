@@ -22,4 +22,5 @@ New-Item -ItemType Directory -Force -Path $package | Out-Null
 Copy-Item -LiteralPath (Join-Path $repoRoot 'src/BetterHotkeys/bin/Release/netstandard2.1/BetterHotkeys.dll') -Destination $package
 $manifest.Save((Join-Path $package 'manifest.xml'))
 Copy-Item -LiteralPath (Join-Path $repoRoot 'docs/user-guide.md') -Destination (Join-Path $package 'USER-GUIDE.md')
+Copy-Item -LiteralPath (Join-Path $repoRoot 'THIRD-PARTY-NOTICES.txt') -Destination $package
 Write-Host "Package created: $package"
