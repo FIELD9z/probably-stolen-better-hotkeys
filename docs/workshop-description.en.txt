@@ -1,3 +1,51 @@
+[h2]Better Hotkeys & Storage 0.5.3[/h2]
+Store items by rules, move them quickly, and find customer requests or hidden contraband.
+
+[h2]Features[/h2]
+[list]
+[*]Rule-based storage: route items by type or tags across containers and storage pages.
+[*]Independent pages: give each page a name, rules and priority. All eligible pages are checked by default.
+[*]Allow and deny lists: accept food, exclude stolen goods, or accept only specific items. Deny rules take priority.
+[*]Categorized selection: browse items in expandable game categories, with tags grouped by category, properties and states to make rules easier to find.
+[*]Pinyin search: search items and tags using Chinese, English, pinyin initials or full pinyin. For example, find “手枪” with sq or shouqiang. Search covers all categories.
+[*]Selected-rule management: allow and exclude lists stay visible independently of search and filters. Remove individual entries or clear either group, then Save to apply.
+[*]Tag picking: click an item to inspect its visible tags and add them to your rules.
+[*]Container-to-container transfers: click a destination container, then Ctrl-click items in another container to move them there. Shortcut actions keep your chosen destination.
+[*]Machine-output storage: quickly take items from dedicated machine output areas and send them to inventory, a chosen container, the sales counter, or automatic rule-based storage.
+[*]Quick sorting: sort a container by hovering over its header and pressing the sort key.
+[*]Customer demand: highlight matching items, with corner markers on containers that hold them.
+[*]Stolen and contraband markers: locate flagged goods, including inside nested containers.
+[*]Batch pinning: keep important items out of quick transfers and automatic storage.
+[*]English and Chinese: follow the game language or choose manually.
+[/list]
+
+[h2]Getting started with storage[/h2]
+Click a container header's gear → choose allowed items or tags → Save → select items and press C.
+For example, let a food page accept Food and exclude Stolen; let a materials page accept Materials.
+Pinned items and items with no matching target or available space stay where they are.
+
+The item catalog remembers owned items displayed in open windows in the current save, so they remain searchable after being sold. Contents of unopened containers are not added in advance. You can also keep adding rules by clicking actual items.
+
+[h2]Default controls[/h2]
+Customize shortcuts in this mod's settings under Mods. Updates preserve existing bindings; check the settings page for your active keys.
+[list]
+[*]C: store selected items, or hold C and left-click items one by one.
+[*]D: toggle customer-demand highlights.
+[*]Double V: toggle stolen/contraband markers.
+[*]Shift + left click: inventory/container/machine output → sales counter; counter → inventory.
+[*]Ctrl + left click: inventory, other containers or machine outputs → highlighted destination container. Click an item in the destination itself to return it to inventory. With no destination selected, container and machine-output items return to inventory.
+[*]Alt + left click: pin/unpin, including selected items from the same source.
+[*]Hover a container header + S: sort that container (follows the game's sort key).
+[/list]
+
+A plain left click on an open owned container selects it as the destination. A header-only selection option is also available. Select the destination again after closing its window or switching its storage page.
+
+Machine transfers support items in dedicated output areas that the game allows you to remove. They do not include raw materials, fuel or items being processed, and do not automatically feed items into machines.
+
+[h2]Installation[/h2]
+Subscribe, enable this mod in the full game's Mods menu, and restart when prompted.
+
+[h2]From the author[/h2]
 While working on hotkeys and storage, I realized I'd added quite a lot, so I changed the name. Quick storage has arrived! Welcome aboard! Report issues in the discussion area and I'll fix them as soon as I see them (why do my total assets keep rising while all my cash is gone?
 
 The item transfer logic in this game makes my head spin a little. Half the time, I have no idea where my stuff went. And I don't even know which bizarre little corner I left my contraband in—HOW DOES LAW ENFORCEMENT KEEP FINDING IT??!! MY MODULES, AAAAAHHH!!!
@@ -6,20 +54,4 @@ So, here we are: some hotkey improvements, plus a way to remind myself where I s
 
 If you run into any issues, feel free to leave a comment below!
 
-[h2]Installation and controls[/h2]
-For the full release of Probably Stolen. Subscribe, enable in Mods and restart when prompted.
-Shift + left click: inventory/container to sales counter; counter to inventory.
-Ctrl + left click: inventory to the highlighted open container; container to inventory.
-Alt + left click: pin/unpin; supports selections sharing the same source.
-Hover a header + S (or the game's sort key): sort that container.
-Double B: toggle stolen/contraband markers, including nested contents.
-
-[h2]Quick storage and customer demand[/h2]
-[b]D[/b]: toggle customer-demand highlights.
-[b]C[/b]: store selected items by rules, or hold C and left-click items. All eligible pages are checked by default, including closed storage windows.
-Use a container header's gear to configure names, priorities, allowed/denied items and allowed/excluded tags. Allowed tags support any/all matching. Any excluded tag rejects the item, even if it is explicitly allowed. Item allowlists route before tags; pinned items are not moved automatically.
-Inspect items in the Tags tab and collect visible tags into either list. Right-click to finish picking; Save commits the draft. Opening the editor collapses the side preview.
-Manual destinations with rule conflicts offer matching-only transfer, an override, or cancellation. Overrides still respect native capacity, locks and type restrictions.
-Native shortcut hints remain intact. An independent shortcut guide is available at the bottom of the mod settings.
-
-Author: FIELD9z | Version: 0.5.0
+Author: FIELD9z | Version: 0.5.3
