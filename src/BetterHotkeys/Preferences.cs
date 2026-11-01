@@ -9,7 +9,7 @@ namespace BetterHotkeys
         internal string Trigger = "DoublePress", Notices = "Exceptions", StolenColor = "Yellow", ContrabandColor = "Red", BothColor = "Purple";
         internal float DoubleInterval = .35f, Opacity = 1f, Refresh = .2f;
         internal int Width = 2;
-        internal Shortcut Counter = Parse("Shift"), Container = Parse("Ctrl"), PinKey = Parse("Alt"), MarkerKey = Parse("B"), SortKey = Parse("S");
+        internal Shortcut Counter = Parse("Shift"), Container = Parse("Ctrl"), PinKey = Parse("Alt"), MarkerKey = Parse("V"), SortKey = Parse("S");
         internal bool DemandEnabled = true, AutoStore = true, StoreAllPages = true;
         internal bool EmptyStorageFallback = false, ForceManualStorage = false;
         internal string DemandColor = "Cyan";

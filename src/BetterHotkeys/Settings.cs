@@ -40,7 +40,7 @@ namespace BetterHotkeys
             Binding("counter_key", "Shift", "柜台转移键＋左键", "Sales-counter chord + left click");
             Binding("container_key", "Ctrl", "容器转移键＋左键", "Container chord + left click");
             Binding("pin_key", "Alt", "固定键＋左键", "Pin chord + left click");
-            Binding("marker_key", "B", "标记键", "Marker chord");
+            Binding("marker_key", "V", "标记键", "Marker chord");
             Binding("demand_key", "D", "顾客需求高亮开关", "Toggle customer demand");
             Binding("store_key", "C", "按规则收纳 / 按住并点击", "Store by rules / hold and click");
             Bool("demand_enabled", true, "06 Demand / 需求", "需求高亮（记忆开关）", "Demand highlight (remembered toggle)");

@@ -1,4 +1,4 @@
-# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.0
+# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.1
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -41,7 +41,7 @@ Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 | Ctrl＋左键 | 库存→最近点击的自有打开容器；容器→库存；柜台不执行 |
 | Alt＋左键 | 固定或解除固定；点击选区内物品时操作同来源选区 |
 | 悬停标题栏＋游戏整理键（默认 S） | 整理该容器，默认记住最近一次原生菜单排序方式 |
-| 双击 B | 开关赃物/违禁品标记；默认黄/红/紫分别表示赃物/违禁品/两者 |
+| 双击 V | 开关赃物/违禁品标记；默认黄/红/紫分别表示赃物/违禁品/两者 |
 
 固定物品不会被转移。目标不足时允许部分接收，不自动绕路或整理目标。普通拖动、滚轮数量调整及 Shift 拖动半堆保留；不新增单取键。
 
@@ -78,7 +78,7 @@ Open Better Hotkeys settings in Mods and click Apply. Settings persist across sa
 | Ctrl + left click | Inventory → last clicked open owned container; container → inventory; no route from counter |
 | Alt + left click | Pin/unpin; selected items in the same direct inventory are processed together |
 | Hover header + game sort key (default S) | Sort that inventory; remembers the last vanilla menu sort choice by default |
-| Double B | Toggle stolen/contraband markers: yellow/red/purple for stolen/contraband/both |
+| Double V | Toggle stolen/contraband markers: yellow/red/purple for stolen/contraband/both |
 
 Pinned items stay put. Partial transfers are allowed; no automatic rerouting or destination sorting. Normal dragging, wheel quantity adjustment and Shift half-stack dragging remain available. No new single-item key is added.
 

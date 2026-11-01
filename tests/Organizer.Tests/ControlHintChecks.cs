@@ -26,7 +26,7 @@ internal static class ControlHintChecks
         check("independent sort reads custom binding", Rows()[3].Key == "F6");
         p.Sort = false;
         check("disabled sorting shown as disabled", Rows()[3].Key == "Disabled");
-        check("default marker gesture is double press", Rows()[4].Key == "Double B");
+        check("default marker gesture is double press", Rows()[4].Key == "Double V");
         p.MarkerKey = Preferences.Parse("Ctrl+B"); p.Trigger = "Hold";
         check("hold marker gesture follows custom chord", Rows()[4].Key == "Hold LeftCtrl+B");
         p.Trigger = "Press";
