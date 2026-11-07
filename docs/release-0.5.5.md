@@ -7,4 +7,4 @@
 
 Risk markers use top-right/bottom-left L corners; demand markers use top-left/bottom-right at the same outer inset. Short arms stay inside occupied cells, including irregular and rotated items. Nested-demand badges move inside the top-left occupied cell.
 
-Validation: full-game compilation (0 warnings/errors), 199 logic checks and native binding checks passed. Final Unity rendering awaits user testing. Workshop publication is not included.
+Validation: full-game compilation (0 warnings/errors), 199 logic checks and native binding checks passed. On 2026-11-07 the user tested the installed corner markers and reported no issues with this design, then authorized Workshop publication. This is not an exhaustive test of every configuration.

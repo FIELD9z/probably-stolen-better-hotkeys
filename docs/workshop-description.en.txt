@@ -1,5 +1,8 @@
-[h2]Better Hotkeys & Storage 0.5.3[/h2]
+[h2]Better Hotkeys & Storage 0.5.5[/h2]
 Store items by rules, move them quickly, and find customer requests or hidden contraband.
+
+[h2]New in 0.5.5[/h2]
+Thinner, shorter corner markers keep item artwork visible: stolen/contraband uses the top-right and bottom-left corners; customer demand uses the top-left and bottom-right. Both share the outer edge, stay inside occupied cells and support irregular items without crossing adjacent markers. Existing colors and hotkeys are preserved.
 
 [h2]Features[/h2]
 [list]
@@ -54,8 +57,8 @@ So, here we are: some hotkey improvements, plus a way to remind myself where I s
 
 If you run into any issues, feel free to leave a comment below!
 
-Author: FIELD9z | Version: 0.5.3
+Author: FIELD9z | Version: 0.5.5
 
 [h2]Source[/h2]
 [url=https://github.com/FIELD9z/probably-stolen-better-hotkeys]GitHub repository[/url]
-[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.3]Source for version 0.5.3[/url]
+[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.5]Source for version 0.5.5[/url]

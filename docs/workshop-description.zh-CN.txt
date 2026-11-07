@@ -1,5 +1,8 @@
-[h2]更好的快捷键与收纳 / Better Hotkeys & Storage 0.5.3[/h2]
+[h2]更好的快捷键与收纳 / Better Hotkeys & Storage 0.5.5[/h2]
 按规则收纳物品，快速转移，轻松找到顾客要的东西和藏起来的赃物。
+
+[h2]0.5.5 更新[/h2]
+标记改为更细、更短的角框，减少遮挡物品：赃物／违禁品显示右上、左下；顾客需求显示左上、右下。两类角框共用外沿，限制在实际占格内，支持异形物品且避免相邻角框交叉。原有颜色和快捷键设置沿用。
 
 [h2]功能[/h2]
 [list]
@@ -50,8 +53,8 @@
 
 游戏里的物品转移逻辑我有点头大，经常不知道转移到哪去了，而且我都不知道我的违禁品放在哪个稀奇古怪的小角落了，治安部是怎么找到的？？！！我的模组啊啊啊！！！就这样，做了一下快捷键的优化，以及提醒自己违禁品放哪了。有问题欢迎在下方评论区反馈
 
-作者：FIELD9z｜版本：0.5.3
+作者：FIELD9z｜版本：0.5.5
 
 [h2]源码[/h2]
 [url=https://github.com/FIELD9z/probably-stolen-better-hotkeys]GitHub 仓库[/url]
-[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.3]0.5.3 对应源码[/url]
+[url=https://github.com/FIELD9z/probably-stolen-better-hotkeys/tree/v0.5.5]0.5.5 对应源码[/url]
