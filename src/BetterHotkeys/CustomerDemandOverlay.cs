@@ -137,39 +137,32 @@ namespace BetterHotkeys
 
         private sealed class DemandFrame : IDisposable
         {
-            private readonly GameObject root;
-            private readonly List<Image> edges = new List<Image>();
+            private readonly ItemOutline outline;
             private readonly Image badge;
-            internal bool Alive => root != null;
+            internal bool Alive => outline.Alive;
             internal DemandFrame(RectTransform parent)
             {
-                root = new GameObject("Better Hotkeys customer demand", typeof(RectTransform));
-                var rect = (RectTransform)root.transform;
-                rect.SetParent(parent, false); rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0, 1);
-                rect.anchoredPosition = Vector2.zero;
-                // Inset from the risk border so both independent modules remain visible.
-                var inset = Settings.Current.Width + 2f;
-                edges.Add(Image(new Vector2(0, 1), Vector2.one, new Vector2(inset, -inset - 2), new Vector2(-inset, -inset)));
-                edges.Add(Image(Vector2.zero, new Vector2(1, 0), new Vector2(inset, inset), new Vector2(-inset, inset + 2)));
-                edges.Add(Image(Vector2.zero, new Vector2(0, 1), new Vector2(inset, inset), new Vector2(inset + 2, -inset)));
-                edges.Add(Image(new Vector2(1, 0), Vector2.one, new Vector2(-inset - 2, inset), new Vector2(-inset, -inset)));
-                badge = Image(Vector2.one, Vector2.one, new Vector2(-inset - 8, -inset - 8), new Vector2(-inset, -inset));
+                outline = new ItemOutline(parent, "Better Hotkeys customer demand", ItemOutline.DemandInset, 1f);
+                var obj = new GameObject("Nested demand marker", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+                var rect = (RectTransform)obj.transform;
+                rect.SetParent(outline.Rect, false);
+                rect.anchorMin = rect.anchorMax = new Vector2(0, 1);
+                rect.pivot = Vector2.one;
+                rect.sizeDelta = new Vector2(5, 5);
+                badge = obj.GetComponent<Image>(); badge.raycastTarget = false;
             }
-            private Image Image(Vector2 min, Vector2 max, Vector2 low, Vector2 high)
+            internal void Geometry(GridShape shape)
             {
-                var obj = new GameObject("Demand marker", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-                var rect = (RectTransform)obj.transform; rect.SetParent(root.transform, false);
-                rect.anchorMin = min; rect.anchorMax = max; rect.offsetMin = low; rect.offsetMax = high;
-                var image = obj.GetComponent<Image>(); image.raycastTarget = false; return image;
+                outline.Geometry(shape);
+                badge.rectTransform.anchoredPosition = outline.BadgePosition;
             }
-            internal void Geometry(GridShape shape) => ((RectTransform)root.transform).sizeDelta = new Vector2(shape.globalWidth, shape.globalHeight) * UISettings.current.gridSize;
             internal void Display(bool direct, bool nested)
             {
                 var color = Settings.ColorFor(Settings.Current.DemandColor);
-                foreach (var edge in edges) { edge.color = color; edge.gameObject.SetActive(direct); }
+                outline.Display(color, direct);
                 badge.color = color; badge.gameObject.SetActive(nested);
             }
-            public void Dispose() { if (root != null) { root.SetActive(false); UnityEngine.Object.Destroy(root); } }
+            public void Dispose() => outline.Dispose();
         }
     }
 }

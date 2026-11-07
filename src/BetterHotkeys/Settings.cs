@@ -70,7 +70,7 @@ namespace BetterHotkeys
             Choice("stolen_color", "Yellow", colors, "04 Markers / 标记", "赃物颜色", "Stolen color");
             Choice("contraband_color", "Red", colors, "04 Markers / 标记", "违禁品颜色", "Contraband color");
             Choice("both_color", "Purple", colors, "04 Markers / 标记", "混合类别颜色", "Mixed-category color");
-            entries.Add("border_width", config.Define("border_width", 2, "04 Markers / 标记", () => Texts.T("边框粗细", "Border width"), 1, 4, null, false));
+            entries.Add("border_width", config.Define("border_width", 2, "04 Markers / 标记", () => Texts.T("边框粗细（每级 0.5 像素）", "Border width (0.5 px per step)"), 1, 4, null, false));
             Float("border_opacity", 1f, .2f, 1f, "04 Markers / 标记", "边框不透明度", "Border opacity");
             Float("scan_interval", .2f, .1f, .5f, "04 Markers / 标记", "扫描间隔（秒）", "Scan interval (seconds)");
             Choice("transfer_notices", "Exceptions", new[] { "Exceptions", "All", "Off" }, "05 Notices / 提示", "转移提示：异常/全部/关闭", "Transfer notices: Exceptions / All / Off");

@@ -120,48 +120,21 @@ namespace BetterHotkeys
 
         private sealed class RiskFrame : IDisposable
         {
-            private readonly GameObject root;
-            private readonly List<Image> edges = new List<Image>();
-            internal bool IsAlive => root != null;
+            private readonly ItemOutline outline;
+            internal bool IsAlive => outline.Alive;
             internal RiskFrame(RectTransform parent)
             {
-                // middle tracks the transformed top-left, but retains unrotated width/height.
-                root = new GameObject("Organizer risk marker", typeof(RectTransform));
-                var rect = (RectTransform)root.transform;
-                rect.SetParent(parent, false);
-                rect.anchorMin = rect.anchorMax = new Vector2(0, 1);
-                rect.pivot = new Vector2(0, 1);
-                rect.anchoredPosition = Vector2.zero;
-                var width = Settings.Current.Width;
-                Edge(new Vector2(0, 1), Vector2.one, new Vector2(0, -width), Vector2.zero);
-                Edge(Vector2.zero, new Vector2(1, 0), Vector2.zero, new Vector2(0, width));
-                Edge(Vector2.zero, new Vector2(0, 1), Vector2.zero, new Vector2(width, 0));
-                Edge(new Vector2(1, 0), Vector2.one, new Vector2(-width, 0), Vector2.zero);
+                outline = new ItemOutline(parent, "Organizer risk marker", ItemOutline.OuterInset, ItemOutline.RiskWidth);
             }
-            internal void UpdateGeometry(GridShape shape)
-            {
-                var cell = UISettings.current.gridSize;
-                ((RectTransform)root.transform).sizeDelta = new Vector2(shape.globalWidth * cell, shape.globalHeight * cell);
-            }
-            private void Edge(Vector2 min, Vector2 max, Vector2 offsetMin, Vector2 offsetMax)
-            {
-                var edge = new GameObject("Risk edge", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-                var rect = (RectTransform)edge.transform;
-                rect.SetParent(root.transform, false);
-                rect.anchorMin = min; rect.anchorMax = max;
-                rect.offsetMin = offsetMin; rect.offsetMax = offsetMax;
-                var image = edge.GetComponent<Image>();
-                image.raycastTarget = false;
-                edges.Add(image);
-            }
+            internal void UpdateGeometry(GridShape shape) => outline.Geometry(shape);
             internal void SetRisk(ItemRisk risk)
             {
                 var color = Settings.ColorFor(risk == ItemRisk.Stolen ? Settings.Current.StolenColor : risk == ItemRisk.Contraband ? Settings.Current.ContrabandColor : Settings.Current.BothColor);
-                foreach (var edge in edges) edge.color = color;
+                outline.Display(color, true);
             }
             public void Dispose()
             {
-                if (root != null) { root.SetActive(false); UnityEngine.Object.Destroy(root); }
+                outline.Dispose();
             }
         }
     }

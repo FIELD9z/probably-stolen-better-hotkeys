@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../src/BetterHotkeys/OutlineGeometry.cs" Link="OutlineGeometry.cs" />
     <Compile Include="../../src/BetterHotkeys/CatalogSearch.cs" Link="CatalogSearch.cs" />
     <Compile Include="../../src/BetterHotkeys/StorageCatalogModel.cs" Link="StorageCatalogModel.cs" />
     <EmbeddedResource Include="../../src/BetterHotkeys/Data/pinyin.tsv" LogicalName="BetterHotkeys.pinyin.tsv" />

@@ -78,5 +78,6 @@ ShortcutChecks.Run(Check);
 ControlHintChecks.Run(Check);
 StorageChecks.Run(Check);
 CatalogChecks.Run(Check);
+OutlineChecks.Run(Check);
 Check("automatic storage defaults to all pages including closed storage", new Preferences().StoreAllPages);
 Console.WriteLine($"{passed} checks passed. Unity runtime and game callbacks are not exercised by these doubles.");

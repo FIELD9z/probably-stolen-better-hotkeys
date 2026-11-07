@@ -1,4 +1,4 @@
-# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.3
+# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.4
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -51,7 +51,7 @@ Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 - 按键：五个动作支持文本组合键，如 Shift、RightAlt、Ctrl+Q、B；None 或空白解除绑定。可用 A–Z、F1–F12（F8/F9 保留）、Space、Tab、BackQuote、Home、End、PageUp、PageDown、Insert 以及 Shift/Ctrl/Alt 的左右变体；最多一个普通键。T 被本机游戏硬编码占用，运行时提示冲突并不执行。左右等价默认开启；关闭后 Shift/Ctrl/Alt 表示左侧。
 - 标记触发：Press 单按开关、DoublePress 双击开关、Hold 按住显示；双击间隔 0.15–0.8 秒。
 - 行为：同来源批量操作；仅标题栏或容器任意区域指定目标；目标边框；记住最近排序或固定使用大/小件优先、起始/末端。
-- 标记：两类分别启停、嵌套汇总、仅自有物品、三种分类配色（七色预设）、宽度 1–4、透明度 0.2–1、扫描间隔 0.1–0.5 秒。扫描不会执行盘查或改变热度。
+- 标记：两类分别启停、嵌套汇总、仅自有物品、三种分类配色（七色预设）、粗细档位 1–4（实际线宽 0.5–2 UI 像素，默认 1 像素）、透明度 0.2–1、扫描间隔 0.1–0.5 秒。扫描不会执行盘查或改变热度。
 - 提示：转移 Exceptions（仅异常，默认）、All、Off；目标变化和标记开关分别启停。
 
 按键字段是文本输入，不是按键捕获控件。应用时拒绝无效或重叠绑定，恢复上一套有效配置；重新打开面板查看恢复后的值。外部冲突在触发动作时检查并说明对象，不自动替换绑定。
@@ -180,3 +180,12 @@ Browse collapsible native major categories (an item may belong to several) or se
 6. 检查长名称、省略号悬停提示、允许／排除两个滚动区及不同 UI 缩放下的窗口布局。
 
 Compilation, logic tests and native API binding checks passed; these checks do not exercise Unity layout, actual item callbacks or in-game save/reload.
+
+
+## 0.5.4 — 更细的占格轮廓 / Thinner cell outlines
+
+顾客需求框固定为 1 UI 像素；赃物／违禁品框沿用原粗细设置，实际线宽改为每档 0.5 UI 像素（默认第 2 档为 1 像素）。已有设置无需重置。风险框距占格外沿内缩 0.5 像素，需求框紧邻其内侧并留 0.5 像素间隙；两类框都靠近外沿，保留独立颜色。异形物品沿旋转／翻转后的实际占格轮廓绘制，不再用外接矩形穿过空格。线条留在自身占格内，避免正常库存中相邻物品的轮廓相交。容器需求角标从 8×8 缩到 5×5，并放在实际占格内。
+
+复测：同一个物品同时命中需求和违禁／赃物时，两种颜色应均可见；将矩形和异形物品紧邻摆放，检查边框没有交叉；旋转、翻转、拖动、缩放界面后检查轮廓跟随；切换 D/V 和粗细设置后检查显示更新。窗口互相遮挡时沿用原生窗口层级，这里保证的是同一正常库存内不重叠占格的物品边框。
+
+Demand outlines use 1 UI pixel. Risk outlines use 0.5 UI pixels per existing width level (default level 2 = 1 pixel). Both follow occupied cells after rotation/reflection, stay inside their own cells and retain separate color lanes. Nested-demand badges shrink from 8×8 to 5×5 and sit in an occupied cell. Check adjacent irregular items, both colors on one item, rotation, dragging, UI scaling and D/V toggles in game. Compilation and automated geometry checks do not verify the final Unity rendering.
