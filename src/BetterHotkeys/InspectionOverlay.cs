@@ -124,7 +124,7 @@ namespace BetterHotkeys
             internal bool IsAlive => outline.Alive;
             internal RiskFrame(RectTransform parent)
             {
-                outline = new ItemOutline(parent, "Organizer risk marker", ItemOutline.OuterInset, ItemOutline.RiskWidth);
+                outline = new ItemOutline(parent, "Organizer risk marker", ItemOutline.OuterInset, ItemOutline.RiskWidth, OutlineCorners.TopRightBottomLeft);
             }
             internal void UpdateGeometry(GridShape shape) => outline.Geometry(shape);
             internal void SetRisk(ItemRisk risk)

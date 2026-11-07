@@ -9,10 +9,10 @@ namespace BetterHotkeys
     {
         internal const float OuterInset = .5f;
         internal static float RiskWidth => Settings.Current.Width * .5f;
-        internal static float DemandInset => OuterInset + RiskWidth + .5f;
         private readonly List<Image> edges = new List<Image>();
         internal readonly RectTransform Rect;
         private readonly float inset, width;
+        private readonly OutlineCorners corners;
         private bool[,] cells = new bool[0, 0];
         private float cellSize;
         private Color color;
@@ -20,9 +20,9 @@ namespace BetterHotkeys
         internal bool Alive => Rect != null;
         internal Vector2 BadgePosition { get; private set; }
 
-        internal ItemOutline(RectTransform parent, string name, float inset, float width)
+        internal ItemOutline(RectTransform parent, string name, float inset, float width, OutlineCorners corners)
         {
-            this.inset = inset; this.width = width;
+            this.inset = inset; this.width = width; this.corners = corners;
             Rect = (RectTransform)new GameObject(name, typeof(RectTransform)).transform;
             Rect.SetParent(parent, false);
             Rect.anchorMin = Rect.anchorMax = Rect.pivot = new Vector2(0, 1);
@@ -46,7 +46,7 @@ namespace BetterHotkeys
             if (!changed) return;
             cellSize = cell;
             Rect.sizeDelta = new Vector2(columns * cell, rows * cell);
-            var strips = OutlineGeometry.Build(cells, cell, inset, width);
+            var strips = OutlineGeometry.Build(cells, cell, inset, width, corners);
             for (var i = 0; i < strips.Count; i++)
             {
                 if (i == edges.Count)
@@ -72,8 +72,8 @@ namespace BetterHotkeys
             }
             // Put the nested-content badge in a real cell, never in a shape's empty corner.
             for (var y = 0; y < rows; y++)
-                for (var x = columns - 1; x >= 0; x--)
-                    if (cells[x, y]) { BadgePosition = new Vector2((x + 1) * cell - inset, -y * cell - inset); return; }
+                for (var x = 0; x < columns; x++)
+                    if (cells[x, y]) { BadgePosition = new Vector2(x * cell + inset + width + 1, -y * cell - inset - width - 1); return; }
         }
 
         internal void Display(Color value, bool show)

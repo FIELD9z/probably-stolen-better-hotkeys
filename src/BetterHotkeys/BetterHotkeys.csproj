@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <Version>0.5.4</Version>
+    <Version>0.5.5</Version>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data/pinyin.tsv" LogicalName="BetterHotkeys.pinyin.tsv" />

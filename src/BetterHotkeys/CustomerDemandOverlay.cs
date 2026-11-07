@@ -142,12 +142,12 @@ namespace BetterHotkeys
             internal bool Alive => outline.Alive;
             internal DemandFrame(RectTransform parent)
             {
-                outline = new ItemOutline(parent, "Better Hotkeys customer demand", ItemOutline.DemandInset, 1f);
+                outline = new ItemOutline(parent, "Better Hotkeys customer demand", ItemOutline.OuterInset, 1f, OutlineCorners.TopLeftBottomRight);
                 var obj = new GameObject("Nested demand marker", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
                 var rect = (RectTransform)obj.transform;
                 rect.SetParent(outline.Rect, false);
                 rect.anchorMin = rect.anchorMax = new Vector2(0, 1);
-                rect.pivot = Vector2.one;
+                rect.pivot = new Vector2(0, 1);
                 rect.sizeDelta = new Vector2(5, 5);
                 badge = obj.GetComponent<Image>(); badge.raycastTarget = false;
             }

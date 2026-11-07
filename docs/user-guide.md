@@ -1,4 +1,4 @@
-# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.4
+# Better Hotkeys & Storage / 更好的快捷键与收纳 — 0.5.5
 
 Author / 作者：FIELD9z。适用本机正式版内部版本 0.46D。
 
@@ -189,3 +189,14 @@ Compilation, logic tests and native API binding checks passed; these checks do n
 复测：同一个物品同时命中需求和违禁／赃物时，两种颜色应均可见；将矩形和异形物品紧邻摆放，检查边框没有交叉；旋转、翻转、拖动、缩放界面后检查轮廓跟随；切换 D/V 和粗细设置后检查显示更新。窗口互相遮挡时沿用原生窗口层级，这里保证的是同一正常库存内不重叠占格的物品边框。
 
 Demand outlines use 1 UI pixel. Risk outlines use 0.5 UI pixels per existing width level (default level 2 = 1 pixel). Both follow occupied cells after rotation/reflection, stay inside their own cells and retain separate color lanes. Nested-demand badges shrink from 8×8 to 5×5 and sit in an occupied cell. Check adjacent irregular items, both colors on one item, rotation, dragging, UI scaling and D/V toggles in game. Compilation and automated geometry checks do not verify the final Unity rendering.
+
+
+## 0.5.5 — 对角角框 / Opposite-corner markers
+
+替代 0.5.4 的完整轮廓：违禁品／赃物仅显示右上与左下两个 L 形角框；顾客需求仅显示左上与右下两个 L 形角框。两类标记共用距占格外沿 0.5 UI 像素的位置，不再让需求框向内错开。颜色、风险粗细档位与 D/V 开关沿用。L 形短边不超过 8 UI 像素或一个格子边长的四分之一，小物品也不会连成整框。
+
+异形物品使用最上／最下有占格行中对应的左右端点，角框始终位于实际占格内；旋转／翻转后重新选择屏幕方向的角落。容器的需求角标改到左上占格内侧，与右上风险角框错开。
+
+Contraband/stolen markers now use only the top-right and bottom-left L corners. Demand markers use top-left and bottom-right, sharing the same outer inset. Arms are capped at 8 UI pixels and one quarter of a cell. Irregular shapes use occupied corners in their extreme rows; nested-demand badges move inside the top-left occupied cell. Existing colors, thickness levels and D/V controls are preserved.
+
+实机重点复测：同一物品同时命中两类标记、单格物品、异形物品紧邻摆放、旋转／翻转，以及容器内有需求物品时的角标。自动检查不代替最终游戏画面验证。
